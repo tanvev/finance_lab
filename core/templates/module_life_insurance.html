@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Life Insurance 101 | Educational Finance Lab{% endblock %}
+
+{% block content %}
+<section class="mb-8">
+  <h1 class="text-3xl font-bold text-trust dark:text-blue-300">
+    Life Insurance 101 — Secure Your Family’s Future
+  </h1>
+  <p class="mt-2 text-gray-700 dark:text-gray-300 max-w-2xl">
+You might be thinking, "I'm young, single, and my biggest asset is a Spotify Premium account. Why do I need life insurance?" Answer: You don't buy it for your future; you buy it to prevent your parents (or future spouse/kids) from going bankrupt when you inevitably shuffle off this mortal coil.  </p>
+
+</section>
+
+<div class="space-y-6">
+<div class="bg-white dark:bg-gray-800 rounded-lg p-8 shadow-md border dark:border-gray-700 mt-6">
+  <h3 class="text-xl font-semibold text-trust dark:text-blue-300">Why term insurance only?</h3>
+  <p class="text-gray-700 dark:text-gray-300 text-base mt-1">
+Because you're trying to buy protection, not a mediocre investment. </p>
+  <ul class="mt-3 text-sm text-gray-700 dark:text-gray-300 space-y-2">
+      <li><strong>It gives maximum cover at minimum price:</strong>
+          Term insurance is pure, unadulterated protection. You pay a small annual fee, and if you die, your nominee gets the massive payout. If you live, you get nothing back. (The cost of not burdening your family is surprisingly cheap when you're 25!)</li>
+      <li><strong>ULIPs, endowment & money-back plans mix investment + insurance $\rightarrow$ costly & inefficient:</strong>
+      These hybrid plans are financial poison. The insurance company takes a huge cut (commission) from your investment. The honest truth: Buy cheap term insurance and invest the difference yourself in an index fund. You'll get way more coverage and way better returns. Do not mix insurance and investment.     </li>
+    </ul>
+</div>
+
+ <div class="bg-white dark:bg-gray-800 rounded-lg p-8 shadow-md border dark:border-gray-700 mt-6">
+  <h3 class="text-xl font-semibold text-trust dark:text-blue-300">How much life cover should I buy?</h3>
+  <p class="text-gray-700 dark:text-gray-300 text-base mt-1">Enough to replace your contribution to the family and clear your debt, so your parents don't have to sell the house to pay your student loan. </p>
+  <ul class="mt-3 text-sm text-gray-700 dark:text-gray-300 space-y-2">
+      <li><strong>A simple rule: 20–25× your annual income + liabilities:</strong>
+           If your income is ₹6 Lakh, you need at least ₹1.2 Crore cover. The Logic: A lump sum of ₹1.2 Crore, invested safely, can generate ₹6 Lakh in annual returns (5%) forever, replacing your income. This ensures your family maintains their lifestyle without touching the principal.</li>
+    </ul>
+</div>
+
+
+<div class="bg-white dark:bg-gray-800 rounded-lg p-8 shadow-md border dark:border-gray-700 mt-6">
+  <h3 class="text-xl font-semibold text-trust dark:text-blue-300">Key factors while buying term insurance</h3>
+  <p class="text-gray-700 dark:text-gray-300 text-base mt-1">
+Since the premium is low, focus 100% on making sure the company will actually pay the claim when it matters. </p>
+  <ul class="mt-3 text-sm text-gray-700 dark:text-gray-300 space-y-2">
+      <li><strong>Claim Settlement Ratio (CSR) > 95%:</strong>
+         This is the percentage of claims the company approved versus received. A high CSR means the company is less likely to use fine print to reject your nominee's payout after you're gone. Stick to the industry leaders here. Your family shouldn't have to fight a massive insurance company during a tragedy</li>
+      <li><strong>Buy online — cheaper, transparent:</strong>
+      Buying directly from the insurer online removes the agent commission, making the policy significantly cheaper. It also forces you to read the terms yourself, which is a rare but useful skill.     </li>
+      <li><strong>Term up to age 60–65:</strong>
+      You need the policy to last until you are financially independent, which means until your major loans are paid off and your kids are through college. For most people, this is until age 60 or 65. Don't buy a 20-year policy now, or you'll have to buy a ridiculously expensive one when you're 45 and slightly less healthy.     </li>
+      <li><strong>Add riders ONLY if needed (CI or disability):</strong>
+      Riders are optional add-ons. The only two worth considering are:
+
+<strong>Critical Illness (CI) Rider</strong>: Pays a lump sum if you are diagnosed with a listed severe illness (like cancer or heart attack). This money can cover treatment costs and lost income while you are still alive.
+
+<strong>Waiver of Premium (WOP) Rider</strong>: If you become permanently disabled, the insurer continues the policy for free. Highly recommended.     </li>
+    </ul>
+</div>
+
+</div>
+
+<!-- CTA -->
+<div class="mt-8 bg-blue-50 dark:bg-blue-900 border border-blue-200 dark:border-blue-700 p-5 rounded-lg">
+  <p class="text-sm">Use our calculator to get your ideal coverage based on income + liabilities.</p>
+  <a href="{% url 'tool_life_insurance_calc' %}">
+    <button class="mt-3 px-4 py-2 bg-blue-600 text-white rounded-md text-sm hover:bg-blue-700">
+      Open Life Cover Calculator →
+    </button>
+  </a>
+</div>
+{% endblock %}

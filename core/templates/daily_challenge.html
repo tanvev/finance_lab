@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Daily Challenge{% endblock %}
+
+{% block content %}
+
+<section class="mb-6">
+  <h1 class="text-3xl font-bold text-trust dark:text-blue-300">💸 1-Minute Money Skill</h1>
+  <p class="mt-1 text-gray-700 dark:text-gray-300 text-sm md:text-base max-w-2xl">
+    One question. 60 seconds. New every day. Build your money habits.
+  </p>
+</section>
+
+<!-- CHALLENGE CARD -->
+<section id="challenge-card"
+         class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6 shadow-md relative overflow-hidden">
+
+  <!-- Timer -->
+  <div class="flex justify-between text-xs md:text-sm text-gray-600 dark:text-gray-300">
+    <span id="q-date"></span>
+    <span id="q-timer" class="font-semibold text-red-600 dark:text-red-400">⏱ 60s</span>
+  </div>
+
+  <!-- Question Text -->
+  <h2 id="q-text" class="mt-4 text-base md:text-lg font-semibold text-gray-900 dark:text-gray-100"></h2>
+
+  <!-- Options -->
+  <div id="q-options" class="mt-5 space-y-2"></div>
+
+  <!-- Result + Mini Lesson -->
+  <div id="q-feedback" class="mt-4 text-xs md:text-sm hidden"></div>
+
+</section>
+
+<!-- STREAK BANNER -->
+<section id="streak-banner"
+         class="mt-8 bg-yellow-50 dark:bg-yellow-900 border border-yellow-300 dark:border-yellow-700 rounded-xl p-4 text-center text-yellow-800 dark:text-yellow-200 font-medium hidden">
+</section>
+
+<a href="{% url 'quiz_badges' %}">
+  <button class="mt-6 px-4 py-2 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-400 text-white rounded-md text-sm font-medium">
+    🎖 View Badges
+  </button>
+</a>
+
+<!-- JS -->
+<script src="{% static 'js/daily_challenge.js' %}"></script>
+
+{% endblock %}

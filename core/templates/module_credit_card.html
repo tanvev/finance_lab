@@ -1,0 +1,196 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Credit Cards – Beginner Guide{% endblock %}
+
+{% block content %}
+
+<!-- HERO -->
+<section class="rounded-lg p-10 text-white bg-gradient-to-r from-[#1D3557]/95 to-[#1D3557]/90 shadow-md mb-12">
+  <h1 class="text-4xl font-bold mb-3">Credit Cards – A Beginner’s Guide</h1>
+  <p class="max-w-2xl text-base md:text-lg opacity-90">
+    Understand how credit cards actually work — interest, billing cycles, risks, traps, rewards, and how to use them without falling into debt. No banks, no marketing. Only truth.
+  </p>
+</section>
+
+<!-- WHY CREDIT CARDS EXIST -->
+<h2 class="text-2xl font-semibold text-trust dark:text-blue-300">Why Credit Cards Exist</h2>
+<p class="text-gray-700 dark:text-gray-300 text-base mt-1 max-w-3xl">
+  A credit card is NOT extra income. It’s a short-term loan you must repay every month.
+  Used right = amazing tool. Used wrong = financial quicksand.
+</p>
+
+<div class="grid md:grid-cols-2 gap-6 mt-6">
+  <!-- Benefits -->
+  <div class="bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-lg p-6 shadow-md">
+    <h3 class="text-xl font-semibold text-green-600 dark:text-green-400">👍 Why Credit Cards Can Be Good</h3>
+    <ul class="mt-3 space-y-2 text-gray-700 dark:text-gray-300 text-base">
+      <li>• Build credit score for future loans</li>
+      <li>• Free short-term loan (45–55 days)</li>
+      <li>• Cashback, discounts, reward points</li>
+      <li>• Protection on fraud, chargeback & disputes</li>
+      <li>• Zero cost EMI (when used properly)</li>
+      <li>• Emergency backup for medical or travel</li>
+    </ul>
+  </div>
+
+  <!-- Risks -->
+  <div class="bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-lg p-6 shadow-md">
+    <h3 class="text-xl font-semibold text-red-600 dark:text-red-400">⚠️ Why Credit Cards Can Be Dangerous</h3>
+    <ul class="mt-3 space-y-2 text-gray-700 dark:text-gray-300 text-base">
+      <li>• Interest rates ~30–42% per year</li>
+      <li>• Minimum Due = debt trap</li>
+      <li>• Overspending becomes invisible</li>
+      <li>• Late fees + GST = snowball debt</li>
+      <li>• Reward system encourages extra spending</li>
+      <li>• Closing old cards can reduce credit score</li>
+    </ul>
+  </div>
+</div>
+
+<!-- HOW BILLING WORKS -->
+<h2 class="text-2xl font-semibold text-trust dark:text-blue-300 mt-14">How Credit Card Billing Actually Works</h2>
+
+<div class="bg-white dark:bg-gray-800 p-6 mt-4 rounded-lg shadow-md border dark:border-gray-700">
+  <p class="text-gray-700 dark:text-gray-300 text-base">
+    Most beginners think the bill is based on the calendar month. It’s not.<br>
+    You have:
+  </p>
+
+  <ul class="mt-4 space-y-2 text-gray-700 dark:text-gray-300 text-base">
+    <li>• <strong>Billing Date:</strong> Statement generates</li>
+    <li>• <strong>Due Date:</strong> ~15–20 days after billing date</li>
+    <li>• <strong>Interest-free period:</strong> Time between purchase & due date (max 45–55 days)</li>
+  </ul>
+
+  <div class="mt-5 bg-blue-50 dark:bg-blue-900 p-4 rounded-lg border-l-4 border-blue-500 text-gray-800 dark:text-gray-100">
+    Example: Billing date = 5th
+    <br>Buy on 6th → You get ~50 days.
+    <br>Buy on 4th → You get ~15 days only.
+  </div>
+</div>
+
+<!-- MINIMUM DUE WARNING -->
+<div class="bg-red-50 dark:bg-red-900 border border-red-300 dark:border-red-700 rounded-lg p-6 mt-10">
+  <h3 class="text-xl font-semibold text-red-700 dark:text-red-300">🚨 Minimum Due = Silent Debt Trap</h3>
+  <p class="mt-2 text-gray-800 dark:text-gray-200">
+    Paying the minimum due avoids late fees, BUT interest begins on the FULL amount.
+  </p>
+  <p class="mt-2 font-medium text-red-700 dark:text-red-300">
+    A ₹10,000 purchase can become ₹13,000–₹15,000 if you repeatedly pay minimum due.
+  </p>
+</div>
+
+<!-- HOW TO USE CREDIT CARDS WISELY -->
+<h2 class="text-2xl font-semibold text-trust dark:text-blue-300 mt-14">How to Use a Credit Card *Safely*</h2>
+
+<div class="grid md:grid-cols-2 gap-6 mt-6">
+  <!-- Safe -->
+  <div class="bg-green-50 dark:bg-green-900 border border-green-300 dark:border-green-700 rounded-lg p-6">
+    <h3 class="text-lg font-semibold text-green-700 dark:text-green-300">✔️ Golden Rules</h3>
+    <ul class="mt-3 space-y-2 text-gray-800 dark:text-gray-200 text-base">
+      <li>• Always pay **full amount due**, never minimum due</li>
+      <li>• Keep credit limit LOW initially</li>
+      <li>• Disable cash withdrawal & international usage</li>
+      <li>• Use only for expenses you already budgeted</li>
+      <li>• Set autopay or reminders before due date</li>
+      <li>• Track spends monthly (UPI + card combined)</li>
+    </ul>
+  </div>
+
+  <!-- Unsafe -->
+  <div class="bg-red-50 dark:bg-red-900 border border-red-300 dark:border-red-700 rounded-lg p-6">
+    <h3 class="text-lg font-semibold text-red-700 dark:text-red-300">❌ Never Do These</h3>
+    <ul class="mt-3 space-y-2 text-gray-800 dark:text-gray-200 text-base">
+      <li>• Don’t swipe for things you can’t repay next month</li>
+      <li>• Don’t rotate credit repeatedly</li>
+      <li>• Don’t withdraw cash using credit card (heavy fee)</li>
+      <li>• Don’t hold too many cards early in career</li>
+      <li>• Don’t use card during emotional or impulsive phases</li>
+    </ul>
+  </div>
+</div>
+
+<!-- REWARD TRAP -->
+<div class="bg-yellow-50 dark:bg-yellow-900 border border-yellow-300 dark:border-yellow-700 rounded-lg p-6 mt-10">
+  <h3 class="text-xl font-semibold text-yellow-700 dark:text-yellow-300">🎁 The Reward Trap (Banks Don’t Tell You)</h3>
+  <p class="mt-3 text-gray-800 dark:text-gray-200">
+    Rewards are designed to make you spend <strong>more than needed</strong>.
+  </p>
+
+  <ul class="mt-3 text-gray-800 dark:text-gray-200 space-y-2">
+    <li>• You get 1–5% cashback… but end up spending 20–40% extra</li>
+    <li>• Offers push you to buy things you didn’t plan</li>
+    <li>• “No Cost EMI” is NOT truly zero-cost if you overspend</li>
+  </ul>
+
+  <p class="mt-3 font-medium text-yellow-700 dark:text-yellow-300">
+    Use rewards as a bonus — not a reason to swipe.
+  </p>
+</div>
+
+<!-- SCENARIOS -->
+<h2 class="text-2xl font-semibold text-trust dark:text-blue-300 mt-14">Real-Life Scenarios</h2>
+
+<div class="grid md:grid-cols-2 gap-6 mt-6">
+
+  <!-- Scenario 1 -->
+  <div class="bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-lg p-6 shadow-md">
+    <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Scenario 1: Student</h3>
+    <p class="text-gray-700 dark:text-gray-300 mt-2">Best Choice: No card OR prepaid card.</p>
+    <p class="text-gray-600 dark:text-gray-400 mt-3">
+      Students tend to overspend + no income = high risk of debt.
+    </p>
+  </div>
+
+  <!-- Scenario 2 -->
+  <div class="bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-lg p-6 shadow-md">
+    <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Scenario 2: First Job</h3>
+    <p class="text-gray-700 dark:text-gray-300 mt-2">Best Choice: Low-limit cashback card.</p>
+    <p class="text-gray-600 dark:text-gray-400 mt-3">
+      Build credit score, but start small. Use only for fixed expenses.
+    </p>
+  </div>
+
+  <!-- Scenario 3 -->
+  <div class="bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-lg p-6 shadow-md">
+    <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Scenario 3: High Spender</h3>
+    <p class="text-gray-700 dark:text-gray-300 mt-2">Best Choice: Premium rewards card.</p>
+    <p class="text-gray-600 dark:text-gray-400 mt-3">
+      If you pay full every month and travel often → optimized rewards make sense.
+    </p>
+  </div>
+
+  <!-- Scenario 4 -->
+  <div class="bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-lg p-6 shadow-md">
+    <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Scenario 4: Impulsive Shopper</h3>
+    <p class="text-gray-700 dark:text-gray-300 mt-2">Best Choice: Avoid credit card.</p>
+    <p class="text-gray-600 dark:text-gray-400 mt-3">
+      Emotional + credit = guaranteed debt cycle.
+    </p>
+  </div>
+
+</div>
+
+<!-- WHEN NOT TO USE A CREDIT CARD -->
+<h2 class="text-2xl font-semibold text-trust dark:text-blue-300 mt-14">When NOT to Use a Credit Card</h2>
+
+<div class="bg-red-50 dark:bg-red-900 border border-red-300 dark:border-red-700 rounded-lg p-6 mt-4">
+  <ul class="space-y-2 text-gray-800 dark:text-gray-200 text-base">
+    <li>• For rent or loan EMI payments (usually extra fee)</li>
+    <li>• For paying off another credit card</li>
+    <li>• For cash withdrawal (very high fee)</li>
+    <li>• During big sales when temptation is high</li>
+    <li>• When struggling with budgeting</li>
+  </ul>
+</div>
+
+<!-- LINK TO CREDIT CARD COACH -->
+<div class="mt-14">
+  <a href="{% url 'tool_credit_card' %}">
+    <button class="px-6 py-3 rounded-lg bg-blue-600 text-white hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-400 shadow-md font-medium">
+      Try the Credit Card Coach
+    </button>
+  </a>
+</div>
+
+{% endblock %}

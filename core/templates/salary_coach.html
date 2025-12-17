@@ -1,0 +1,450 @@
+{% extends "base.html" %}
+{% block title %}My First Salary Coach{% endblock %}
+
+{% block content %}
+
+<section class="mb-6">
+  <h1 class="text-3xl font-bold text-trust dark:text-blue-300">
+    💼 My First Salary Coach
+  </h1>
+  <p class="mt-1 text-sm md:text-base text-gray-700 dark:text-gray-300 max-w-2xl">
+    Understand your CTC, estimate in-hand salary, see PF vs no-PF impact, and get a ready-to-use script
+    to talk to HR — without awkwardness.
+  </p>
+</section>
+
+<!-- LAYOUT: LEFT = INPUT, RIGHT = ANALYSIS -->
+<div class="grid gap-6 md:grid-cols-2 items-start">
+
+  <!-- INPUT CARD -->
+  <section class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-5 shadow-sm">
+    <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100">
+      ☕ Step 1: Tell me about your offer
+    </h2>
+    <p class="mt-1 text-xs text-gray-600 dark:text-gray-300">
+      You can approximate values. This is for learning, not official tax filing.
+    </p>
+
+    <div class="mt-4 space-y-3 text-sm">
+
+      <!-- CTC -->
+      <div>
+        <label for="offerCtc" class="block text-gray-700 dark:text-gray-200 mb-1">
+          CTC (₹ per year)
+        </label>
+        <input id="offerCtc" type="number" min="0" step="10000"
+               class="w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100 text-sm"
+               placeholder="e.g., 550000">
+      </div>
+
+      <!-- FIXED / VARIABLE -->
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label for="offerFixed" class="block text-gray-700 dark:text-gray-200 mb-1">
+            Fixed % of CTC
+          </label>
+          <input id="offerFixed" type="number" min="0" max="100" step="1"
+                 class="w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100 text-sm"
+                 placeholder="e.g., 70">
+        </div>
+        <div>
+          <label for="offerVariable" class="block text-gray-700 dark:text-gray-200 mb-1">
+            Variable % of CTC
+          </label>
+          <input id="offerVariable" type="number" min="0" max="100" step="1"
+                 class="w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100 text-sm"
+                 placeholder="e.g., 30">
+        </div>
+      </div>
+
+      <!-- PF MODE -->
+      <div>
+        <label for="offerPfMode" class="block text-gray-700 dark:text-gray-200 mb-1">
+          PF option in this offer
+        </label>
+        <select id="offerPfMode"
+                class="w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100 text-sm">
+          <option value="full">Full PF (12% on basic)</option>
+          <option value="capped">PF capped (around ₹1,800/month)</option>
+          <option value="none">No PF (opt-out / no PF)</option>
+        </select>
+        <p class="mt-1 text-[11px] text-gray-500 dark:text-gray-400">
+          If you are not sure, choose “PF capped” — very common in fresher offers.
+        </p>
+      </div>
+
+      <!-- JOINING BONUS -->
+      <div>
+        <label for="offerJoining" class="block text-gray-700 dark:text-gray-200 mb-1">
+          Joining Bonus (₹, optional)
+        </label>
+        <input id="offerJoining" type="number" min="0" step="1000"
+               class="w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100 text-sm"
+               placeholder="e.g., 50000">
+        <p class="mt-1 text-[11px] text-gray-500 dark:text-gray-400">
+          If your bonus has a 1-year bond or clawback, we’ll warn you in the summary.
+        </p>
+      </div>
+
+      <!-- PRIORITY -->
+      <div>
+        <p class="text-gray-700 dark:text-gray-200 mb-1">
+          Right now, you care most about:
+        </p>
+        <div class="flex flex-wrap gap-2 text-xs">
+          <label class="inline-flex items-center gap-1">
+            <input type="radio" name="priority" value="stability" checked
+                   class="text-blue-600 border-gray-300">
+            <span>Stable monthly in-hand</span>
+          </label>
+          <label class="inline-flex items-center gap-1">
+            <input type="radio" name="priority" value="wealth"
+                   class="text-blue-600 border-gray-300">
+            <span>Long-term wealth (PF/investing)</span>
+          </label>
+          <label class="inline-flex items-center gap-1">
+            <input type="radio" name="priority" value="flexibility"
+                   class="text-blue-600 border-gray-300">
+            <span>Freedom to switch jobs</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- BUTTONS -->
+      <div class="pt-3 flex flex-wrap gap-3 items-center">
+        <button id="analyseBtn"
+                class="px-4 py-2 rounded-md bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-400 text-white text-sm font-medium">
+          ☕ Analyse This Offer
+        </button>
+        <button id="presetBtn"
+                class="px-3 py-1.5 rounded-md border border-gray-300 dark:border-gray-600 text-xs text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">
+          Try Sample Fresher Offer
+        </button>
+      </div>
+
+      <p id="inputError" class="mt-2 text-xs text-red-600 dark:text-red-400 hidden">
+        Please fill at least CTC and fixed/variable percentages (they should roughly add up to 100%).
+      </p>
+    </div>
+  </section>
+
+  <!-- ANALYSIS COLUMN -->
+  <section class="space-y-4">
+
+    <!-- SUMMARY CARD -->
+    <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-5 shadow-sm">
+      <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100">
+        📊 Step 2: Quick Summary
+      </h2>
+      <p class="mt-1 text-xs text-gray-600 dark:text-gray-300">
+        These are approximate numbers for understanding only.
+      </p>
+
+      <div id="summaryEmpty" class="mt-4 text-xs text-gray-500 dark:text-gray-400">
+        Fill the offer details on the left and click “Analyse This Offer” to see your salary story.
+      </div>
+
+      <div id="summaryCards" class="mt-4 grid gap-3 text-sm hidden">
+        <!-- In-hand now -->
+        <div class="p-3 rounded-md bg-blue-50 dark:bg-blue-900/40 border border-blue-200 dark:border-blue-700">
+          <p class="text-[11px] uppercase tracking-wide text-blue-700 dark:text-blue-800 font-semibold">
+            Approx. Monthly In-Hand (with current PF choice)
+          </p>
+          <p id="outInhandNow" class="mt-1 text-base font-semibold text-blue-900 dark:text-blue-400">
+            –
+          </p>
+        </div>
+
+        <!-- PF and future -->
+        <div class="p-3 rounded-md bg-emerald-50 dark:bg-emerald-900/40 border border-emerald-200 dark:border-emerald-700">
+          <p class="text-[11px] uppercase tracking-wide text-emerald-700 dark:text-emerald-300 font-semibold">
+            PF Contribution & Long-Term Effect
+          </p>
+<p id="outPfNow" class="mt-1 text-sm text-emerald-900 dark:text-emerald-200">
+            –
+          </p>
+          <p id="outPfFuture" class="mt-1 text-xs text-emerald-800 dark:text-emerald-200">
+            –
+          </p>
+        </div>
+
+        <!-- PF vs No PF Comparison -->
+        <div class="p-3 rounded-md bg-orange-50 dark:bg-orange-900/30 border border-orange-200 dark:border-orange-700">
+          <p class="text-[11px] uppercase tracking-wide text-orange-700 dark:text-orange-300 font-semibold">
+            PF vs No PF (for learning)
+          </p>
+          <p id="outPfCompare" class="mt-1 text-sm text-orange-900 dark:text-orange-50">
+            –
+          </p>
+        </div>
+
+        <!-- Variable risk -->
+        <div class="p-3 rounded-md bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
+          <p class="text-[11px] uppercase tracking-wide text-gray-600 dark:text-gray-300 font-semibold">
+            Variable Pay Risk Check
+          </p>
+          <p id="outVariableRisk" class="mt-1 text-sm text-gray-800 dark:text-gray-100">
+            –
+          </p>
+        </div>
+
+        <!-- Joining bonus warning -->
+        <div id="joiningCard"
+     class="p-3 rounded-md bg-red-50 dark:bg-red-900/70 border border-red-200 dark:border-red-600 hidden">
+          <p class="text-[11px] uppercase tracking-wide text-red-700 dark:text-red-500 font-semibold">
+            Joining Bonus Reality Check
+          </p>
+          <p id="outJoining" class="mt-1 text-sm text-red-1000 dark:text-red-400 font-medium">
+            –
+          </p>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- HR SCRIPT -->
+    <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-5 shadow-sm">
+      <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100">
+        🗣️ Step 3: Script to Talk to HR
+      </h2>
+      <p class="mt-1 text-xs text-gray-600 dark:text-gray-300">
+        Use this as inspiration. Speak in your own style during the actual call.
+      </p>
+
+      <div id="scriptEmpty" class="mt-3 text-xs text-gray-500 dark:text-gray-400">
+        Once you analyse an offer, we’ll suggest a short message you can send or say to HR.
+      </div>
+
+      <div id="scriptBox" class="mt-3 hidden">
+        <p class="text-[11px] uppercase tracking-wide text-gray-500 dark:text-gray-400 font-semibold mb-1">
+          Sample message
+        </p>
+        <div class="text-xs md:text-sm bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-md p-3 whitespace-pre-line"
+             id="outScript">
+        </div>
+        <button id="copyScriptBtn"
+                class="mt-3 px-3 py-1.5 rounded-md border border-gray-300 dark:border-gray-600 text-xs text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">
+          Copy Script
+        </button>
+        <p id="copyConfirm" class="mt-1 text-[11px] text-emerald-600 dark:text-emerald-300 hidden">
+          ✅ Copied. Edit with your own words before sending.
+        </p>
+      </div>
+    </div>
+
+  </section>
+</div>
+
+{% endblock %}
+
+{% block extra_head %}
+<script>
+// -----------------------
+// Helper: format money
+// -----------------------
+function fmtMoney(num) {
+  if (!isFinite(num)) return "–";
+  return "₹ " + Math.round(num).toLocaleString("en-IN");
+}
+
+// -----------------------
+// Analyse button logic
+// -----------------------
+document.addEventListener("DOMContentLoaded", () => {
+  const analyseBtn = document.getElementById("analyseBtn");
+  const presetBtn  = document.getElementById("presetBtn");
+
+  analyseBtn.addEventListener("click", runAnalysis);
+  presetBtn.addEventListener("click", loadPreset);
+});
+
+function loadPreset() {
+  // Typical fresher IT offer example
+  document.getElementById("offerCtc").value       = 550000;
+  document.getElementById("offerFixed").value     = 70;
+  document.getElementById("offerVariable").value  = 30;
+  document.getElementById("offerPfMode").value    = "capped";
+  document.getElementById("offerJoining").value   = 50000;
+}
+
+function runAnalysis() {
+  const inputError = document.getElementById("inputError");
+  inputError.classList.add("hidden");
+
+  const ctc        = parseFloat(document.getElementById("offerCtc").value || "0");
+  const fixedPct   = parseFloat(document.getElementById("offerFixed").value || "0");
+  const varPct     = parseFloat(document.getElementById("offerVariable").value || "0");
+  const pfMode     = document.getElementById("offerPfMode").value;
+  const joiningRaw = parseFloat(document.getElementById("offerJoining").value || "0");
+
+  const priority   = document.querySelector("input[name='priority']:checked")?.value || "stability";
+
+  if (!ctc || !fixedPct || !varPct || (fixedPct + varPct < 90 || fixedPct + varPct > 110)) {
+    inputError.classList.remove("hidden");
+    return;
+  }
+
+  // Basic assumptions
+  const fixedCtc   = ctc * (fixedPct / 100);
+  const variableCtc= ctc * (varPct / 100);
+
+  // Approx "basic" as 40% of fixed
+  const basicYear  = fixedCtc * 0.40;
+  const basicMonth = basicYear / 12;
+
+  // PF calculation
+  let pfYearEmployer = 0;
+  if (pfMode === "full") {
+    pfYearEmployer = basicYear * 0.12;
+  } else if (pfMode === "capped") {
+    const cap = 1800 * 12;
+    pfYearEmployer = Math.min(basicYear * 0.12, cap);
+  } else {
+    pfYearEmployer = 0;
+  }
+
+  // Very rough deduction assumption
+  let deductionRate = 0.25;
+  if (pfMode === "full") deductionRate = 0.28;
+  if (pfMode === "none") deductionRate = 0.22;
+
+  const approxMonthlyFixedGross = fixedCtc / 12;
+  const approxMonthlyInhand     = approxMonthlyFixedGross * (1 - deductionRate);
+
+  // Hypothetical "no PF" scenario for learning
+  const approxMonthlyInhandNoPf = approxMonthlyFixedGross * (1 - 0.22);  // slightly lower deductions
+
+  // Future PF value approx (20 years @ ~8% compound -> ~4.66x)
+  const pfFuture = pfYearEmployer * 4.66;
+
+  // Joining bonus text
+  const hasJoining = joiningRaw > 0;
+
+  // Update summary cards
+  document.getElementById("summaryEmpty").classList.add("hidden");
+  document.getElementById("summaryCards").classList.remove("hidden");
+
+  document.getElementById("outInhandNow").textContent =
+    fmtMoney(approxMonthlyInhand) + " / month (approx, with current PF setup)";
+
+  const pfNowLine =
+    pfYearEmployer > 0
+      ? `Employer PF adds about ${fmtMoney(pfYearEmployer)} per year to your long-term savings.`
+      : "This structure doesn’t add much to PF. Almost everything is coming as cash now.";
+
+  document.getElementById("outPfNow").textContent = pfNowLine;
+
+  const pfFutureLine =
+    pfYearEmployer > 0
+      ? `If a similar PF amount continues for ~20 years and grows at ~8% annually, it could become roughly ${fmtMoney(pfFuture)} (very approximate).`
+      : "Without PF, you’ll need to invest on your own to build long-term wealth.";
+  document.getElementById("outPfFuture").textContent = pfFutureLine;
+
+  const diffInhand = approxMonthlyInhandNoPf - approxMonthlyInhand;
+  const compareLine =
+    pfYearEmployer > 0
+      ? `If PF was removed, your in-hand might increase by around ${fmtMoney(diffInhand)} per month, but you’d lose automatic PF savings. PF is like forced SIP for your future self.`
+      : `If PF was added (12% on a basic approximation), your in-hand might reduce by a few thousand, but your future PF could build into a meaningful corpus.`;
+  document.getElementById("outPfCompare").textContent = compareLine;
+
+  // Variable risk text
+  let riskLine = "";
+  if (varPct <= 10) {
+    riskLine = `Variable pay is around ${varPct}% of CTC — fairly low. Your monthly in-hand should be more predictable.`;
+  } else if (varPct <= 25) {
+    riskLine = `Variable pay is ${varPct}% of CTC — not scary, but don’t mentally count it as guaranteed. Plan expenses from your fixed part.`;
+  } else {
+    riskLine = `Variable pay is ${varPct}% of CTC — quite high. Great if targets are met, but risky for EMIs or fixed monthly commitments.`;
+  }
+  document.getElementById("outVariableRisk").textContent = riskLine;
+
+  const joiningCard = document.getElementById("joiningCard");
+  const outJoining  = document.getElementById("outJoining");
+  if (hasJoining) {
+    joiningCard.classList.remove("hidden");
+    outJoining.textContent =
+      "Joining bonus looks attractive, but it usually comes with a clawback (repayment if you leave early). Treat it as conditional money, not free shopping budget.";
+  } else {
+    joiningCard.classList.add("hidden");
+  }
+
+  // --- HR SCRIPT GENERATION ---
+  const scriptBox   = document.getElementById("scriptBox");
+  const scriptEmpty = document.getElementById("scriptEmpty");
+  const outScript   = document.getElementById("outScript");
+
+  scriptEmpty.classList.add("hidden");
+  scriptBox.classList.remove("hidden");
+
+  const ctcStr   = fmtMoney(ctc) + " CTC";
+  const varStr   = varPct + "% variable";
+  const pfStr    = pfMode === "none" ? "no PF" : (pfMode === "capped" ? "capped PF" : "full PF");
+  const prioText =
+    priority === "stability"
+      ? "a more stable monthly in-hand"
+      : priority === "wealth"
+      ? "better long-term savings (PF/investing)"
+      : "more flexibility in case I need to switch roles in 1–2 years";
+
+  let askLine = "";
+  let extraLine = "";
+
+  if (priority === "stability") {
+    askLine =
+`Right now I value stable in-hand more than a large variable component.
+Would it be possible to slightly increase the fixed portion by moving a part of the ${varStr} into fixed pay?`;
+    extraLine = "This would make it easier for me to plan rent, EMIs and monthly expenses confidently.";
+  } else if (priority === "wealth") {
+    askLine =
+`I’m comfortable with a reasonable fixed salary as long as my long-term savings are strong.
+Is there an option with full PF instead of ${pfStr}, even if it reduces monthly in-hand a bit?`;
+    extraLine = "I’m okay with slightly lower cash now if it builds a solid retirement and safety base.";
+  } else {
+    askLine =
+`Given this is an early role in my career, I may explore internal movement or future opportunities.
+Could we structure the offer so that there’s less dependency on joining bonus and more on fixed + PF?`;
+    extraLine = "I want to avoid situations where I have to repay bonus if my role changes within a year.";
+  }
+
+  const politeIntro =
+`Hi [HR Name],
+
+Thank you for sharing the offer details. I really appreciate the opportunity and I’m excited about the role.`;
+
+  const structureLine =
+`From what I understand, the offer is around ${ctcStr} with ${varStr} and ${pfStr}.`;
+
+  const closing =
+`If there’s any flexibility here, I’d be grateful if we can explore it.
+Either way, I’m keen to make this work and wanted to share this honestly.
+
+Thank you so much.`;
+
+  const scriptFull = `${politeIntro}
+
+${structureLine}
+
+${askLine}
+
+${extraLine}
+
+${closing}`;
+
+  outScript.textContent = scriptFull;
+
+  // copy button
+  const copyBtn     = document.getElementById("copyScriptBtn");
+  const copyConfirm = document.getElementById("copyConfirm");
+  copyConfirm.classList.add("hidden");
+  copyBtn.onclick = async () => {
+    try {
+      await navigator.clipboard.writeText(scriptFull);
+      copyConfirm.classList.remove("hidden");
+      setTimeout(() => copyConfirm.classList.add("hidden"), 2500);
+    } catch (e) {
+      console.warn("Clipboard blocked", e);
+    }
+  };
+}
+</script>
+{% endblock %}

@@ -1,0 +1,276 @@
+{% extends "base.html" %}
+{% block title %}EPF Calculator & Guide | Educational Finance Lab{% endblock %}
+
+{% block content %}
+
+<!-- HEADER -->
+<section class="mb-6">
+  <h1 class="text-2xl md:text-3xl font-semibold text-trust dark:text-blue-300">
+    EPF Calculator + PF Learning Guide
+  </h1>
+  <p class="mt-2 text-sm md:text-base text-gray-700 dark:text-gray-300 max-w-2xl">
+    Calculate PF contributions, compare scenarios, project long-term growth, and understand PF rules in simple terms.
+  </p>
+</section>
+
+<!-- MAIN CALCULATOR -->
+<div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md border border-gray-200 dark:border-gray-700">
+
+  <!-- INPUT GRID -->
+  <div class="grid md:grid-cols-2 gap-4">
+
+    <!-- Basic Salary -->
+    <div>
+      <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Basic Salary + DA (₹)</label>
+      <input id="basic" type="number" class="w-full mt-1 px-3 py-2 rounded-md border bg-gray-50 dark:bg-gray-900 border-gray-300 dark:border-gray-600">
+    </div>
+
+    <!-- Include Special Allowance -->
+    <div>
+      <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Include Special Allowance in PF?</label>
+      <select id="includeSpecial" class="w-full mt-1 px-3 py-2 rounded-md border bg-gray-50 dark:bg-gray-900 border-gray-300 dark:border-gray-600">
+        <option value="no">No (Only Basic)</option>
+        <option value="yes">Yes (Basic + Allowances)</option>
+      </select>
+    </div>
+
+    <!-- Special Allowance -->
+    <div>
+      <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Special Allowance (₹)</label>
+      <input id="special" type="number" class="w-full mt-1 px-3 py-2 rounded-md border bg-gray-50 dark:bg-gray-900 border-gray-300 dark:border-gray-600">
+    </div>
+
+    <!-- Years -->
+    <div>
+      <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Years of Contribution</label>
+      <input id="years" type="number" value="10" class="w-full mt-1 px-3 py-2 rounded-md border bg-gray-50 dark:bg-gray-900 border-gray-300 dark:border-gray-600">
+    </div>
+
+    <!-- VPF Slider -->
+    <div class="md:col-span-2">
+      <label class="text-sm font-medium text-gray-700 dark:text-gray-300">
+        Additional Voluntary PF (VPF) Contribution (% of Basic)
+      </label>
+      <input id="vpf" type="range" min="0" max="100" value="0"
+             class="w-full mt-2 cursor-pointer accent-blue-600">
+      <p id="vpfLabel" class="text-xs text-gray-600 dark:text-gray-400 mt-1">0%</p>
+    </div>
+
+  </div>
+
+  <button onclick="calculatePF()" class="mt-6 px-4 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700 font-semibold">
+    Calculate PF
+  </button>
+</div>
+
+<!-- RESULT SECTION -->
+<section id="pf-result" class="hidden mt-8 p-6 bg-white dark:bg-gray-800 rounded-xl shadow-md border border-gray-200 dark:border-gray-700">
+  <h2 class="text-xl font-semibold text-trust dark:text-blue-300">PF Summary</h2>
+  <div id="pf-output" class="mt-4 text-gray-800 dark:text-gray-100 text-sm md:text-base"></div>
+</section>
+
+<!-- CHART SECTION -->
+<section id="pf-chart-section" class="hidden mt-8 p-6 bg-white dark:bg-gray-800 rounded-xl shadow-md border border-gray-200 dark:border-gray-700">
+  <h2 class="text-xl font-semibold text-trust dark:text-blue-300">PF Growth Projection</h2>
+  <canvas id="pfChart" class="mt-4"></canvas>
+</section>
+
+<!-- COMPARISON MODE -->
+<section class="mt-10 p-6 bg-blue-50 dark:bg-blue-900 border border-blue-200 dark:border-blue-700 rounded-xl">
+  <h2 class="text-xl font-semibold text-blue-800 dark:text-blue-200">
+    PF Comparison — ₹15,000 Basic vs Full Basic
+  </h2>
+
+  <button onclick="comparePF()"
+          class="mt-4 px-4 py-2 rounded-md bg-blue-600 hover:bg-blue-700 text-white font-medium">
+    Compare PF Scenarios
+  </button>
+
+  <div id="pf-compare" class="hidden mt-5 text-sm md:text-base text-gray-800 dark:text-gray-100"></div>
+</section>
+
+<!-- LEARNING SECTION (ACCORDIONS) -->
+<section class="mt-12">
+  <h2 class="text-2xl font-semibold text-trust dark:text-blue-300 mb-3">PF Learning Guide</h2>
+
+  <div class="space-y-4">
+
+    <!-- Accordion Item -->
+    <details class="bg-white dark:bg-gray-800 p-4 rounded-lg border border-gray-300 dark:border-gray-700">
+      <summary class="cursor-pointer font-semibold text-gray-900 dark:text-gray-200">
+        What is PF? Why is it deducted?
+      </summary>
+      <p class="mt-2 text-sm text-gray-700 dark:text-gray-300">
+        PF (Provident Fund) is like a piggy bank your job forces you to save in, so future-you can thank present-you!
+It grows over time with interest and becomes a happy retirement treasure chest.
+
+Why is it deducted?
+A tiny part of your salary is taken every month so you don’t blow it all on pizza and gadgets today.
+Your employer matches this amount—like a bonus gift—to help you build a solid savings backup for later.
+      </p>
+    </details>
+
+    <details class="bg-white dark:bg-gray-800 p-4 rounded-lg border border-gray-300 dark:border-gray-700">
+      <summary class="cursor-pointer font-semibold text-gray-900 dark:text-gray-200">
+        EPF vs EPS (Pension)
+      </summary>
+      <p class="mt-2 text-sm text-gray-700 dark:text-gray-300">
+        EPF (Employees’ Provident Fund)
+Your retirement savings vault—money grows with interest like a plant becoming a money tree.
+You can withdraw it when you change jobs or retire (hello jackpot!).
+EPS (Employees’ Pension Scheme)
+Your monthly pension piggy bank—smaller amount, but comes back as regular pocket money after retirement.
+You can’t take it all at once; it pays you back slowly like a slow but steady snack machine!.
+      </p>
+    </details>
+
+    <details class="bg-white dark:bg-gray-800 p-4 rounded-lg border border-gray-300 dark:border-gray-700">
+      <summary class="cursor-pointer font-semibold text-gray-900 dark:text-gray-200">
+        PF Wage Ceiling (₹15,000 Rule)
+      </summary>
+      <p class="mt-2 text-sm text-gray-700 dark:text-gray-300">
+        What is the PF wage ceiling?
+There’s a rule saying PF calculations are usually done as if your salary is ₹15,000—even if you earn more.
+Why ₹15,000?
+It’s a government-set limit to make sure everyone saves at least a minimum amount for the future.
+What does it mean for you?
+If your salary is above ₹15,000, PF can be limited to that amount unless you and your employer choose to contribute more. It’s like a savings cap—with a “boost if you want” option!
+      </p>
+    </details>
+
+    <details class="bg-white dark:bg-gray-800 p-4 rounded-lg border border-gray-300 dark:border-gray-700">
+      <summary class="cursor-pointer font-semibold text-gray-900 dark:text-gray-200">
+        VPF – Should you contribute more?
+      </summary>
+      <p class="mt-2 text-sm text-gray-700 dark:text-gray-300">
+        What is VPF?
+VPF (Voluntary Provident Fund) is like PF’s big brother—you choose to save extra from your salary for the future.
+Should you contribute more?
+If you love guaranteed interest, tax savings, and watching money grow safely, then YES—VPF is your financial gym!
+When to avoid it?
+If you’re low on cash flow or need money sooner, skip the extra PF—no point building a future empire while present-you struggles for snacks!.
+      </p>
+    </details>
+
+    <details class="bg-white dark:bg-gray-800 p-4 rounded-lg border border-gray-300 dark:border-gray-700">
+      <summary class="cursor-pointer font-semibold text-gray-900 dark:text-gray-200">
+        PF Withdrawal, Tax & Transfer Rules
+      </summary>
+      <p class="mt-2 text-sm text-gray-700 dark:text-gray-300">
+        PF Withdrawal
+You can pull out PF when you leave a job or retire—like unlocking a savings treasure chest.
+But withdrawing too early is allowed only for special needs like home, wedding, or emergencies.
+Tax Rules
+No tax if you withdraw after 5 years of service—your money leaves the bank like a tax-free superhero!
+Withdraw before that, and tax attacks your interest like a sneaky villain.
+Transfer Rules
+Switch jobs? Don’t withdraw—just transfer using your UAN, and your PF grows like a loyal pet that follows you everywhere!
+Transfers keep the benefits, interest, and tax perks safe for future-you
+      </p>
+    </details>
+
+  </div>
+</section>
+
+{% endblock %}
+
+{% block extra_head %}
+
+<!-- Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+// ------------------------- PF CALCULATOR -----------------------
+let chart;
+
+function calculatePF() {
+  let basic = parseFloat(document.getElementById("basic").value) || 0;
+  let special = parseFloat(document.getElementById("special").value) || 0;
+  let includeSpecial = document.getElementById("includeSpecial").value;
+  let years = parseInt(document.getElementById("years").value) || 0;
+  let vpfPercent = parseInt(document.getElementById("vpf").value);
+
+  let pfWage = includeSpecial === "yes" ? basic + special : basic;
+  let cappedWage = Math.min(pfWage, 15000);
+
+  let employeePF = cappedWage * 0.12;
+  let vpf = cappedWage * (vpfPercent / 100);
+  let eps = Math.min(1250, cappedWage * 0.0833);
+  let employerPF = (cappedWage * 0.12) - eps;
+
+  let monthlyTotal = employeePF + employerPF + eps + vpf;
+  let yearlyTotal = monthlyTotal * 12;
+
+  let rate = 0.0815;
+  let balance = 0;
+  let history = [];
+
+  for (let i = 1; i <= years; i++) {
+    balance = (balance + yearlyTotal) * (1 + rate);
+    history.push(Math.round(balance));
+  }
+
+  document.getElementById("pf-output").innerHTML = `
+    <p><strong>PF Wage Used:</strong> ₹${cappedWage}</p>
+    <p><strong>Employee PF:</strong> ₹${employeePF.toFixed(0)}</p>
+    <p><strong>Voluntary PF (VPF):</strong> ₹${vpf.toFixed(0)}</p>
+    <p><strong>Employer PF:</strong> ₹${employerPF.toFixed(0)}</p>
+    <p><strong>EPS (Pension):</strong> ₹${eps.toFixed(0)}</p>
+    <hr class="my-3">
+    <p><strong>Total Monthly Contribution:</strong> ₹${monthlyTotal.toFixed(0)}</p>
+    <p><strong>Total Yearly Contribution:</strong> ₹${yearlyTotal.toFixed(0)}</p>
+    <hr class="my-3">
+    <p><strong>Projected PF Corpus After ${years} Years:</strong></p>
+    <p class="text-lg font-semibold text-trust dark:text-blue-300">₹${balance.toLocaleString()}</p>
+  `;
+
+  document.getElementById("pf-result").classList.remove("hidden");
+
+  // Draw Chart
+  drawChart(history);
+  document.getElementById("pf-chart-section").classList.remove("hidden");
+}
+
+function drawChart(history) {
+  const ctx = document.getElementById("pfChart");
+
+  if (chart) chart.destroy();
+
+  chart = new Chart(ctx, {
+    type: "line",
+    data: {
+      labels: history.map((_, i) => `Year ${i+1}`),
+      datasets: [{
+        label: "PF Balance Over Time",
+        data: history,
+        borderWidth: 3
+      }]
+    }
+  });
+}
+
+// --------------- COMPARISON MODE -----------------
+function comparePF() {
+  let basic = parseFloat(document.getElementById("basic").value) || 0;
+
+  let pf15 = 15000 * 0.12 * 2; // emp + employer
+  let pfFull = basic * 0.12 * 2;
+
+  document.getElementById("pf-compare").innerHTML = `
+    <p><strong>PF on ₹15,000 Basic:</strong> ₹${pf15.toFixed(0)}/month</p>
+    <p><strong>PF on Full Basic (${basic}):</strong> ₹${pfFull.toFixed(0)}/month</p>
+    <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
+      *Higher PF reduces in-hand salary but grows your long-term corpus.
+    </p>
+  `;
+  document.getElementById("pf-compare").classList.remove("hidden");
+}
+
+// VPF Label
+document.getElementById("vpf").addEventListener("input", function() {
+  document.getElementById("vpfLabel").textContent = this.value + "%";
+});
+
+</script>
+
+{% endblock %}

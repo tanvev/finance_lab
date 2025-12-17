@@ -1,0 +1,186 @@
+{% extends "base.html" %}
+{% block title %}Life Insurance Calculator | Educational Finance Lab{% endblock %}
+
+{% block content %}
+
+<h1 class="text-2xl md:text-3xl font-semibold text-trust dark:text-blue-300 mb-6">
+  Life Insurance Cover & Premium Estimator 🛡️
+</h1>
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+  <!-- LEFT: INPUT FORM -->
+  <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow border border-gray-200 dark:border-gray-700">
+    <h2 class="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-3">
+      Enter Your Details
+    </h2>
+
+    <div class="space-y-4">
+
+      <div>
+        <label class="text-sm text-gray-700 dark:text-gray-300">Age</label>
+        <input id="ageL" type="number"
+               class="w-full mt-1 p-2 rounded-md border dark:border-gray-600 bg-gray-50 dark:bg-gray-900">
+      </div>
+
+      <div>
+        <label class="text-sm text-gray-700 dark:text-gray-300">Annual Income</label>
+        <input id="incomeL" type="number"
+               class="w-full mt-1 p-2 rounded-md border dark:border-gray-600 bg-gray-50 dark:bg-gray-900">
+      </div>
+
+      <div>
+        <label class="text-sm text-gray-700 dark:text-gray-300">Existing Loans?</label>
+        <select id="loanL" class="w-full mt-1 p-2 rounded-md border dark:border-gray-600 bg-gray-50 dark:bg-gray-900">
+          <option value="0">No</option>
+          <option value="1">Yes</option>
+        </select>
+      </div>
+
+      <button onclick="calculateLife()"
+              class="w-full py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md font-medium mt-4">
+        Calculate Cover & Premium →
+      </button>
+    </div>
+  </div>
+
+  <!-- RIGHT: RESULTS + SUGGESTIONS -->
+  <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow border border-gray-200 dark:border-gray-700">
+
+    <h2 class="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-3">
+      Estimated Cover + Smart Recommendation
+    </h2>
+
+    <div id="resultLife" class="text-sm text-gray-700 dark:text-gray-300">
+      <p class="italic text-gray-500 dark:text-gray-400">Your results will appear here.</p>
+    </div>
+
+    <hr class="my-4 border-gray-300 dark:border-gray-700">
+
+    <h3 class="text-base font-semibold text-gray-800 dark:text-gray-100 mb-2">
+      Suggested Add-ons & Policy Type 🔍
+    </h3>
+
+    <div id="recommendLife" class="text-sm text-gray-600 dark:text-gray-300 space-y-2">
+      <p class="italic text-gray-500 dark:text-gray-400">Fill the inputs to get personalised recommendations.</p>
+    </div>
+
+  </div>
+<hr class="my-4 border-gray-300 dark:border-gray-700">
+
+<h3 class="text-base font-semibold text-gray-800 dark:text-gray-100 mb-2">
+  Premium vs Age Graph 📈
+</h3>
+
+<canvas id="agePremiumChart" height="200" class="mt-3"></canvas>
+
+</div>
+
+{% endblock %}
+
+{% block extra_head %}
+<script>
+function calculateLife() {
+  let age = parseInt(document.getElementById("ageL").value || 0);
+  let income = parseInt(document.getElementById("incomeL").value || 0);
+  let loan = parseInt(document.getElementById("loanL").value);
+updateAgePremiumChart(function(age) {
+
+    let income = parseInt(document.getElementById("incomeL").value || 0);
+    let loan = parseInt(document.getElementById("loanL").value);
+
+    if (!income) return 0;
+
+    let coverNeeded = income * 20;
+    if (loan === 1) coverNeeded += 1000000;
+
+    return Math.round((coverNeeded / 1000) * (age <= 30 ? 0.9 : age <= 40 ? 1.4 : 2.1));
+});
+
+  if (!age || !income) {
+    document.getElementById("resultLife").innerHTML =
+      `<p class='text-red-600'>Please enter valid age & income.</p>`;
+    return;
+  }
+
+  // LIFE COVER LOGIC
+  let coverNeeded = income * 20;
+  if (loan === 1) coverNeeded += 1000000;
+
+  // Premium approximation formula
+  let premium = Math.round((coverNeeded / 1000) * (age <= 30 ? 0.9 : age <= 40 ? 1.4 : 2.1));
+
+  document.getElementById("resultLife").innerHTML = `
+    <p><strong>Recommended Life Cover:</strong> ₹${coverNeeded.toLocaleString()}</p>
+    <p class="mt-1"><strong>Estimated Annual Premium:</strong> ₹${premium.toLocaleString()}</p>
+    <p class="mt-2 text-xs">(This is an approximate term insurance benchmark.)</p>
+  `;
+
+  // RECOMMENDATION ENGINE
+  let rec = [];
+
+  if (age < 30) rec.push("✔ Buy a **term plan for 40 years** – lower premiums when young.");
+  if (age > 40) rec.push("✔ Add **Critical Illness Rider** (cancer, cardiac).");
+  if (loan === 1) rec.push("✔ Add a **Loan Protection Rider** to cover EMI risk.");
+  if (income > 1000000) rec.push("✔ High income → consider **Income Benefit Option** instead of lump sum.");
+  rec.push("✔ Avoid savings plans; **pure term insurance** gives the highest coverage at lowest premium.");
+
+  document.getElementById("recommendLife").innerHTML =
+    rec.map(r => `<p>${r}</p>`).join("");
+}
+</script>
+<script>
+let ageChartInstance = null;
+
+// Generate a curve of premium values from age 20 to 60
+function updateAgePremiumChart(calcFn) {
+    const ctx = document.getElementById("agePremiumChart");
+    if (!ctx) return;
+
+    let ages = [];
+    let premiums = [];
+
+    for (let age = 20; age <= 60; age += 5) {
+        ages.push(age);
+        premiums.push(calcFn(age));
+    }
+
+    // Destroy old chart if exists
+    if (ageChartInstance) {
+        ageChartInstance.destroy();
+    }
+
+    ageChartInstance = new Chart(ctx, {
+        type: "line",
+        data: {
+            labels: ages,
+            datasets: [{
+                label: "Estimated Premium (₹)",
+                data: premiums,
+                borderColor: "rgba(59,130,246,1)",
+                backgroundColor: "rgba(59,130,246,0.2)",
+                borderWidth: 2,
+                tension: 0.3,
+                fill: true,
+                pointRadius: 3
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: false }
+            },
+            scales: {
+                x: {
+                    ticks: { color: "#888" }
+                },
+                y: {
+                    ticks: { color: "#888" }
+                }
+            }
+        }
+    });
+}
+</script>
+
+{% endblock %}

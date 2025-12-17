@@ -1,0 +1,523 @@
+{% extends "base.html" %}
+{% block title %}Budgeting & Expense Planning{% endblock %}
+
+{% block content %}
+
+<!-- HERO (slightly tighter) -->
+<section class="relative rounded-xl px-5 py-8 md:px-8 md:py-9 text-white bg-gradient-to-r from-[#1D3557]/95 to-[#1D3557]/90 shadow-md mb-8 overflow-hidden">
+  <!-- Soft watermark -->
+  <div class="pointer-events-none absolute -right-10 -top-10 opacity-10 md:opacity-20">
+    <svg viewBox="0 0 120 120" class="w-40 h-40 md:w-52 md:h-52">
+      <circle cx="60" cy="60" r="50" fill="#A8DADC"/>
+      <text x="60" y="72" text-anchor="middle" font-size="48" fill="#1D3557" font-family="system-ui, -apple-system">
+        ₹
+      </text>
+    </svg>
+  </div>
+
+  <div class="flex flex-col md:flex-row items-center gap-6 relative z-10">
+    <!-- Text -->
+    <div class="flex-1">
+      <h1 class="text-2xl md:text-3xl font-bold mb-2">Budgeting & Expense Planning</h1>
+      <p class="max-w-xl text-sm md:text-base opacity-90">
+        Learn how to tell your money where to go instead of asking where it went. We’ll follow Aditi — a student
+        with a ₹6,000 stipend — and see how small decisions change her month.
+      </p>
+
+      <div class="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-3 text-[11px] md:text-xs text-blue-100">
+        <div class="bg-white/5 rounded-lg px-3 py-2">
+          <div class="font-semibold">Meet Aditi</div>
+          <p class="mt-1 opacity-90">1st-year, ₹6,000 stipend, shared PG.</p>
+        </div>
+        <div class="bg-white/5 rounded-lg px-3 py-2">
+          <div class="font-semibold">Real Numbers</div>
+          <p class="mt-1 opacity-90">Food, rent, Swiggy, cabs, OTT, all included.</p>
+        </div>
+        <div class="bg-white/5 rounded-lg px-3 py-2">
+          <div class="font-semibold">Actionable</div>
+          <p class="mt-1 opacity-90">Finish this page → build your first budget.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Medium illustration -->
+    <div class="hidden md:block flex-1">
+      <div class="mx-auto w-52 h-52 rounded-3xl bg-blue-50/10 flex items-center justify-center border border-blue-100/30">
+        <svg viewBox="0 0 220 220" class="w-40 h-40 text-blue-100 dark:text-blue-200">
+          <!-- Desk -->
+          <rect x="30" y="140" width="160" height="14" rx="7" fill="#A8DADC"/>
+          <!-- Laptop -->
+          <rect x="60" y="90" width="80" height="45" rx="6" fill="#F1FAEE" stroke="#457B9D" stroke-width="2"/>
+          <rect x="65" y="95" width="70" height="25" rx="3" fill="#EAF4FB"/>
+          <!-- Chart on laptop -->
+          <polyline points="70,112 85,105 100,110 115,100 130,108"
+                    fill="none" stroke="#1D3557" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <!-- Coins -->
+          <circle cx="155" cy="110" r="16" fill="#F4A261"/>
+          <path d="M147 110h16" stroke="#8B4513" stroke-width="2" stroke-linecap="round"/>
+          <path d="M151 105h8" stroke="#8B4513" stroke-width="2" stroke-linecap="round"/>
+          <!-- Person (Aditi) -->
+          <circle cx="45" cy="95" r="14" fill="#F1FAEE" stroke="#457B9D" stroke-width="2"/>
+          <path d="M37 120c3-7 7-10 8-10h0c3 0 7 3 8 10" fill="#457B9D" stroke="#1D3557"
+                stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INTRO -->
+<section class="mb-4">
+  <h2 class="text-xl md:text-2xl font-semibold text-trust dark:text-blue-300">Learn the Concepts</h2>
+  <p class="text-gray-700 dark:text-gray-300 text-sm md:text-base mt-1">
+    We’ll keep it simple: track, divide, assign, and protect. Each block below has a tiny visual plus a practical tip.
+  </p>
+</section>
+
+<!-- CONCEPTS: each card compact, split inside -->
+
+<!-- 1) EXPENSE TRACKING -->
+<section class="bg-white dark:bg-gray-800 rounded-lg p-4 md:p-5 shadow-md border border-gray-200 dark:border-gray-700 mb-5">
+  <div class="flex flex-col md:flex-row gap-4 items-start">
+    <!-- Text side -->
+    <div class="flex-1">
+      <h3 class="text-lg md:text-xl font-semibold text-trust dark:text-blue-300">1) Expense Tracking</h3>
+      <p class="text-gray-700 dark:text-gray-300 text-sm mt-2">
+        You can’t fix what you can’t see. Tracking simply means noting where money goes — especially “small”
+        spends like snacks, rides, and subscriptions.
+      </p>
+
+      <p class="text-xs font-semibold text-gray-900 dark:text-gray-100 mt-3">
+        Aditi’s Guess vs Reality (₹)
+      </p>
+      <div class="mt-1 text-[11px] bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
+        <div class="grid grid-cols-3 font-semibold bg-gray-100 dark:bg-gray-800 px-2 py-1.5">
+          <span>Category</span><span>She Thinks</span><span>Actual</span>
+        </div>
+        <div class="grid grid-cols-3 px-2 py-1">
+          <span>Food & snacks</span><span>2,000</span><span>2,400</span>
+        </div>
+        <div class="grid grid-cols-3 px-2 py-1 bg-gray-50 dark:bg-gray-900">
+          <span>Shopping</span><span>500</span><span>1,200</span>
+        </div>
+        <div class="grid grid-cols-3 px-2 py-1">
+          <span>Autos & cabs</span><span>500</span><span>800</span>
+        </div>
+        <div class="grid grid-cols-3 px-2 py-1 bg-gray-50 dark:bg-gray-900">
+          <span>Subscriptions</span><span>0</span><span>600</span>
+        </div>
+      </div>
+      <p class="text-[11px] text-gray-600 dark:text-gray-400 mt-1.5">
+        Hidden leak: shopping + subscriptions quietly take away ₹1,800.
+      </p>
+
+      <!-- Tip/Avoid strip -->
+      <div class="mt-2 text-[11px] flex flex-col gap-1">
+        <div class="flex items-start gap-2">
+          <span class="text-green-700 dark:text-green-300 font-semibold">Tip ✓</span>
+          <span class="text-gray-700 dark:text-gray-300">Track only 7 days first. Patterns show up faster than you think.</span>
+        </div>
+        <div class="flex items-start gap-2">
+          <span class="text-red-700 dark:text-red-300 font-semibold">Avoid ✗</span>
+          <span class="text-gray-700 dark:text-gray-300">Restarting from “next month” if you miss a day. Just continue next day.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chart side -->
+    <div class="w-full md:w-5/12">
+      <div class="flex items-center justify-between gap-2 mb-1">
+        <p class="text-[11px] font-medium text-gray-900 dark:text-gray-100">
+          Visual: Where the stipend actually goes
+        </p>
+        <button type="button"
+                onclick="toggleExpenseData()"
+                class="text-[11px] px-2 py-1 rounded-md border border-blue-200 dark:border-blue-500 text-blue-700 dark:text-blue-200 hover:bg-blue-50 dark:hover:bg-blue-900">
+          Switch example
+        </button>
+      </div>
+      <p id="expenseToggleLabel" class="text-[10px] text-gray-600 dark:text-gray-400 mb-1">
+        Showing: Aditi’s month
+      </p>
+      <canvas id="expenseChart" class="w-full h-32"></canvas>
+    </div>
+  </div>
+</section>
+
+<!-- 2) 50–30–20 -->
+<section class="bg-white dark:bg-gray-800 rounded-lg p-4 md:p-5 shadow-md border border-gray-200 dark:border-gray-700 mb-5">
+  <div class="flex flex-col md:flex-row gap-4 items-start">
+    <!-- Text side -->
+    <div class="flex-1">
+      <h3 class="text-lg md:text-xl font-semibold text-trust dark:text-blue-300">2) The 50–30–20 Method</h3>
+      <p class="text-gray-700 dark:text-gray-300 text-sm mt-2">
+        A super-easy way to control your money without feeling like you’re doing MBA-level math. Just split your income into three buckets and chill.      </p>
+      <ul class="list-disc ml-5 mt-2 text-[13px] text-gray-700 dark:text-gray-300 space-y-0.5">
+        <li><strong>50% Needs(a.k.a. “Stuff you can’t escape”):</strong> Rent, food, travel, phone bill—basically the grown-up expenses that follow you around even if you hide.</li>
+        <li><strong>30% Wants(the fun zone):</strong> Cafés, Swiggy cravings, that cute shirt you absolutely didn’t need, weekend plans—everything that makes life nicer but won’t kill you if you skip it.Cafés, Zomato binges, shopping because the sale spoke to you, spontaneous plans that you regret only after checking your bank balance.</li>
+        <li><strong>20% Savings/Investing(future-you will hug you):</strong> Emergency fund, SIPs, savings for goals—this is the money that quietly grows while you’re busy living your life.</li>
+      </ul>
+
+      <!-- Needs vs Wants -->
+      <div class="grid grid-cols-2 gap-2 mt-3 text-[11px]">
+        <div class="p-2.5 rounded-lg bg-green-50 dark:bg-green-900">
+          <div class="font-semibold text-green-800 dark:text-green-200">Needs (examples)</div>
+          <p class="mt-0.5 text-gray-700 dark:text-gray-200">PG rent, mess, bus/metro, basic data pack.</p>
+        </div>
+        <div class="p-2.5 rounded-lg bg-yellow-50 dark:bg-yellow-900">
+          <div class="font-semibold text-yellow-800 dark:text-yellow-200">Wants (examples)</div>
+          <p class="mt-0.5 text-gray-700 dark:text-gray-200">Zomato, cafés, extra clothes, impulse buys.</p>
+        </div>
+      </div>
+
+      <!-- Tip/Avoid strip -->
+      <div class="mt-2 text-[11px] grid grid-cols-1 gap-1" role="list" aria-label="Budget tips and avoids">
+  <div class="flex flex-col gap-2" role="listitem">
+    <div class="flex items-start gap-2">
+      <span class="text-green-700 dark:text-green-300 font-semibold" aria-hidden="true">Tip ✓</span>
+      <span class="text-gray-700 dark:text-gray-300">
+        Metro life hack: if you live in a big city, expect “needs” to be <strong>60–65%</strong>. Start where you are — don’t sprint.
+      </span>
+    </div>
+
+    <div class="flex items-start gap-2">
+      <span class="text-green-700 dark:text-green-300 font-semibold" aria-hidden="true">Tip ✓</span>
+      <span class="text-gray-700 dark:text-gray-300">
+        Can’t hit 20% savings? Chill. Do <strong>5%</strong>, then 10. Budgeting isn’t a gym test — consistency wins.
+      </span>
+    </div>
+  </div>
+
+  <div class="flex flex-col gap-2" role="listitem">
+    <div class="flex items-start gap-2">
+      <span class="text-red-700 dark:text-red-300 font-semibold" aria-hidden="true">Avoid ✗</span>
+      <span class="text-gray-700 dark:text-gray-300">
+        Don’t call comforts “needs.” If you can drop it for a tight month without crying, it’s a <em>want</em>.
+      </span>
+    </div>
+
+    <div class="flex items-start gap-2">
+      <span class="text-red-700 dark:text-red-300 font-semibold" aria-hidden="true">Avoid ✗</span>
+      <span class="text-gray-700 dark:text-gray-300">
+        Your brain ≠ spreadsheet. Use an app or a note — your future self will high-five you.
+      </span>
+    </div>
+
+    <div class="flex items-start gap-2">
+      <span class="text-red-700 dark:text-red-300 font-semibold" aria-hidden="true">Avoid ✗</span>
+      <span class="text-gray-700 dark:text-gray-300">
+        “YOLO” is fun — until bills RSVP. Enjoy, but don’t bankrupt your future self.
+      </span>
+    </div>
+  </div>
+</div>
+
+    </div>
+
+    <!-- Chart side -->
+    <div class="w-full md:w-5/12">
+      <p class="text-[11px] font-medium text-gray-900 dark:text-gray-100 mb-1">
+        Visual: 50–30–20 split
+      </p>
+      <canvas id="fiftyChart" class="w-full h-36"></canvas>
+    </div>
+  </div>
+</section>
+
+<!-- 3) ZERO-BASED BUDGETING & 4) EMERGENCY FUND stacked tighter -->
+
+<section class="grid gap-5 md:grid-cols-2 mb-6">
+
+  <!-- Zero-Based -->
+  <div class="bg-white dark:bg-gray-800 rounded-lg p-4 md:p-5 shadow-md border border-gray-200 dark:border-gray-700">
+    <h3 class="text-lg md:text-xl font-semibold text-trust dark:text-blue-300">3) Zero-Based Budgeting</h3>
+    <p class="text-gray-700 dark:text-gray-300 text-sm mt-2">
+      Your income is fully “given jobs” on paper before the month begins. Income − Expenses − Savings = 0.
+    </p>
+
+    <p class="text-[11px] font-semibold text-gray-900 dark:text-gray-100 mt-2">
+      Mini example: ₹20,000 income
+    </p>
+    <div class="mt-1 text-[11px] bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg px-3 py-2 space-y-0.5">
+      <div class="flex justify-between"><span>Essentials (rent, food, travel)</span><span>₹12,000</span></div>
+      <div class="flex justify-between"><span>Discretionary (wants)</span><span>₹4,500</span></div>
+      <div class="flex justify-between"><span>Subscriptions & misc.</span><span>₹500</span></div>
+      <div class="flex justify-between font-semibold border-t border-dashed border-gray-300 dark:border-gray-700 pt-1 mt-1">
+        <span>Savings / Investing</span><span>₹3,000</span>
+      </div>
+      <div class="flex justify-between font-semibold">
+        <span>Total planned</span><span>₹20,000</span>
+      </div>
+    </div>
+
+    <p class="text-[11px] font-medium text-gray-900 dark:text-gray-100 mt-2">
+      Visual: 100% of income assigned
+    </p>
+    <canvas id="zeroChart" class="mt-1 w-full h-24"></canvas>
+
+    <div class="mt-2 text-[11px] flex flex-col gap-1">
+      <div class="flex items-start gap-2">
+        <span class="text-green-700 dark:text-green-300 font-semibold">Tip ✓</span>
+        <span class="text-gray-700 dark:text-gray-300">
+          Add savings as a fixed line in your budget, not “whatever remains”.
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Emergency Fund -->
+  <div class="bg-white dark:bg-gray-800 rounded-lg p-4 md:p-5 shadow-md border border-gray-200 dark:border-gray-700">
+    <h3 class="text-lg md:text-xl font-semibold text-trust dark:text-blue-300">4) Emergency Fund Basics</h3>
+    <p class="text-gray-700 dark:text-gray-300 text-sm mt-2">
+      This is your financial safety net. It’s for real emergencies: health, job issues, urgent family needs — not sales.
+    </p>
+
+    <p class="text-[11px] font-semibold text-gray-900 dark:text-gray-100 mt-2">
+      If essential monthly cost = ₹17,000:
+    </p>
+    <ul class="list-disc ml-5 mt-1 text-[13px] text-gray-700 dark:text-gray-300 space-y-0.5">
+      <li>3-month safety: ₹51,000</li>
+      <li>6-month safety: ₹1,02,000</li>
+    </ul>
+
+    <p class="text-[11px] font-medium text-gray-900 dark:text-gray-100 mt-2">
+      Visual: Safety levels
+    </p>
+    <canvas id="emFundChart" class="mt-1 w-full h-28"></canvas>
+
+    <div class="mt-2 text-[11px] flex flex-col gap-1">
+      <div class="flex items-start gap-2">
+        <span class="text-green-700 dark:text-green-300 font-semibold">Tip ✓</span>
+        <span class="text-gray-700 dark:text-gray-300">
+          Start with a mini goal like ₹10,000. Reaching a small target is better than waiting for a big one.
+        </span>
+      </div>
+      <div class="flex items-start gap-2">
+        <span class="text-red-700 dark:text-red-300 font-semibold">Avoid ✗</span>
+        <span class="text-gray-700 dark:text-gray-300">
+          Keeping emergency money in risky investments or using it for planned shopping.
+        </span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Quick Budget vs No-Budget -->
+<section class="mb-6">
+  <h2 class="text-xl md:text-2xl font-semibold text-trust dark:text-blue-300">Budget vs No Budget</h2>
+  <div class="mt-3 grid gap-3 md:grid-cols-2 text-[13px]">
+    <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-4">
+      <h3 class="font-semibold text-trust dark:text-blue-200 mb-1">Without a Budget</h3>
+      <ul class="list-disc ml-4 text-gray-700 dark:text-gray-300 space-y-0.5">
+        <li>Month feels longer than the money.</li>
+        <li>Impulse ordering and small spends pile up.</li>
+        <li>End-of-month surprise: “Where did it all go?”</li>
+        <li>No fixed savings, only leftover (if any).</li>
+      </ul>
+    </div>
+    <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-4">
+      <h3 class="font-semibold text-trust dark:text-blue-200 mb-1">With a Simple Budget</h3>
+      <ul class="list-disc ml-4 text-gray-700 dark:text-gray-300 space-y-0.5">
+        <li>Clear idea of what’s safe to spend.</li>
+        <li>Fixed monthly limit for outings/delivery.</li>
+        <li>Less stress near the end of the month.</li>
+        <li>Savings are planned, not accidental.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- TOOLS -->
+<section class="mb-6">
+  <h2 class="text-xl md:text-2xl font-semibold text-trust dark:text-blue-300">Try the Tools</h2>
+  <p class="text-gray-700 dark:text-gray-300 text-sm md:text-base mt-1">
+    Turn these ideas into your own numbers.
+  </p>
+
+  <div class="flex flex-wrap gap-3 mt-4">
+    <a href="{% url 'tool_budget_planner' %}">
+      <button class="px-5 py-2 rounded-md text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-400 font-medium text-sm">
+        Open Budget Planner
+      </button>
+    </a>
+    <a href="{% url 'tool_emergency_fund' %}">
+      <button class="px-5 py-2 rounded-md text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-400 font-medium text-sm">
+        Emergency Fund Calculator
+      </button>
+    </a>
+  </div>
+</section>
+
+<!-- WORKSHEETS -->
+<section class="mb-6">
+  <h2 class="text-xl md:text-2xl font-semibold text-trust dark:text-blue-300">Download Worksheets</h2>
+  <p class="text-gray-700 dark:text-gray-300 text-sm md:text-base mt-1">
+    Use guided Excel/Google Sheets templates with formulas ready — just fill your numbers.
+  </p>
+
+  <a href="{% url 'worksheets' %}">
+    <button class="mt-3 px-5 py-2 rounded-md text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-400 font-medium text-sm">
+      Get Worksheets
+    </button>
+  </a>
+</section>
+
+<!-- CHALLENGE -->
+<section class="mb-2">
+  <div class="bg-blue-50 dark:bg-blue-900 border border-blue-300 dark:border-blue-700 rounded-lg p-4">
+    <h3 class="font-semibold text-trust dark:text-blue-100 mb-1 text-sm md:text-base">
+      Challenge: Build a ₹22,000 Stipend Budget
+    </h3>
+    <p class="text-[13px] text-gray-700 dark:text-gray-200">
+      Try this scenario:
+    </p>
+    <ul class="text-[13px] text-gray-700 dark:text-gray-200 ml-4 mt-1 list-disc">
+      <li>Shared flat rent: ₹6,000</li>
+      <li>Food & groceries: ₹4,000</li>
+      <li>Commute: ₹1,500</li>
+      <li>Phone & data: ₹500</li>
+      <li>Your wants: you decide.</li>
+      <li>Goal: start an emergency fund.</li>
+    </ul>
+    <p class="text-[13px] text-gray-700 dark:text-gray-200 mt-1">
+      Can you save at least ₹3,000–₹5,000 every month?
+    </p>
+    <a href="{% url 'tool_budget_planner' %}">
+      <button class="mt-2 px-5 py-2 rounded-md text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-400 font-medium text-xs">
+        Start the Challenge
+      </button>
+    </a>
+  </div>
+  <a href="{% url 'quiz_budgeting' %}">
+  <button class="mt-4 px-5 py-2 rounded-md text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-400 text-sm font-medium">
+    Take the Budgeting Quiz
+  </button>
+</a>
+</section>
+
+{% endblock %}
+
+{% block extra_head %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+// ---------- Expense Tracking: toggle between Aditi and sample month ----------
+let expenseChartInstance = null;
+let showingAditi = true;
+
+const expenseDataAditi = [2400, 1200, 800, 600];
+const expenseDataSample = [2000, 900, 600, 400];
+
+function buildExpenseChart(data) {
+  const ctx = document.getElementById('expenseChart');
+  if (!ctx) return;
+  if (expenseChartInstance) {
+    expenseChartInstance.destroy();
+  }
+  expenseChartInstance = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ["Food", "Shopping", "Travel", "Subscriptions"],
+      datasets: [{
+        data: data,
+        backgroundColor: ["#457B9D","#A8DADC","#1D3557","#E63946"]
+      }]
+    },
+    options: {
+      animation: { duration: 700, easing: 'easeOutQuart' },
+      plugins:{legend:{display:false}},
+      scales:{
+        y:{display:false, grid:{display:false}},
+        x:{grid:{display:false}}
+      }
+    }
+  });
+}
+
+function toggleExpenseData() {
+  showingAditi = !showingAditi;
+  const label = document.getElementById('expenseToggleLabel');
+  if (label) {
+    label.textContent = showingAditi ? "Showing: Aditi’s month" : "Showing: Sample month";
+  }
+  buildExpenseChart(showingAditi ? expenseDataAditi : expenseDataSample);
+}
+
+// 50-30-20 Pie
+function buildFiftyChart() {
+  const ctx = document.getElementById('fiftyChart');
+  if (!ctx) return;
+  new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels:["Needs","Wants","Savings"],
+      datasets:[{
+        data:[50,30,20],
+        backgroundColor:["#1D3557","#457B9D","#A8DADC"],
+        borderWidth:0
+      }]
+    },
+    options: {
+      animation: { duration: 700, easing: 'easeOutQuart' },
+      plugins:{legend:{display:true}},
+      cutout:"60%"
+    }
+  });
+}
+
+// Zero-Based Budgeting Sample
+function buildZeroChart() {
+  const ctx = document.getElementById('zeroChart');
+  if (!ctx) return;
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels:["Assigned Income"],
+      datasets:[{ data:[100], backgroundColor:"#457B9D" }]
+    },
+    options: {
+      animation: { duration: 700, easing: 'easeOutQuart' },
+      plugins:{legend:{display:false}},
+      scales:{
+        y:{display:false, grid:{display:false}},
+        x:{grid:{display:false}}
+      }
+    }
+  });
+}
+
+// Emergency Fund Chart
+function buildEmFundChart() {
+  const ctx = document.getElementById('emFundChart');
+  if (!ctx) return;
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels:["3-Month Fund","6-Month Fund"],
+      datasets:[{
+        data:[51000,102000],
+        backgroundColor:["#1D3557","#457B9D"]
+      }]
+    },
+    options: {
+      animation: { duration: 700, easing: 'easeOutQuart' },
+      plugins:{legend:{display:false}},
+      scales:{
+        y:{display:false, grid:{display:false}},
+        x:{grid:{display:false}}
+      }
+    }
+  });
+}
+
+// Initialize all charts on load
+document.addEventListener("DOMContentLoaded", function() {
+  buildExpenseChart(expenseDataAditi);
+  buildFiftyChart();
+  buildZeroChart();
+  buildEmFundChart();
+});
+</script>
+
+
+{% endblock %}
+

@@ -1,0 +1,135 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <title>{% block title %}Educational Finance Lab{% endblock %}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Tailwind Build -->
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Feather Icons -->
+  <script src="https://unpkg.com/feather-icons"></script>
+
+  {% block extra_head %}{% endblock %}
+</head>
+
+<body class="bg-gray-50 dark:bg-gray-900 dark:text-gray-100 transition-colors duration-300">
+
+<!-- 🌙 NAVBAR -->
+<nav class="px-6 py-4 flex justify-between items-center shadow-md
+            bg-white text-gray-800
+            dark:bg-gray-800 dark:text-gray-100 transition-colors duration-300">
+
+  <!-- Logo -->
+  <a href="{% url 'home' %}"
+     class="text-xl font-semibold hover:opacity-80 transition text-trust dark:text-blue-300">
+    Finance Lab
+  </a>
+
+  <!-- Menu -->
+  <ul class="hidden md:flex gap-6 text-sm items-center">
+
+    <li><a href="{% url 'home' %}" class="hover:text-blue-600 dark:hover:text-blue-300">Home</a></li>
+
+    <li class="group relative cursor-pointer">
+      <span class="hover:text-blue-600 dark:hover:text-blue-300">Explore ▾</span>
+      <ul class="absolute hidden group-hover:block
+                 bg-white dark:bg-gray-700
+                 text-gray-800 dark:text-gray-100
+                 mt-2 rounded shadow-lg text-sm w-40
+                 border border-gray-200 dark:border-gray-600">
+        <li><a href="/module/budgeting/" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600">Budgeting</a></li>
+        <li><a href="/module/investment/" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600">Investment</a></li>
+        <li><a href="/module/loans/" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600">Credit & Loans</a></li>
+        <li><a href="/module/salary/" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600">Salary & Payslip 101</a></li>
+        <li><a href="/module/credit/card/" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600">Credit Cards 101</a></li>
+        <li><a href="/module/scam/shield/" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600">Scams 101</a></li>
+        <li><a href="/module/health/insurance/" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600">Health Insurance 101</a></li>
+        <li><a href="/module/life/insurance/" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600">Life Insurance 101</a></li>
+        <li><a href="/module/tax/" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600">Taxes 101</a></li>
+
+      </ul>
+    </li>
+
+    <li><a href="/tools/" class="hover:text-blue-600 dark:hover:text-blue-300">Tools</a></li>
+    <li><a href="/worksheets/" class="hover:text-blue-600 dark:hover:text-blue-300">Worksheets</a></li>
+    <li><a href="{% url 'quiz_dashboard' %}" class="hover:underline">Quizzes</a></li>
+    <li><a href="/about/" class="hover:text-blue-600 dark:hover:text-blue-300">About</a></li>
+
+
+    <!-- Dark Mode Button -->
+    <li>
+      <button id="theme-toggle"
+        class="px-3 py-1 rounded-md text-xs font-semibold
+               bg-gray-200 text-gray-900
+               dark:bg-gray-700 dark:text-white hover:bg-gray-300 dark:hover:bg-gray-600">
+        🌙 Dark
+      </button>
+    </li>
+  </ul>
+<script>
+function loadProgress(){
+  const budget = localStorage.getItem("fl_badge_budget") || "-";
+  const invest = localStorage.getItem("fl_badge_invest") || "-";
+  const loans  = localStorage.getItem("fl_badge_loans") || "-";
+
+  const txt = lvl => lvl === "-" ? "-" : lvl.charAt(0).toUpperCase() + lvl.slice(1);
+  document.getElementById("pi-budget").textContent = "Budget: " + txt(budget);
+  document.getElementById("pi-invest").textContent = "Invest: " + txt(invest);
+  document.getElementById("pi-loans").textContent  = "Loans: " + txt(loans);
+}
+document.addEventListener("DOMContentLoaded", loadProgress);
+</script>
+
+  <!-- Mobile Menu Placeholder -->
+  <div class="md:hidden">
+    <i data-feather="menu"></i>
+  </div>
+</nav>
+
+<!-- 📌 MAIN -->
+<main class="max-w-6xl mx-auto px-4 md:px-8 py-8">
+  {% block content %}{% endblock %}
+</main>
+
+<!-- 📎 FOOTER -->
+<footer class="bg-gray-200 dark:bg-gray-800 dark:text-gray-200 text-gray-700 mt-10 py-6 text-center text-sm border-t border-gray-300 dark:border-gray-700">
+  <div class="flex justify-center gap-6 text-sm">
+    <a href="{% url 'about' %}" class="hover:underline">About</a>
+
+    <a href="{% url 'tools' %}" class="hover:underline">Tools</a>
+    <a href="{% url 'worksheets' %}" class="hover:underline">Worksheets</a>
+    <a href="{% url 'about' %}" class="hover:underline">Disclaimer</a>
+    <a href="{% url 'about' %}" class="hover:underline">Contact</a>
+  </div>
+  <div class="mt-3 text-xs">© 2026 Educational Finance Lab | Built for Learning</div>
+</footer>
+
+<!-- JS: Icons + Dark Mode -->
+<script>feather.replace();</script>
+<script>
+  if (localStorage.getItem('theme') === 'dark' ||
+      (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+    document.documentElement.classList.add('dark');
+  }
+
+  document.getElementById('theme-toggle').addEventListener('click', () => {
+    const isDark = document.documentElement.classList.toggle('dark');
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+  });
+</script>
+<script>
+  function trackTool(toolName) {
+    let stats = JSON.parse(localStorage.getItem("financeLabStats") || "{}");
+    stats[toolName] = (stats[toolName] || 0) + 1;
+    localStorage.setItem("financeLabStats", JSON.stringify(stats));
+  }
+</script>
+
+</body>
+</html>

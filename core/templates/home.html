@@ -1,0 +1,295 @@
+{% extends "base.html" %}
+{% block title %}Educational Finance Lab{% endblock %}
+
+{% block content %}
+
+<!-- HERO -->
+<section class="rounded-lg p-10 text-white bg-gradient-to-r from-[#1D3557]/95 to-[#1D3557]/90 shadow-md mb-12">
+  <h1 class="text-4xl font-bold mb-3">Understand Personal Finance the Right Way</h1>
+  <p class="max-w-2xl text-base md:text-lg opacity-90">
+    Learn budgeting, investing, and loan management with simple explanations, Indian examples,
+    and hands-on tools that make money easy to understand.
+  </p>
+
+  <div class="mt-8 flex flex-wrap gap-4">
+    <a href="{% url 'module_budgeting' %}">
+      <button class="px-6 py-2.5 rounded-md text-white bg-orange-500 hover:bg-orange-600 font-medium text-base">Start Learning</button>
+    </a>
+    <a href="{% url 'tools' %}">
+      <button class="px-6 py-2.5 rounded-md text-white bg-blue-600 hover:bg-blue-700 font-medium text-base">Try a Calculator</button>
+    </a>
+  </div>
+
+  <p class="text-sm opacity-85 mt-5">Built to teach, not to sell.</p>
+  <p class="text-sm opacity-70">No sign-up needed. No financial products.</p>
+</section>
+
+<!-- SECTIONS -->
+<section>
+  <h2 class="text-2xl font-semibold text-trust dark:text-blue-300">Explore the Modules</h2>
+  <p class="text-gray-700 dark:text-gray-300 text-base mt-1">Start with basics and move at your own pace.</p>
+</section>
+
+<!-- MODULE CARDS -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-6">
+
+  <div class="bg-white dark:bg-gray-800 rounded-lg p-8 shadow-md border dark:border-gray-700">
+    <h3 class="text-lg font-semibold text-trust dark:text-blue-300">Budgeting & Expense Planning 101</h3>
+    <p class="text-gray-700 dark:text-gray-300 text-base mt-2">Plan your money so the month doesn't feel longer than your salary.</p>
+    <p class="text-gray-600 dark:text-gray-400 text-sm mt-3">Real examples using stipends, first salaries, and shared flats.</p>
+    <a href="{% url 'module_budgeting' %}" class="inline-block mt-4 text-blue-600 dark:text-blue-400 font-medium">Learn & Track →</a>
+  </div>
+
+  <div class="bg-white dark:bg-gray-800 rounded-lg p-8 shadow-md border dark:border-gray-700">
+    <h3 class="text-lg font-semibold text-trust dark:text-blue-300">Investment Fundamentals 101</h3>
+    <p class="text-gray-700 dark:text-gray-300 text-base mt-2">Understand SIPs, FDs, and mutual funds before investing a single rupee.</p>
+    <p class="text-gray-600 dark:text-gray-400 text-sm mt-3">See how ₹ 2,000/month grows over 5–10 years.</p>
+    <a href="{% url 'module_investment' %}" class="inline-block mt-4 text-blue-600 dark:text-blue-400 font-medium">Start Simple →</a>
+  </div>
+
+  <div class="bg-white dark:bg-gray-800 rounded-lg p-8 shadow-md border dark:border-gray-700">
+    <h3 class="text-lg font-semibold text-trust dark:text-blue-300">Credit & Loan Management 101</h3>
+    <p class="text-gray-700 dark:text-gray-300 text-base mt-2">Learn EMIs, loans, and credit cards without traps or surprises.</p>
+    <p class="text-gray-600 dark:text-gray-400 text-sm mt-3">Examples based on common Indian loan amounts.</p>
+    <a href="{% url 'module_loans' %}" class="inline-block mt-4 text-blue-600 dark:text-blue-400 font-medium">Borrow Wisely →</a>
+  </div>
+  <div class="bg-white dark:bg-gray-800 rounded-lg p-8 shadow-md border dark:border-gray-700">
+    <h3 class="text-lg font-semibold text-trust dark:text-blue-300">Salary & Payslip 101</h3>
+    <p class="text-gray-700 dark:text-gray-300 text-base mt-2">Your paycheck decoded: The student guide.</p>
+    <p class="text-gray-600 dark:text-gray-400 text-sm mt-3"> Your payslip, simplified.</p>
+    <a href="{% url 'module_salary' %}" class="inline-block mt-4 text-blue-600 dark:text-blue-400 font-medium">Unlock the Secrets→</a>
+  </div>
+  <div class="bg-white dark:bg-gray-800 rounded-lg p-8 shadow-md border dark:border-gray-700">
+    <h3 class="text-lg font-semibold text-trust dark:text-blue-300">Credit Cards 101</h3>
+    <p class="text-gray-700 dark:text-gray-300 text-base mt-2">See if a credit card is the right financial tool for you</p>
+    <p class="text-gray-600 dark:text-gray-400 text-sm mt-3">If the answer is yes, we'll help you pick the best "First Card."</p>
+    <a href="{% url 'module_credit_card' %}" class="inline-block mt-4 text-blue-600 dark:text-blue-400 font-medium">Find My First Card→</a>
+  </div>
+  <div class="bg-white dark:bg-gray-800 rounded-lg p-8 shadow-md border dark:border-gray-700">
+    <h3 class="text-lg font-semibold text-trust dark:text-blue-300">Scams 101</h3>
+    <p class="text-gray-700 dark:text-gray-300 text-base mt-2">Decode Your Scams (UPI & Cards)</p>
+    <p class="text-gray-600 dark:text-gray-400 text-sm mt-3">Learn the most common tricks, like Phishing, QR Code Fraud, and Remote Access Scams.</p>
+    <a href="{% url 'module_scam_shield' %}" class="inline-block mt-4 text-blue-600 dark:text-blue-400 font-medium">Get Protected→</a>
+  </div>
+  <div class="bg-white dark:bg-gray-800 rounded-lg p-8 shadow-md border dark:border-gray-700">
+    <h3 class="text-lg font-semibold text-trust dark:text-blue-300">Health Insurance 101</h3>
+    <p class="text-gray-700 dark:text-gray-300 text-base mt-2">What, Why and How?</p>
+    <p class="text-gray-600 dark:text-gray-400 text-sm mt-3">The Student Priority</p>
+    <a href="{% url 'module_health_insurance' %}" class="inline-block mt-4 text-blue-600 dark:text-blue-400 font-medium">Secure my Health→</a>
+  </div>
+  <div class="bg-white dark:bg-gray-800 rounded-lg p-8 shadow-md border dark:border-gray-700">
+    <h3 class="text-lg font-semibold text-trust dark:text-blue-300">Life Insurance 101</h3>
+    <p class="text-gray-700 dark:text-gray-300 text-base mt-2">What, Why and How?</p>
+    <p class="text-gray-600 dark:text-gray-400 text-sm mt-3">The Golden Age to Buy</p>
+    <a href="{% url 'module_life_insurance' %}" class="inline-block mt-4 text-blue-600 dark:text-blue-400 font-medium">Start Planning→</a>
+  </div>
+ <div class="bg-white dark:bg-gray-800 rounded-lg p-8 shadow-md border dark:border-gray-700">
+    <h3 class="text-lg font-semibold text-trust dark:text-blue-300">Taxes 101</h3>
+    <p class="text-gray-700 dark:text-gray-300 text-base mt-2">The Holy Trinity of Deductions</p>
+    <p class="text-gray-600 dark:text-gray-400 text-sm mt-3">Your Mandatory Adulting Guide</p>
+    <a href="{% url 'module_tax' %}" class="inline-block mt-4 text-blue-600 dark:text-blue-400 font-medium">Start Paying→</a>
+  </div>
+
+</div>
+<!-- QUIZ ZONE -->
+<section class="mt-16">
+  <h2 class="text-2xl font-semibold text-trust dark:text-blue-300 mb-2">
+    🎯 Quiz Zone: Test Your Money Skills
+  </h2>
+  <p class="text-gray-700 dark:text-gray-300 mb-6">
+    Short, simple quizzes to check your financial basics. Earn badges based on your score!
+  </p>
+
+  <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    <!-- Daily Quiz -->
+    <a href="{% url 'daily_challenge' %}">
+      <div class="p-6 bg-white dark:bg-gray-800 rounded-lg shadow hover:shadow-lg border dark:border-gray-700 cursor-pointer transition">
+        <h3 class="text-lg font-semibold text-trust dark:text-blue-300">Daily Challenge</h3>
+        <p class="text-sm text-gray-600 dark:text-gray-300 mt-1">Test your daily knowledge, a new challenge everyday</p>
+        <button class="mt-4 px-4 py-1.5 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-400 text-white rounded-md text-sm">
+          Start Quiz →
+        </button>
+      </div>
+    </a>
+    <!-- Budget Quiz -->
+    <a href="{% url 'quiz_budgeting' %}">
+      <div class="p-6 bg-white dark:bg-gray-800 rounded-lg shadow hover:shadow-lg border dark:border-gray-700 cursor-pointer transition">
+        <h3 class="text-lg font-semibold text-trust dark:text-blue-300">Budgeting Quiz</h3>
+        <p class="text-sm text-gray-600 dark:text-gray-300 mt-1">Learn wants vs needs, 50–30–20, and tracking habits.</p>
+        <button class="mt-4 px-4 py-1.5 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-400 text-white rounded-md text-sm">
+          Start Quiz →
+        </button>
+      </div>
+    </a>
+
+    <!-- Investment Quiz -->
+    <a href="{% url 'quiz_investment' %}">
+      <div class="p-6 bg-white dark:bg-gray-800 rounded-lg shadow hover:shadow-lg border dark:border-gray-700 cursor-pointer transition">
+        <h3 class="text-lg font-semibold text-trust dark:text-blue-300">Investment Quiz</h3>
+        <p class="text-sm text-gray-600 dark:text-gray-300 mt-1">Test compounding, SIP logic, risk, and real scenarios.</p>
+        <button class="mt-4 px-4 py-1.5 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-400 text-white rounded-md text-sm">
+          Start Quiz →
+        </button>
+      </div>
+    </a>
+
+    <!-- Loans Quiz -->
+    <a href="{% url 'quiz_loans' %}">
+      <div class="p-6 bg-white dark:bg-gray-800 rounded-lg shadow hover:shadow-lg border dark:border-gray-700 cursor-pointer transition">
+        <h3 class="text-lg font-semibold text-trust dark:text-blue-300">Loans Quiz</h3>
+        <p class="text-sm text-gray-600 dark:text-gray-300 mt-1">Understand EMI traps, minimum due & total loan cost.</p>
+        <button class="mt-4 px-4 py-1.5 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-400 text-white rounded-md text-sm">
+          Start Quiz →
+        </button>
+      </div>
+    </a>
+  <!-- Salary Quiz -->
+<a href="{% url 'quiz_salary' %}">
+  <div class="p-6 bg-white dark:bg-gray-800 rounded-lg shadow hover:shadow-lg border dark:border-gray-700 cursor-pointer transition">
+    <h3 class="text-lg font-semibold text-trust dark:text-blue-300">Salary & Payslip Quiz</h3>
+    <p class="text-sm text-gray-600 dark:text-gray-300 mt-1">
+      Decode CTC vs in-hand, PF, bonus and offer letter tricks.
+    </p>
+    <button class="mt-4 px-4 py-1.5 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-400 text-white rounded-md text-sm">
+      Start Quiz →
+    </button>
+  </div>
+</a>
+
+  </div>
+</section>
+
+<!-- TOOLS -->
+<section class="mt-16">
+  <h2 class="text-2xl font-semibold text-trust dark:text-blue-300">Smart Tools, Simple Screens</h2>
+  <p class="text-gray-700 dark:text-gray-300 text-base mt-1">See the numbers clearly instead of guessing them.</p>
+</section>
+
+<div class="grid grid-cols-2 md:grid-cols-3 gap-8 mt-6">
+
+  <div class="bg-white dark:bg-gray-800 rounded-lg p-8 shadow-md border dark:border-gray-700">
+    <h3 class="text-lg font-semibold text-trust dark:text-blue-300">Budget Planner</h3>
+    <p class="text-gray-700 dark:text-gray-300 text-base mt-2">Plan before you spend: rent, food, subscriptions, wants.</p>
+    <a href="{% url 'tool_budget_planner' %}">
+      <button class="mt-4 px-6 py-2.5 rounded-md text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-400 font-medium text-base">Try Now</button>
+    </a>
+  </div>
+
+  <div class="bg-white dark:bg-gray-800 rounded-lg p-8 shadow-md border dark:border-gray-700">
+    <h3 class="text-lg font-semibold text-trust dark:text-blue-300">EMI Calculator</h3>
+    <p class="text-gray-700 dark:text-gray-300 text-base mt-2">Understand how much extra you're paying beyond the price.</p>
+    <a href="{% url 'tool_emi_calculator' %}">
+      <button class="mt-4 px-6 py-2.5 rounded-md text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-400 font-medium text-base">Try Now</button>
+    </a>
+  </div>
+    <div class="bg-white dark:bg-gray-800 rounded-lg p-8 shadow-md border dark:border-gray-700">
+    <h3 class="text-lg font-semibold text-trust dark:text-blue-300">Emergency Fund</h3>
+    <p class="text-gray-700 dark:text-gray-300 text-base mt-2">Pow much Funds you need in case of Emergency.</p>
+    <a href="{% url 'tool_emergency_fund' %}">
+      <button class="mt-4 px-6 py-2.5 rounded-md text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-400 font-medium text-base">Try Now</button>
+    </a>
+  </div>
+    <div class="bg-white dark:bg-gray-800 rounded-lg p-8 shadow-md border dark:border-gray-700">
+    <h3 class="text-lg font-semibold text-trust dark:text-blue-300">SIP Calculator</h3>
+    <p class="text-gray-700 dark:text-gray-300 text-base mt-2">ow much do you get from SIP's.</p>
+    <a href="{% url 'tool_sip_calculator' %}">
+      <button class="mt-4 px-6 py-2.5 rounded-md text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-400 font-medium text-base">Try Now</button>
+    </a>
+  </div>
+    <div class="bg-white dark:bg-gray-800 rounded-lg p-8 shadow-md border dark:border-gray-700">
+    <h3 class="text-lg font-semibold text-trust dark:text-blue-300">FD vs SIP</h3>
+    <p class="text-gray-700 dark:text-gray-300 text-base mt-2">Are FD's more profitable than SIP's</p>
+    <a href="{% url 'tool_fd_vs_sip' %}">
+      <button class="mt-4 px-6 py-2.5 rounded-md text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-400 font-medium text-base">Try Now</button>
+    </a>
+  </div>
+  <div class="bg-white dark:bg-gray-800 rounded-lg p-8 shadow-md border dark:border-gray-700">
+    <h3 class="text-lg font-semibold text-trust dark:text-blue-300">Loan Comparison</h3>
+    <p class="text-gray-700 dark:text-gray-300 text-base mt-2">Which loan is better</p>
+    <a href="{% url 'tool_loan_comparison' %}">
+      <button class="mt-4 px-6 py-2.5 rounded-md text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-400 font-medium text-base">Try Now</button>
+    </a>
+  </div>
+  <div class="bg-white dark:bg-gray-800 rounded-lg p-8 shadow-md border dark:border-gray-700">
+    <h3 class="text-lg font-semibold text-trust dark:text-blue-300">Know Your Salary</h3>
+    <p class="text-gray-700 dark:text-gray-300 text-base mt-2">First salary Breakdown</p>
+    <a href="{% url 'salary_coach' %}">
+      <button class="mt-4 px-6 py-2.5 rounded-md text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-400 font-medium text-base">Try Now</button>
+    </a>
+  </div>
+  <div class="bg-white dark:bg-gray-800 rounded-lg p-8 shadow-md border dark:border-gray-700">
+    <h3 class="text-lg font-semibold text-trust dark:text-blue-300">Plan Your first Salary</h3>
+    <p class="text-gray-700 dark:text-gray-300 text-base mt-2">How to invest your First Salary </p>
+    <a href="{% url 'salary_plan' %}">
+      <button class="mt-4 px-6 py-2.5 rounded-md text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-400 font-medium text-base">Try Now</button>
+    </a>
+  </div>
+  <div class="bg-white dark:bg-gray-800 rounded-lg p-8 shadow-md border dark:border-gray-700">
+    <h3 class="text-lg font-semibold text-trust dark:text-blue-300">Credit Cards Comparison</h3>
+    <p class="text-gray-700 dark:text-gray-300 text-base mt-2">which card is better </p>
+    <a href="{% url 'tool_credit_card' %}">
+      <button class="mt-4 px-6 py-2.5 rounded-md text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-400 font-medium text-base">Try Now</button>
+    </a>
+  </div>
+  <div class="bg-white dark:bg-gray-800 rounded-lg p-8 shadow-md border dark:border-gray-700">
+    <h3 class="text-lg font-semibold text-trust dark:text-blue-300">Side Hustle Finder</h3>
+    <p class="text-gray-700 dark:text-gray-300 text-base mt-2">Where can you earn more</p>
+    <a href="{% url 'tool_side_hustle' %}">
+      <button class="mt-4 px-6 py-2.5 rounded-md text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-400 font-medium text-base">Try Now</button>
+    </a>
+  </div>
+
+  <div class="bg-white dark:bg-gray-800 rounded-lg p-8 shadow-md border dark:border-gray-700">
+    <h3 class="text-lg font-semibold text-trust dark:text-blue-300">Tax Calculator</h3>
+    <p class="text-gray-700 dark:text-gray-300 text-base mt-2">Get Tax Smart</p>
+    <a href="{% url 'tool_tax_calculator' %}">
+      <button class="mt-4 px-6 py-2.5 rounded-md text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-400 font-medium text-base">Try Now</button>
+    </a>
+  </div>
+
+  <div class="bg-white dark:bg-gray-800 rounded-lg p-8 shadow-md border dark:border-gray-700">
+    <h3 class="text-lg font-semibold text-trust dark:text-blue-300">PF Calculator</h3>
+    <p class="text-gray-700 dark:text-gray-300 text-base mt-2">Visualize Growth</p>
+    <a href="{% url 'tool_pf_calculator' %}">
+      <button class="mt-4 px-6 py-2.5 rounded-md text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-400 font-medium text-base">Try Now</button>
+    </a>
+  </div>
+  <div class="bg-white dark:bg-gray-800 rounded-lg p-8 shadow-md border dark:border-gray-700">
+    <h3 class="text-lg font-semibold text-trust dark:text-blue-300">Health Insurance  Calculator</h3>
+    <p class="text-gray-700 dark:text-gray-300 text-base mt-2">Know Your HI</p>
+    <a href="{% url 'tool_health_insurance_calc' %}">
+      <button class="mt-4 px-6 py-2.5 rounded-md text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-400 font-medium text-base">Try Now</button>
+    </a>
+  </div>
+  <div class="bg-white dark:bg-gray-800 rounded-lg p-8 shadow-md border dark:border-gray-700">
+    <h3 class="text-lg font-semibold text-trust dark:text-blue-300">Life Insurance Calculator</h3>
+    <p class="text-gray-700 dark:text-gray-300 text-base mt-2">Calculate my quote</p>
+    <a href="{% url 'tool_life_insurance_calc' %}">
+      <button class="mt-4 px-6 py-2.5 rounded-md text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-400 font-medium text-base">Try Now</button>
+    </a>
+  </div>
+
+</div>
+
+<!-- WORKSHEETS -->
+<section class="mt-16">
+  <h2 class="text-2xl font-semibold text-trust dark:text-blue-300">Hands-on Practice Worksheets</h2>
+  <p class="text-gray-700 dark:text-gray-300 text-base mt-1">Real Excel/Sheets templates that make you understand money by doing.</p>
+</section>
+
+<div class="bg-white dark:bg-gray-800 rounded-lg p-10 mt-6 shadow-md border dark:border-gray-700">
+  <p class="text-gray-700 dark:text-gray-300 text-base max-w-2xl">
+    Track expenses, compare loans, and understand investing with guided sheets built for Indian incomes.
+  </p>
+  <a href="{% url 'worksheets' %}">
+    <button class="mt-6 px-6 py-2.5 rounded-md text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-400 font-medium text-base">Download Sheets</button>
+  </a>
+</div>
+
+<!-- TRUST -->
+<section class="mt-16">
+  <h2 class="text-2xl font-semibold text-trust dark:text-blue-300">Built on Trusted Indian Data</h2>
+  <p class="text-gray-700 dark:text-gray-300 text-base mt-1">Based on guidelines from RBI, SEBI, AMFI. Educational only, no products.</p>
+</section>
+
+{% endblock %}

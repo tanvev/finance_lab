@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+{% block title %}About | Educational Finance Lab{% endblock %}
+
+{% block content %}
+
+<section class="bg-white dark:bg-gray-800 shadow-md rounded-lg p-8 border dark:border-gray-700">
+  <h1 class="text-3xl font-bold text-trust dark:text-blue-300 mb-3">About Educational Finance Lab</h1>
+  <p class="text-gray-700 dark:text-gray-300 text-sm md:text-base">
+    Educational Finance Lab exists to help students, freshers, and young professionals
+    understand money <strong>before</strong> they start handling bigger amounts.
+  </p>
+</section>
+
+<!-- Section -->
+<section class="mt-10">
+  <h2 class="text-xl font-semibold text-trust dark:text-blue-300 border-l-4 pl-3 border-trust">🎯 Our Purpose</h2>
+  <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-6 border dark:border-gray-700 mt-3">
+    <p class="text-gray-700 dark:text-gray-300 text-sm mb-3">We focus on:</p>
+    <ul class="list-disc pl-6 text-gray-700 dark:text-gray-300 text-sm">
+      <li>Simple explanations in plain English</li>
+      <li>Indian-focused examples and numbers</li>
+      <li>Tools and worksheets that make the math visible</li>
+    </ul>
+    <p class="text-gray-700 dark:text-gray-300 text-sm mt-3">
+      The goal is not to tell you what to buy, but to make you confident enough to ask better questions
+      and make better decisions.
+    </p>
+  </div>
+</section>
+
+<section class="mt-10">
+  <h2 class="text-xl font-semibold text-trust dark:text-blue-300 border-l-4 pl-3 border-trust">🚫 Not Selling Finance Products</h2>
+  <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-6 border dark:border-gray-700 mt-3">
+    <p class="text-gray-700 dark:text-gray-300 text-sm mb-3">
+      We do <strong>not</strong> sell or promote any financial products.
+    </p>
+    <ul class="list-disc pl-6 text-gray-700 dark:text-gray-300 text-sm">
+      <li>No Demat account links</li>
+      <li>No “hot stock tips”</li>
+      <li>No hidden commissions</li>
+    </ul>
+    <p class="text-gray-700 dark:text-gray-300 text-sm mt-3">
+      This site is built purely for learning and awareness.
+    </p>
+  </div>
+</section>
+
+<section class="mt-10">
+  <h2 class="text-xl font-semibold text-trust dark:text-blue-300 border-l-4 pl-3 border-trust">📊 Data & Sources</h2>
+  <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-6 border dark:border-gray-700 mt-3">
+    <p class="text-gray-700 dark:text-gray-300 text-sm mb-3">
+      We rely on publicly available information and guidelines from Indian regulators and official bodies like:
+    </p>
+    <ul class="list-disc pl-6 text-gray-700 dark:text-gray-300 text-sm">
+      <li>Reserve Bank of India (RBI)</li>
+      <li>Securities and Exchange Board of India (SEBI)</li>
+      <li>Association of Mutual Funds in India (AMFI)</li>
+    </ul>
+    <p class="text-gray-700 dark:text-gray-300 text-sm mt-3">
+      Real-life examples on this site are simplified and rounded for easier understanding.
+      They are <strong>illustrations</strong>, not live quotes.
+    </p>
+  </div>
+</section>
+
+<section class="mt-10">
+  <h2 class="text-xl font-semibold text-trust dark:text-blue-300 border-l-4 pl-3 border-trust">⚠️ Important Disclaimer</h2>
+  <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-6 border dark:border-gray-700 mt-3">
+    <p class="text-gray-700 dark:text-gray-300 text-sm mb-3"><strong>Educational use only.</strong></p>
+    <ul class="list-disc pl-6 text-gray-700 dark:text-gray-300 text-sm">
+      <li>This website does not provide personalized financial, investment, tax, or legal advice.</li>
+      <li>Calculators and examples are for learning purposes and may not reflect current market conditions.</li>
+      <li>Before making decisions, always check updated information from official sources.</li>
+    </ul>
+    <p class="text-gray-700 dark:text-gray-300 text-sm mt-3">
+      Consider consulting a qualified financial advisor for personal advice tailored to your situation.
+    </p>
+  </div>
+</section>
+
+<section class="mt-16">
+  <h2 class="text-2xl font-semibold text-trust dark:text-blue-300">Contact Us</h2>
+  <p class="text-gray-700 dark:text-gray-300 text-base mt-1">Ask questions, suggest topics, or share feedback.</p>
+
+  <div class="bg-white dark:bg-gray-800 rounded-lg p-8 shadow-md border dark:border-gray-700 mt-6">
+
+    {% if success %}
+      <div class="p-4 mb-6 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-md border border-green-400">
+        Thank you! Your message has been sent.
+      </div>
+    {% endif %}
+
+    <form method="POST" class="space-y-6">
+      {% csrf_token %}
+
+      <div>
+        <label class="block text-base text-gray-700 dark:text-gray-200 font-medium">Name</label>
+        <input type="text" name="name" required class="w-full px-4 py-2.5 rounded-md border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 dark:text-gray-100 text-base">
+      </div>
+
+      <div>
+        <label class="block text-base text-gray-700 dark:text-gray-200 font-medium">Email</label>
+        <input type="email" name="email" required class="w-full px-4 py-2.5 rounded-md border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 dark:text-gray-100 text-base">
+      </div>
+
+      <div>
+        <label class="block text-base text-gray-700 dark:text-gray-200 font-medium">Message</label>
+        <textarea name="message" rows="4" required class="w-full px-4 py-2.5 rounded-md border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 dark:text-gray-100 text-base"></textarea>
+      </div>
+
+      <button class="px-6 py-2.5 rounded-md text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-400 font-medium text-base">
+        Send Message
+      </button>
+    </form>
+
+    <p class="text-sm text-gray-600 dark:text-gray-400 mt-6">
+      Prefer email? Reach us at: <strong>tanvi200705@gmail.com</strong>
+    </p>
+  </div>
+</section>
+
+
+{% endblock %}

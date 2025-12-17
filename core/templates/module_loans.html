@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+{% block title %}Credit & Loan Management | Educational Finance Lab{% endblock %}
+
+{% block content %}
+
+<!-- HERO -->
+<section class="rounded-xl p-10 text-white shadow-md"
+         style="background: linear-gradient(to right, rgba(29,53,87,0.92), rgba(29,53,87,0.85));">
+  <h1 class="text-3xl font-semibold">Credit & Loan Management</h1>
+  <p class="mt-3 max-w-2xl text-base text-blue-100">
+    Learn how EMIs, credit cards, and loans really work — so you don’t pay more than you need to.
+    We focus on real Indian numbers, not jargon.
+  </p>
+</section>
+
+<!-- SECTION: LEARN -->
+<h2 class="mt-10 text-2xl font-semibold text-trust dark:text-blue-300">📘 Learn the Concepts</h2>
+
+<!-- 1) WHAT IS EMI -->
+<div class="bg-white dark:bg-gray-800 rounded-lg p-8 shadow-md border dark:border-gray-700 mt-6">
+  <h3 class="text-xl font-semibold text-trust dark:text-blue-300">Why is EMI?</h3>
+  <p>EMI = <strong>Equated Monthly Instalment</strong>. It includes principal + interest.</p>
+
+   <p class="mt-2"><strong>Example (Education Loan):</strong></p>
+  <p class="text-gray-600 dark:text-gray-300 text-sm">
+    Loan ₹4,00,000 at 10% for 5 years → EMI ≈ ₹8,500/month.<br>
+    Over 5 years, you pay a lot more than ₹4,00,000 due to interest.
+  </p>
+
+  <div class="p-4 mt-4 bg-green-100 dark:bg-green-900 text-gray-900 dark:text-gray-100 rounded-md border-l-4 border-green-600 text-base">
+    <strong>Tip:</strong>Never ask ‘What’s the EMI?’ Ask ‘How much total interest will I pay?’.
+  </div>
+</div>
+
+
+<!-- 2. Total Cost of a Loan -->
+<div class="bg-white dark:bg-gray-800 rounded-lg p-8 shadow-md border dark:border-gray-700 mt-6">
+  <h3 class="text-xl font-semibold text-trust dark:text-blue-300"> Total Cost of a Loan</h3>
+<p>The EMI doesn’t show the full cost. Look at:</p>
+  <ul class="list-disc ml-6 mt-2 text-sm">
+    <li>Principal amount</li>
+    <li>Interest rate (actual cost)</li>
+    <li>Tenure (years/months)</li>
+    <li>Processing fees & prepayment charges</li>
+  </ul>
+
+  <p class="mt-2"><strong>Example (Bike Loan):</strong></p>
+  <p class="text-gray-600 dark:text-gray-300 text-sm">
+    ₹1,20,000 at 11% for 3 years → EMI ≈ ₹3,900/month<br>
+    Total repaid ≈ ₹1,40,000 → extra ₹20,000 is the real cost.
+  </p>
+  <div class="p-4 mt-4 bg-green-100 dark:bg-green-900 text-gray-900 dark:text-gray-100 rounded-md border-l-4 border-green-600 text-base">
+    <strong>Tip:</strong>Choosing a loan only because EMI looks small. Lower EMI means longer tenure → more interest.
+  </div>
+</div>
+
+
+<!-- 3. Credit Card Minimum Due -->
+<div class="bg-white dark:bg-gray-800 rounded-lg p-8 shadow-md border dark:border-gray-700 mt-6">
+  <h3 class="text-xl font-semibold text-trust dark:text-blue-300"> Credit Cards: Minimum Due = Hidden Debt</h3>
+<p>Credit card bill shows a big amount and a small <strong>minimum due</strong>.</p>
+
+  <p class="text-gray-600 dark:text-gray-300 text-sm mt-2">
+     <strong>30–40% interest</strong>.
+  </p>
+
+  <p class="mt-2"><strong>Example:</strong></p>
+  <p class="text-gray-600 dark:text-gray-300 text-sm">
+    Bill: ₹10,000 | Minimum due: ₹1,000<br>
+    Remaining ₹9,000 earns heavy interest every month.
+  </p>
+
+  <div class="mt-3 p-3 bg-blue-50 dark:bg-blue-900 border-l-4 border-blue-500 rounded">
+    💡 <strong>Best Habit:</strong> Always pay the <strong>full amount due</strong>.
+  </div>
+
+  <div class="mt-2 p-3 bg-red-50 dark:bg-red-900 border-l-4 border-red-500 rounded">
+    🚫 <strong>Avoid:</strong> Treating minimum due as ‘okay to pay’. It’s a trap.
+  </div>
+</div>
+
+
+<!-- 4. Good vs Bad Debt -->
+<div class="bg-white dark:bg-gray-800 rounded-lg p-8 shadow-md border dark:border-gray-700 mt-6">
+  <h3 class="text-xl font-semibold text-trust dark:text-blue-300"> Good Debt vs Bad Debt</h3>
+<ul class="list-disc ml-6 text-sm">
+    <li><strong>Good-ish:</strong> Education loan → increases earning.</li>
+    <li><strong>Neutral:</strong> Home loan you can afford.</li>
+    <li><strong>Bad:</strong> High-interest loan/credit card for shopping & parties.</li>
+  </ul>
+
+  <p class="mt-2 text-sm text-gray-600 dark:text-gray-300">
+    Ask: <em>Will this debt help me earn more or build a useful asset?</em>
+  </p>
+</div>
+
+
+<!-- SECTION: TOOLS -->
+<h2 class="mt-12 text-2xl font-semibold text-trust dark:text-blue-300">🛠 Try the Tools</h2>
+<p class="text-gray-600 dark:text-gray-300 text-base mt-1">Check the real cost before saying yes to any loan.</p>
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+  <a href="{% url 'tool_emi_calculator' %}" class="bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-lg p-6 shadow-md hover:shadow-lg transition">
+    <strong class="text-trust dark:text-blue-200 text-lg">EMI Calculator 📉</strong>
+    <p class="text-sm text-gray-600 dark:text-gray-300 mt-2">See EMI + total interest instantly.</p>
+  </a>
+  <a href="{% url 'tool_loan_comparison' %}" class="bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-lg p-6 shadow-md hover:shadow-lg transition">
+    <strong class="text-trust dark:text-blue-200 text-lg">Loan Comparison Tool 🔍</strong>
+    <p class="text-sm text-gray-600 dark:text-gray-300 mt-2">Compare two offers and processing fees.</p>
+  </a>
+</div>
+
+<!-- WORKSHEETS -->
+<h2 class="mt-12 text-2xl font-semibold text-trust dark:text-blue-300">📁 Download Worksheets</h2>
+<div class="bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-lg shadow-md p-6 mt-4">
+  <ul class="text-sm text-gray-700 dark:text-gray-300">
+    <li>📋 Loan Comparison Sheet (compare 2–3 bank offers)</li>
+    <li>💳 Debt Overview Sheet (track all EMIs & interest rates)</li>
+  </ul>
+  <a href="{% url 'worksheets' %}">
+    <button class="mt-4 px-6 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-400">
+      View Loan Worksheets
+    </button>
+  </a>
+</div>
+
+<!-- CHALLENGE -->
+<h2 class="mt-12 text-2xl font-semibold text-trust dark:text-blue-300">🏆 Challenge: Compare Two Loan Offers</h2>
+<div class="bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-lg shadow-md p-6 mt-4">
+  <p class="text-gray-700 dark:text-gray-300 text-sm">Imagine two banks offer a ₹4,00,000 loan:</p>
+  <ul class="text-sm text-gray-700 dark:text-gray-300 mt-2 ml-6 list-disc">
+    <li>Bank A: 10.5% interest, ₹3,000 processing fee</li>
+    <li>Bank B: 11% interest, no processing fee</li>
+  </ul>
+  <p class="text-sm text-gray-700 dark:text-gray-300 mt-2">Use the tools above to answer:</p>
+  <ul class="text-sm text-gray-700 dark:text-gray-300 mt-1 ml-6 list-disc">
+    <li>Which bank has a lower total cost?</li>
+    <li>How much does processing fee actually change the result?</li>
+  </ul>
+  <a href="{% url 'tool_loan_comparison' %}">
+    <button class="mt-4 px-6 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-400">
+      Start Comparing
+    </button>
+  </a>
+</div>
+
+{% endblock %}

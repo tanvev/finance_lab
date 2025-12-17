@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+{% block title %}EMI Calculator | Educational Finance Lab{% endblock %}
+
+{% block content %}
+
+<section class="rounded-xl p-8 bg-white dark:bg-gray-900 border dark:border-gray-700 shadow-md">
+  <h2 class="text-2xl font-bold text-trust dark:text-blue-300">📉 EMI & Total Interest Calculator</h2>
+  <p class="text-sm text-gray-600 dark:text-gray-300 mt-1">
+    Compare interest payments for different loan durations.
+  </p>
+
+  <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div>
+      <label class="text-sm font-semibold">Loan Amount (₹)</label>
+      <input id="loanAmount" type="number"
+             class="w-full mt-1 p-2 border rounded dark:bg-gray-800 dark:border-gray-600"
+             value="400000" min="10000">
+    </div>
+
+    <div>
+      <label class="text-sm font-semibold">Interest Rate (% per year)</label>
+      <input id="interestRate" type="number"
+             class="w-full mt-1 p-2 border rounded dark:bg-gray-800 dark:border-gray-600"
+             value="10" step="0.1">
+    </div>
+
+    <div>
+      <label class="text-sm font-semibold">Tenure (Years)</label>
+      <input id="loanTenure" type="number"
+             class="w-full mt-1 p-2 border rounded dark:bg-gray-800 dark:border-gray-600"
+             value="5" min="1">
+    </div>
+  </div>
+
+  <button onclick="calculateEMI()"
+          class="mt-4 px-6 py-2 rounded bg-blue-600 text-white hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-400">
+    Calculate
+  </button>
+
+  <div class="mt-6 bg-blue-50 dark:bg-blue-900 p-4 rounded border-l-4 border-blue-600">
+    <p>📌 <strong>EMI:</strong> ₹<span id="emiResult">–</span></p>
+    <p>💰 <strong>Total Interest:</strong> ₹<span id="totalInterest">–</span></p>
+  </div>
+</section>
+
+<!-- 📊 Chart Container -->
+<section class="rounded-xl mt-10 p-8 bg-white dark:bg-gray-900 border dark:border-gray-700 shadow-md">
+  <h3 class="text-xl font-semibold text-trust dark:text-blue-300">📊 Total Interest vs Tenure</h3>
+  <p class="text-sm text-gray-600 dark:text-gray-300">Shows how longer tenure increases interest burden.</p>
+  <canvas id="interestChart" class="mt-4"></canvas>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+function calculateEMI(){
+    let P = parseFloat(document.getElementById("loanAmount").value);
+    let r = parseFloat(document.getElementById("interestRate").value) / 12 / 100;
+    let years = parseInt(document.getElementById("loanTenure").value);
+    let n = years * 12;
+
+    let emi = (P * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
+    let totalAmount = emi * n;
+    let totalInterest = totalAmount - P;
+
+    document.getElementById("emiResult").innerText = Math.round(emi).toLocaleString('en-IN');
+    document.getElementById("totalInterest").innerText = Math.round(totalInterest).toLocaleString('en-IN');
+
+    drawInterestChart();
+}
+
+// 📊 Generate Total Interest vs Tenure Chart
+function drawInterestChart(){
+    let P = parseFloat(document.getElementById("loanAmount").value);
+    let rYear = parseFloat(document.getElementById("interestRate").value);
+
+    let labels = [], data = [];
+    for(let year = 1; year <= 20; year++){
+        let r = rYear / 12 / 100;
+        let n = year * 12;
+        let emi = (P * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
+        let totalInterest = (emi * n) - P;
+
+        labels.push(year + " yrs");
+        data.push(Math.round(totalInterest));
+    }
+
+    if(window.interestChartInstance){
+        window.interestChartInstance.destroy();
+    }
+
+    const ctx = document.getElementById("interestChart");
+    window.interestChartInstance = new Chart(ctx, {
+        type: "line",
+        data: {
+            labels: labels,
+            datasets: [{
+                label: "Total Interest (₹)",
+                data: data,
+                borderWidth: 3,
+                fill: false,
+                tension: 0.2
+            }]
+        }
+    });
+}
+
+// Draw first chart when page loads
+window.onload = calculateEMI;
+</script>
+
+{% endblock %}

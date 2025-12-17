@@ -1,0 +1,180 @@
+{% extends "base.html" %}
+{% block title %}FD vs SIP Comparison{% endblock %}
+
+{% block content %}
+
+<section class="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-6">
+
+  <!-- LEFT INPUT PANEL -->
+  <div class="bg-white dark:bg-gray-800 rounded-lg p-8 shadow-md border dark:border-gray-700">
+    <h2 class="text-2xl font-semibold text-trust dark:text-blue-300">FD vs SIP Comparison</h2>
+    <p class="text-gray-700 dark:text-gray-300 text-base mt-2">
+      Compare how a one-time investment would grow in a fixed deposit versus investing the same total amount gradually through a SIP.
+    </p>
+
+    <form id="fdSipForm" class="space-y-5 mt-8 text-base" onsubmit="return false;">
+
+      <!-- Total Investment -->
+      <div>
+        <label class="block text-gray-700 dark:text-gray-200 font-medium">Total Amount to Invest (₹)</label>
+        <input type="number" id="totalInvest" min="1"
+          class="w-full px-4 py-2.5 rounded-md border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-900 dark:text-gray-100">
+        <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
+          This is the total amount you will invest in both cases (FD and SIP).
+        </p>
+      </div>
+
+      <!-- FD Rate -->
+      <div>
+        <label class="block text-gray-700 dark:text-gray-200 font-medium">FD Interest Rate (% per year)</label>
+        <input type="number" id="fdRate" min="1" max="15" step="0.1"
+          class="w-full px-4 py-2.5 rounded-md border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-900 dark:text-gray-100">
+      </div>
+
+      <!-- SIP Min Return -->
+      <div>
+        <label class="block text-gray-700 dark:text-gray-200 font-medium">SIP Min Expected Return (% per year)</label>
+        <input type="number" id="sipMinRate" min="1" max="40" step="0.1"
+          class="w-full px-4 py-2.5 rounded-md border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-900 dark:text-gray-100">
+      </div>
+
+      <!-- SIP Max Return -->
+      <div>
+        <label class="block text-gray-700 dark:text-gray-200 font-medium">SIP Max Expected Return (% per year)</label>
+        <input type="number" id="sipMaxRate" min="1" max="40" step="0.1"
+          class="w-full px-4 py-2.5 rounded-md border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-900 dark:text-gray-100">
+      </div>
+
+      <!-- Duration -->
+      <div>
+        <label class="block text-gray-700 dark:text-gray-200 font-medium">Time Period (Years)</label>
+        <input type="number" id="years" min="1" max="40"
+          class="w-full px-4 py-2.5 rounded-md border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-900 dark:text-gray-100">
+      </div>
+
+      <!-- Button -->
+      <button type="button" onclick="calculateFdVsSip()"
+        class="w-full px-6 py-2.5 rounded-md text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-400 font-medium mt-4">
+        Compare Growth
+      </button>
+
+    </form>
+
+    <!-- Note -->
+    <div class="p-4 mt-6 bg-blue-50 dark:bg-blue-900 text-gray-900 dark:text-gray-100 rounded-md border-l-4 border-blue-500 text-base">
+      <strong>Note:</strong> For SIP, we assume you invest monthly. The total amount is spread evenly across the entire period.
+    </div>
+  </div>
+
+  <!-- RIGHT OUTPUT PANEL -->
+  <div class="bg-white dark:bg-gray-800 rounded-lg p-8 shadow-md border dark:border-gray-700">
+    <h3 class="text-xl font-semibold text-trust dark:text-blue-300">Maturity Comparison</h3>
+    <p class="text-gray-700 dark:text-gray-300 text-base mt-1">
+      See how the same total money performs when put into an FD versus invested gradually via SIP.
+    </p>
+
+    <!-- Chart -->
+    <canvas id="fdSipChart" class="mt-6 w-full h-64"></canvas>
+
+    <!-- Results Summary -->
+    <div id="fdSipSummary" class="hidden mt-8 space-y-2 text-base bg-blue-50 dark:bg-blue-900 border border-blue-300 dark:border-blue-700 rounded-lg p-4">
+      <p><strong>Total Invested:</strong> <span id="sumTotal"></span></p>
+      <p><strong>FD Maturity Value:</strong> <span id="sumFd"></span></p>
+      <p><strong>SIP Maturity (Min):</strong> <span id="sumSipMin"></span></p>
+      <p><strong>SIP Maturity (Mid):</strong> <span id="sumSipMid"></span></p>
+      <p><strong>SIP Maturity (Max):</strong> <span id="sumSipMax"></span></p>
+      <p class="text-sm text-gray-700 dark:text-gray-300 mt-1">
+        SIP values are based on monthly investing, while FD assumes a one-time deposit of the total amount at the start.
+      </p>
+    </div>
+  </div>
+
+</section>
+
+{% endblock %}
+
+{% block extra_head %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+// Format as ₹ 1,20,000
+function formatINR(amount) {
+  return "₹ " + amount.toLocaleString("en-IN");
+}
+
+// Monthly SIP compounding
+function sipFutureValue(monthly, annualRate, years) {
+  const months = years * 12;
+  const monthlyRate = (annualRate / 100) / 12;
+  const factor = Math.pow(1 + monthlyRate, months);
+  const fv = monthly * ((factor - 1) / monthlyRate) * (1 + monthlyRate);
+  return Math.round(fv);
+}
+
+// FD lump sum compounding (annual)
+function fdFutureValue(principal, annualRate, years) {
+  const fv = principal * Math.pow(1 + annualRate / 100, years);
+  return Math.round(fv);
+}
+
+function calculateFdVsSip() {
+  const total = parseFloat(document.getElementById("totalInvest").value);
+  const fdRate = parseFloat(document.getElementById("fdRate").value);
+  const sipMin = parseFloat(document.getElementById("sipMinRate").value);
+  const sipMax = parseFloat(document.getElementById("sipMaxRate").value);
+  const years = parseFloat(document.getElementById("years").value);
+
+  if (!total || !fdRate || !sipMin || !sipMax || !years) {
+    alert("Please fill all fields.");
+    return;
+  }
+  if (sipMax <= sipMin) {
+    alert("SIP Max return must be greater than SIP Min return.");
+    return;
+  }
+
+  const sipMid = (sipMin + sipMax) / 2;
+
+  // For SIP: spread total amount evenly across all months
+  const monthlyInvest = total / (years * 12);
+
+  const fdVal = fdFutureValue(total, fdRate, years);
+  const sipValMin = sipFutureValue(monthlyInvest, sipMin, years);
+  const sipValMid = sipFutureValue(monthlyInvest, sipMid, years);
+  const sipValMax = sipFutureValue(monthlyInvest, sipMax, years);
+
+  // Update Summary
+  document.getElementById("sumTotal").innerText = formatINR(Math.round(total));
+  document.getElementById("sumFd").innerText = formatINR(fdVal);
+  document.getElementById("sumSipMin").innerText = formatINR(sipValMin);
+  document.getElementById("sumSipMid").innerText = formatINR(sipValMid);
+  document.getElementById("sumSipMax").innerText = formatINR(sipValMax);
+  document.getElementById("fdSipSummary").classList.remove("hidden");
+
+  // Chart
+  const ctx = document.getElementById("fdSipChart");
+  if (window.fdSipChartInstance) {
+    window.fdSipChartInstance.destroy();
+  }
+
+  window.fdSipChartInstance = new Chart(ctx, {
+    type: "bar",
+    data: {
+      labels: ["FD", "SIP (Min)", "SIP (Mid)", "SIP (Max)"],
+      datasets: [{
+        data: [fdVal, sipValMin, sipValMid, sipValMax],
+        backgroundColor: ["#1D3557", "#457B9D", "#A8DADC", "#BFDCE5"]
+      }]
+    },
+    options: {
+      plugins: {
+        legend: { display: false }
+      },
+      scales: {
+        y: { ticks: { display: false }, grid: { display: false } },
+        x: { grid: { display: false } }
+      }
+    }
+  });
+}
+</script>
+{% endblock %}

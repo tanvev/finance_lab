@@ -1,0 +1,202 @@
+{% extends "base.html" %}
+{% block title %}Health Insurance Calculator | Educational Finance Lab{% endblock %}
+
+{% block content %}
+
+<h1 class="text-2xl md:text-3xl font-semibold text-trust dark:text-blue-300 mb-6">
+  Health Insurance Planner & Premium Estimator 🏥
+</h1>
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+  <!-- LEFT: INPUT FORM -->
+  <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow border border-gray-200 dark:border-gray-700">
+    <h2 class="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-3">
+      Enter Your Details
+    </h2>
+
+    <div class="space-y-4">
+      <div>
+        <label class="text-sm text-gray-700 dark:text-gray-300">Age</label>
+        <input id="age" type="number"
+               class="w-full mt-1 p-2 rounded-md border dark:border-gray-600 bg-gray-50 dark:bg-gray-900">
+      </div>
+
+      <div>
+        <label class="text-sm text-gray-700 dark:text-gray-300">City Tier</label>
+        <select id="city" class="w-full mt-1 p-2 rounded-md border dark:border-gray-600 bg-gray-50 dark:bg-gray-900">
+          <option value="1">Tier 1 (Mumbai, Delhi, Bangalore)</option>
+          <option value="2">Tier 2 (Pune, Jaipur, Surat)</option>
+          <option value="3">Tier 3 (Small Cities)</option>
+        </select>
+      </div>
+
+      <div>
+        <label class="text-sm text-gray-700 dark:text-gray-300">Sum Insured Needed</label>
+        <select id="cover" class="w-full mt-1 p-2 rounded-md border dark:border-gray-600 bg-gray-50 dark:bg-gray-900">
+          <option value="300000">₹3 lakh</option>
+          <option value="500000">₹5 lakh</option>
+          <option value="1000000">₹10 lakh</option>
+          <option value="2000000">₹20 lakh</option>
+        </select>
+      </div>
+
+      <button onclick="calculateHealth()"
+              class="w-full py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md font-medium mt-4">
+        Calculate Premium →
+      </button>
+    </div>
+  </div>
+
+  <!-- RIGHT: RESULT + RECOMMENDATIONS -->
+  <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow border border-gray-200 dark:border-gray-700">
+
+    <h2 class="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-3">
+      Estimated Premium & Smart Recommendation
+    </h2>
+
+    <div id="result" class="text-sm text-gray-700 dark:text-gray-300">
+      <p class="italic text-gray-500 dark:text-gray-400">Your premium & recommendations will appear here.</p>
+    </div>
+
+    <hr class="my-4 border-gray-300 dark:border-gray-700">
+
+    <h3 class="text-base font-semibold text-gray-800 dark:text-gray-100 mb-2">
+      Automated Feature Recommendation 🔍
+    </h3>
+
+    <div id="recommend-box" class="text-sm text-gray-600 dark:text-gray-300 space-y-2">
+      <p class="italic text-gray-500 dark:text-gray-400">Fill the form to get personalised suggestions.</p>
+    </div>
+
+  </div>
+<hr class="my-4 border-gray-300 dark:border-gray-700">
+
+<h3 class="text-base font-semibold text-gray-800 dark:text-gray-100 mb-2">
+  Premium vs Age Graph 📈
+</h3>
+
+<canvas id="agePremiumChart" height="200" class="mt-3"></canvas>
+
+</div>
+
+{% endblock %}
+
+{% block extra_head %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+function calculateHealth() {
+  let age = parseInt(document.getElementById("age").value || 0);
+  let city = parseInt(document.getElementById("city").value);
+  let cover = parseInt(document.getElementById("cover").value);
+updateAgePremiumChart(function(age) {
+    let cover = parseInt(document.getElementById("cover").value);
+    let city = parseInt(document.getElementById("city").value);
+
+    let base = cover * 0.011;
+
+    if (age > 40) base *= 1.35;
+    if (age > 55) base *= 1.75;
+
+    if (city === 1) base *= 1.25;
+    if (city === 2) base *= 1.10;
+
+    return Math.round(base);
+});
+
+  if (!age || age < 1) {
+    document.getElementById("result").innerHTML =
+      `<p class='text-red-600'>Please enter a valid age.</p>`;
+    return;
+  }
+
+  // BASE PREMIUM LOGIC
+  let base = cover * 0.011;
+
+  if (age > 40) base *= 1.35;
+  if (age > 55) base *= 1.75;
+
+  // City loadings
+  if (city === 1) base *= 1.25;
+  if (city === 2) base *= 1.10;
+
+  let premium = Math.round(base);
+
+  document.getElementById("result").innerHTML = `
+    <p class="text-gray-800 dark:text-gray-100">
+      <strong>Estimated Yearly Premium:</strong> ₹${premium.toLocaleString()}
+    </p>
+    <p class="mt-2">(<em>This is an approximate industry average, not an actual quote.</em>)</p>
+  `;
+
+  // RECOMMENDATION ENGINE
+  let recommend = [];
+
+  if (age > 45) recommend.push("✔ Add **No Claim Bonus (NCB) Protector** — older age → more benefit");
+  if (cover < 500000) recommend.push("✔ Consider **at least ₹5–10 lakh cover** due to rising medical inflation");
+  if (city === 1) recommend.push("✔ Add **Room Rent Waiver** — Tier 1 hospital rooms are expensive");
+  if (age < 30) recommend.push("✔ Young buyers should add **OPD + annual checkup** for preventive care");
+  if (age > 50) recommend.push("✔ Ensure **pre-existing disease cover** + 2–3 year waiting period");
+
+  document.getElementById("recommend-box").innerHTML =
+    recommend.length
+      ? recommend.map(r => `<p>${r}</p>`).join("")
+      : `<p>No special add-ons needed. A simple policy works well for you 🎉</p>`;
+}
+</script>
+<script>
+let ageChartInstance = null;
+
+// Generate a curve of premium values from age 20 to 60
+function updateAgePremiumChart(calcFn) {
+    const ctx = document.getElementById("agePremiumChart");
+    if (!ctx) return;
+
+    let ages = [];
+    let premiums = [];
+
+    for (let age = 20; age <= 60; age += 5) {
+        ages.push(age);
+        premiums.push(calcFn(age));
+    }
+
+    // Destroy old chart if exists
+    if (ageChartInstance) {
+        ageChartInstance.destroy();
+    }
+
+    ageChartInstance = new Chart(ctx, {
+        type: "line",
+        data: {
+            labels: ages,
+            datasets: [{
+                label: "Estimated Premium (₹)",
+                data: premiums,
+                borderColor: "rgba(59,130,246,1)",
+                backgroundColor: "rgba(59,130,246,0.2)",
+                borderWidth: 2,
+                tension: 0.3,
+                fill: true,
+                pointRadius: 3
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: false }
+            },
+            scales: {
+                x: {
+                    ticks: { color: "#888" }
+                },
+                y: {
+                    ticks: { color: "#888" }
+                }
+            }
+        }
+    });
+}
+</script>
+
+{% endblock %}

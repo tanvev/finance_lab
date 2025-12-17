@@ -1,0 +1,539 @@
+{% extends "base.html" %}
+{% block title %}Salary & Payslip 101 | Educational Finance Lab{% endblock %}
+
+{% block content %}
+
+<!-- HERO -->
+<section class="relative rounded-xl px-5 py-8 md:px-8 md:py-9 text-white bg-gradient-to-r from-[#1D3557]/95 to-[#1D3557]/90 shadow-md mb-8 overflow-hidden">
+  <div class="pointer-events-none absolute -right-10 -top-10 opacity-10 md:opacity-20">
+    <svg viewBox="0 0 120 120" class="w-40 h-40 md:w-52 md:h-52">
+      <rect x="18" y="20" width="84" height="60" rx="8" fill="#A8DADC"/>
+      <line x1="28" y1="40" x2="92" y2="40" stroke="#1D3557" stroke-width="3" />
+      <line x1="28" y1="52" x2="72" y2="52" stroke="#1D3557" stroke-width="3" />
+      <text x="82" y="60" text-anchor="middle" font-size="22" fill="#1D3557" font-family="system-ui">₹</text>
+    </svg>
+  </div>
+
+  <div class="relative z-10 space-y-3 max-w-2xl">
+    <h1 class="text-2xl md:text-3xl font-bold">Salary & Payslip 101</h1>
+    <p class="text-sm md:text-base opacity-90">
+      Understand CTC, in-hand salary, PF, tax, bonuses, and bonds — so your first offer letter doesn’t feel like a puzzle.
+    </p>
+    <p class="text-xs md:text-sm text-blue-100">
+      Simple Indian examples. Educational only, not tax or legal advice.
+    </p>
+  </div>
+</section>
+
+<!-- SECTION: CTC vs IN-HAND -->
+<section class="mb-8">
+  <h2 class="text-xl md:text-2xl font-semibold text-trust dark:text-blue-300">
+    1. CTC vs In-Hand Salary
+  </h2>
+  <p class="mt-1 text-sm md:text-base text-gray-700 dark:text-gray-300">
+    CTC is what your employer spends on you. In-hand is what lands in your bank account every month.
+    The difference is PF, tax, and other components in the middle.
+  </p>
+
+  <div class="mt-4 grid gap-5 md:grid-cols-2">
+    <!-- Theory -->
+    <div class="bg-white dark:bg-gray-800 rounded-lg p-4 md:p-5 shadow-md border border-gray-200 dark:border-gray-700 text-sm md:text-[13px] space-y-2">
+      <p class="font-semibold text-gray-900 dark:text-gray-100">
+        CTC (Cost to Company) usually includes:
+      </p>
+      <p class="mt-2 text-gray-700 dark:text-gray-300">
+        CTC, or Cost to Company, is the magical number companies love to flaunt because it makes you feel like you’ve won the salary lottery. Spoiler: you haven’t. This number includes everything the company might spend on you, including things you will never actually see in your bank account, but hey—looks great on the offer letter.
+      </p>
+      <ul class="list-disc ml-4 text-gray-700 dark:text-gray-300 space-y-1">
+        <li><strong>Fixed pay:</strong> Fixed pay is the only part you actually see—basic, HRA, allowances.
+Everything else is marketing.</li>
+        <li><strong>Employer PF:</strong> The money they “give” you but lock away until you’ve forgotten why you needed it.
+Think of it as a forced savings plan you never signed up for.</li>
+        <li><strong>Bonus / variable pay:</strong> It is included in CTC because optimism is free.
+Whether you ever receive it is a separate, spiritual journey.</li>
+        <li><strong>Other benefits:</strong> like gratuity and insurance look generous on paper.
+Unfortunately, your wallet is not made of paper.</li>
+      </ul>
+      <p class="mt-2 text-gray-700 dark:text-gray-300">
+        Your monthly <strong>in-hand</strong> is roughly:
+      </p>
+      <p class="font-mono text-xs bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded px-3 py-2">
+        In-hand ≈ (CTC ÷ 12) − employee PF − income tax ÷ 12 − professional tax
+      </p>
+      <p class="mt-2 text-gray-700 dark:text-gray-300">
+        It’s the amount you cry over at the end of every month
+      </p>
+      <p class="text-[11px] text-gray-600 dark:text-gray-400 mt-2">
+        Exact amounts depend on your company’s structure and the tax rules for that year.
+      </p>
+      <p class="font-mono text-xs bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded px-3 py-2">
+      In summary: CTC is a beautifully inflated number designed to make everyone feel good. Your in-hand salary is the humble, realistic reminder of adulthood.
+      </p>
+    </div>
+
+    <!-- Chart -->
+    <div class="bg-white dark:bg-gray-800 rounded-lg p-4 md:p-5 shadow-md border border-gray-200 dark:border-gray-700">
+      <p class="text-xs md:text-sm font-medium text-gray-900 dark:text-gray-100 mb-2">
+        Sample CTC ₹6,00,000 – Approx Distribution
+      </p>
+      <canvas id="ctcChart" class="w-full h-40"></canvas>
+      <p class="mt-2 text-[11px] text-gray-600 dark:text-gray-400">
+        Example only. Actual structure varies by company.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION: PAYSLIP COMPONENTS -->
+<section class="mb-8">
+  <h2 class="text-xl md:text-2xl font-semibold text-trust dark:text-blue-300">
+    2. Typical Payslip Breakdown
+  </h2>
+  <p class="mt-1 text-sm md:text-base text-gray-700 dark:text-gray-300">
+    This is what a simple fresher payslip might contain (numbers are rough and for learning).
+  </p>
+
+  <div class="mt-3 bg-white dark:bg-gray-800 rounded-lg p-4 md:p-5 shadow-md border border-gray-200 dark:border-gray-700 text-xs md:text-sm">
+    <div class="overflow-x-auto">
+      <table class="min-w-full border-collapse">
+        <thead>
+          <tr class="bg-gray-100 dark:bg-gray-900">
+            <th class="border border-gray-200 dark:border-gray-700 px-2 py-2 text-left">Component</th>
+            <th class="border border-gray-200 dark:border-gray-700 px-2 py-2 text-left">Type</th>
+            <th class="border border-gray-200 dark:border-gray-700 px-2 py-2 text-left">What it really means</th>
+            <th class="border border-gray-200 dark:border-gray-700 px-2 py-2 text-left">Example (₹ / month)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="border px-2 py-1">Basic Salary</td>
+            <td class="border px-2 py-1">Earning</td>
+            <td class="border px-2 py-1">Base for PF, HRA, some tax benefits.</td>
+            <td class="border px-2 py-1">20,000</td>
+          </tr>
+          <tr class="bg-gray-50 dark:bg-gray-900">
+            <td class="border px-2 py-1">HRA</td>
+            <td class="border px-2 py-1">Earning</td>
+            <td class="border px-2 py-1">Helps reduce tax if you pay rent.</td>
+            <td class="border px-2 py-1">8,000</td>
+          </tr>
+          <tr>
+            <td class="border px-2 py-1">Other Allowances</td>
+            <td class="border px-2 py-1">Earning</td>
+            <td class="border px-2 py-1">Travel, internet, flexi benefits, etc.</td>
+            <td class="border px-2 py-1">7,000</td>
+          </tr>
+          <tr class="bg-gray-50 dark:bg-gray-900">
+            <td class="border px-2 py-1">Employee PF</td>
+            <td class="border px-2 py-1">Deduction</td>
+            <td class="border px-2 py-1">12% of basic. Leaves your hand now, but goes to your PF account.</td>
+            <td class="border px-2 py-1">2,400</td>
+          </tr>
+          <tr>
+            <td class="border px-2 py-1">Professional Tax</td>
+            <td class="border px-2 py-1">Deduction</td>
+            <td class="border px-2 py-1">State-level tax (₹200-ish in many states).</td>
+            <td class="border px-2 py-1">200</td>
+          </tr>
+          <tr class="bg-gray-50 dark:bg-gray-900">
+            <td class="border px-2 py-1">Income Tax (TDS)</td>
+            <td class="border px-2 py-1">Deduction</td>
+            <td class="border px-2 py-1">Your annual income tax divided across months.</td>
+            <td class="border px-2 py-1">~2,000 (example)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="mt-2 text-[11px] text-gray-600 dark:text-gray-400">
+      Employer PF, gratuity, and insurance may not appear as “in-hand” salary, but are still part of CTC.
+    </p>
+  </div>
+</section>
+
+<!-- SECTION: IN-HAND CALCULATOR -->
+<section class="mb-8">
+  <h2 class="text-xl md:text-2xl font-semibold text-trust dark:text-blue-300">
+    3. Quick In-Hand Salary Estimator
+  </h2>
+  <p class="mt-1 text-sm md:text-base text-gray-700 dark:text-gray-300">
+    This is a rough estimator using sample structures and the new tax regime. Actual figures depend on your exact offer letter and tax year.
+  </p>
+
+  <div class="mt-4 grid gap-5 md:grid-cols-2">
+    <!-- Inputs -->
+    <div class="bg-white dark:bg-gray-800 rounded-lg p-4 md:p-5 shadow-md border border-gray-200 dark:border-gray-700 text-xs md:text-sm space-y-3">
+      <div>
+        <label class="block font-medium text-gray-800 dark:text-gray-100 mb-1">
+          Annual CTC (₹)
+        </label>
+        <input id="ctcInput" type="number" min="100000" step="10000"
+               class="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 px-3 py-2"
+               placeholder="600000">
+      </div>
+
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="block font-medium text-gray-800 dark:text-gray-100 mb-1">
+            Variable % of CTC
+          </label>
+          <input id="varInput" type="number" min="0" max="50" step="5"
+                 class="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 px-3 py-2"
+                 placeholder="10">
+        </div>
+        <div>
+          <label class="block font-medium text-gray-800 dark:text-gray-100 mb-1">
+            Bonus % of CTC
+          </label>
+          <input id="bonusInput" type="number" min="0" max="50" step="5"
+                 class="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 px-3 py-2"
+                 placeholder="5">
+        </div>
+      </div>
+
+      <div>
+        <label class="block font-medium text-gray-800 dark:text-gray-100 mb-1">
+          City Type
+        </label>
+        <select id="cityInput"
+                class="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 px-3 py-2">
+          <option value="metro">Metro (Mumbai, Bengaluru, Delhi, etc.)</option>
+          <option value="non-metro" selected>Non-metro / others</option>
+        </select>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <input id="pfToggle" type="checkbox" checked
+               class="rounded border-gray-300 dark:border-gray-600">
+        <label for="pfToggle" class="text-gray-800 dark:text-gray-100">
+          Include PF contribution (12% of basic)
+        </label>
+      </div>
+
+      <button type="button"
+              onclick="calculateInHand()"
+              class="mt-1 px-4 py-2 rounded-md bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-400 text-white font-medium">
+        Estimate In-Hand
+      </button>
+
+      <p class="mt-2 text-[11px] text-gray-600 dark:text-gray-400">
+        Uses approximate slabs (new regime) and a simple structure: Basic ≈ 40% of CTC, HRA ≈ 40% of Basic.
+      </p>
+    </div>
+
+    <!-- Output -->
+    <div class="bg-white dark:bg-gray-800 rounded-lg p-4 md:p-5 shadow-md border border-gray-200 dark:border-gray-700 text-xs md:text-sm space-y-2">
+      <p class="font-semibold text-gray-900 dark:text-gray-100">
+        Estimate (approx, per current inputs)
+      </p>
+      <div class="grid grid-cols-2 gap-2 mt-2">
+        <div class="bg-gray-50 dark:bg-gray-900 rounded-md p-3">
+          <p class="text-[11px] text-gray-600 dark:text-gray-400">Approx Monthly In-Hand</p>
+          <p id="inHandOut" class="text-lg font-bold text-gray-900 dark:text-gray-100">–</p>
+        </div>
+        <div class="bg-gray-50 dark:bg-gray-900 rounded-md p-3">
+          <p class="text-[11px] text-gray-600 dark:text-gray-400">Approx Monthly Deductions</p>
+          <p id="deductOut" class="text-lg font-bold text-gray-900 dark:text-gray-100">–</p>
+        </div>
+      </div>
+
+      <div class="mt-3 border-t border-dashed border-gray-300 dark:border-gray-700 pt-3 space-y-1.5">
+        <p class="flex justify-between">
+          <span>Gross monthly (CTC ÷ 12)</span>
+          <span id="grossOut" class="font-mono">–</span>
+        </p>
+        <p class="flex justify-between">
+          <span>Employee PF (if enabled)</span>
+          <span id="pfOut" class="font-mono">–</span>
+        </p>
+        <p class="flex justify-between">
+          <span>Approx income tax / month</span>
+          <span id="taxOut" class="font-mono">–</span>
+        </p>
+        <p class="flex justify-between">
+          <span>Approx professional tax</span>
+          <span id="ptOut" class="font-mono">–</span>
+        </p>
+      </div>
+
+      <p class="mt-2 text-[11px] text-gray-600 dark:text-gray-400">
+        This is a learning tool, not a professional tax calculator. Always check real numbers on your payslip or with a CA.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION: PF OPT-OUT COMPARISON (static example) -->
+<section class="mb-8">
+  <h2 class="text-xl md:text-2xl font-semibold text-trust dark:text-blue-300">
+    4. PF vs More In-Hand Today
+  </h2>
+  <p class="mt-1 text-sm md:text-base text-gray-700 dark:text-gray-300">
+    Some companies let you reduce PF to increase your take-home salary. That feels good now, but can hurt long-term savings.
+  </p>
+
+  <div class="mt-4 grid gap-5 md:grid-cols-2">
+    <div class="bg-white dark:bg-gray-800 rounded-lg p-4 md:p-5 shadow-md border border-gray-200 dark:border-gray-700 text-xs md:text-sm space-y-2">
+      <p class="font-semibold text-gray-900 dark:text-gray-100">
+        Example: CTC ₹6,00,000, Basic ₹2,40,000
+      </p>
+      <ul class="list-disc ml-4 text-gray-700 dark:text-gray-300 space-y-1">
+        <li>Employee PF ~ ₹2,400/month (12% of basic).</li>
+        <li>If you opt out of PF, in-hand grows by ~₹2,400/month.</li>
+        <li>But if PF stays invested at ~8% for 10 years, it can become ₹4–5 lakh+.</li>
+      </ul>
+      <p class="mt-1 text-[11px] text-gray-600 dark:text-gray-400">
+        Short-term comfort vs long-term safety. Neither is “always right” — it depends on your situation.
+      </p>
+    </div>
+
+    <div class="bg-white dark:bg-gray-800 rounded-lg p-4 md:p-5 shadow-md border border-gray-200 dark:border-gray-700">
+      <p class="text-xs md:text-sm font-medium text-gray-900 dark:text-gray-100 mb-2">
+        Rough view: PF ON vs PF OFF (10 years)
+      </p>
+      <canvas id="pfChart" class="w-full h-40"></canvas>
+      <p class="mt-2 text-[11px] text-gray-600 dark:text-gray-400">
+        Very rough illustrative numbers assuming ~₹2,400/month at ~8% annual return for 10 years.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION: ROLE-BASED EXAMPLES -->
+<section class="mb-8">
+  <h2 class="text-xl md:text-2xl font-semibold text-trust dark:text-blue-300">
+    5. Role-Based Sample Salary Structures
+  </h2>
+  <p class="mt-1 text-sm md:text-base text-gray-700 dark:text-gray-300">
+    These are simplified examples to help you “see” offer letters, not real offers.
+  </p>
+
+  <div class="mt-4 grid gap-4 md:grid-cols-3 text-xs md:text-sm">
+    <!-- SDE -->
+    <div class="bg-white dark:bg-gray-800 rounded-lg p-4 shadow-md border border-gray-200 dark:border-gray-700">
+      <p class="font-semibold text-gray-900 dark:text-gray-100">SDE-1 @ Tech Company</p>
+      <p class="text-[11px] text-gray-500 dark:text-gray-400 mb-1">CTC ~ ₹12–15 LPA</p>
+      <ul class="list-disc ml-4 text-gray-700 dark:text-gray-300 space-y-0.5">
+        <li>Fixed ~ 60–70%</li>
+        <li>Variable ~ 10–15%</li>
+        <li>ESOPs or joining bonus</li>
+        <li>PF on full basic</li>
+      </ul>
+    </div>
+
+    <!-- Analyst -->
+    <div class="bg-white dark:bg-gray-800 rounded-lg p-4 shadow-md border border-gray-200 dark:border-gray-700">
+      <p class="font-semibold text-gray-900 dark:text-gray-100">Data / Business Analyst</p>
+      <p class="text-[11px] text-gray-500 dark:text-gray-400 mb-1">CTC ~ ₹6–9 LPA</p>
+      <ul class="list-disc ml-4 text-gray-700 dark:text-gray-300 space-y-0.5">
+        <li>Fixed ~ 70–80%</li>
+        <li>Variable ~ 0–15%</li>
+        <li>Occasional performance bonus</li>
+        <li>PF + gratuity</li>
+      </ul>
+    </div>
+
+    <!-- GT / Sales -->
+    <div class="bg-white dark:bg-gray-800 rounded-lg p-4 shadow-md border border-gray-200 dark:border-gray-700">
+      <p class="font-semibold text-gray-900 dark:text-gray-100">Graduate Trainee / Sales</p>
+      <p class="text-[11px] text-gray-500 dark:text-gray-400 mb-1">CTC ~ ₹4–6 LPA</p>
+      <ul class="list-disc ml-4 text-gray-700 dark:text-gray-300 space-y-0.5">
+        <li>Fixed ~ 50–60%</li>
+        <li>Incentives / commissions heavy</li>
+        <li>More variable, month-to-month swings</li>
+        <li>PF + simple allowances</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION: NEGOTIATION TIPS -->
+<section class="mb-4">
+  <h2 class="text-xl md:text-2xl font-semibold text-trust dark:text-blue-300">
+    6. Salary Negotiation Tips (Before You Say Yes)
+  </h2>
+  <p class="mt-1 text-sm md:text-base text-gray-700 dark:text-gray-300">
+    These are practical conversation ideas, not guarantees. Use respectfully and realistically.
+  </p>
+
+  <div class="mt-3 bg-white dark:bg-gray-800 rounded-lg p-4 md:p-5 shadow-md border border-gray-200 dark:border-gray-700 text-xs md:text-sm space-y-1.5">
+    <ul class="list-disc ml-4 text-gray-700 dark:text-gray-300 space-y-1.5">
+      <li>
+        <strong>Negotiate the fixed part, not just CTC:</strong>
+        “Could we move a bit of variable/bonus into fixed so my monthly in-hand is more stable?”
+      </li>
+      <li>
+        <strong>Clarify bonus rules:</strong>
+        “Is the joining bonus clawed back if I leave before 1 year? How is variable pay calculated?”
+      </li>
+      <li>
+        <strong>Ask about PF flexibility (if relevant):</strong>
+        “Is PF on full basic or capped? Is there any PF opt-out policy? I’m asking to understand take-home.”
+      </li>
+      <li>
+        <strong>Consider non-cash benefits:</strong>
+        Work from home, learning budget, health insurance, relocation support — sometimes more valuable than +₹10k CTC.
+      </li>
+      <li>
+        <strong>Compare offers with a sheet:</strong>
+        Put CTC, fixed, variable, PF, location rent, and in-hand side by side.
+      </li>
+    </ul>
+    <p class="mt-2 text-[11px] text-gray-600 dark:text-gray-400">
+      You don’t need to “fight” for salary. Calm questions and clear comparisons already make you stronger than most freshers.
+    </p>
+  </div>
+</section>
+<section class="mt-10">
+  <h2 class="text-xl md:text-2xl font-semibold text-trust dark:text-blue-300">
+    Compare 2–3 Job Offers Side by Side
+  </h2>
+  <p class="mt-1 text-sm md:text-base text-gray-700 dark:text-gray-300">
+    Don’t decide by CTC alone. Use a simple scoring sheet to compare stability, growth, and work-life balance.
+  </p>
+
+  <div class="mt-3 flex flex-wrap gap-3 text-xs md:text-sm">
+    <a href="{% url 'worksheets' %}">
+      <button class="px-4 py-2 rounded-md bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-400 text-white font-medium">
+        Open Offer Comparison Sheet
+      </button>
+    </a>
+    <p class="text-[11px] text-gray-600 dark:text-gray-400">
+      Available as Excel template.
+    </p>
+  </div>
+</section>
+
+{% endblock %}
+
+{% block extra_head %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+// ---------- CTC chart (static example) ----------
+document.addEventListener("DOMContentLoaded", function() {
+  const ctcCtx = document.getElementById("ctcChart");
+  if (ctcCtx) {
+    new Chart(ctcCtx, {
+      type: 'doughnut',
+      data: {
+        labels: ["Fixed Pay (in-hand base)", "Employer PF", "Bonus / Variable", "Approx Tax & Others"],
+        datasets: [{
+          data: [55, 10, 10, 25],
+          backgroundColor: ["#1D3557", "#457B9D", "#A8DADC", "#F4A261"],
+          borderWidth: 0
+        }]
+      },
+      options: {
+        plugins: { legend: { display: true } },
+        cutout: "60%"
+      }
+    });
+  }
+
+  const pfCtx = document.getElementById("pfChart");
+  if (pfCtx) {
+    new Chart(pfCtx, {
+      type: 'bar',
+      data: {
+        labels: ["PF ON (10 yrs)", "PF OFF (10 yrs)"],
+        datasets: [{
+          data: [450000, 0],
+          backgroundColor: ["#1D3557", "#E63946"]
+        }]
+      },
+      options: {
+        plugins: { legend: { display: false } },
+        scales: {
+          y: { display: false, grid: { display: false } },
+          x: { grid: { display: false } }
+        }
+      }
+    });
+  }
+});
+
+// ---------- Approx tax helper (New Regime, rough) ----------
+function estimateTaxNewRegime(annual) {
+  // Very rough FY 23-24 style slabs, ignoring cess & rebate details
+  let taxable = Math.max(0, annual - 50000); // standard deduction approx
+  let tax = 0;
+
+  const slabs = [
+    { limit: 300000, rate: 0.00 },
+    { limit: 600000, rate: 0.05 },
+    { limit: 900000, rate: 0.10 },
+    { limit: 1200000, rate: 0.15 },
+    { limit: 1500000, rate: 0.20 },
+    { limit: Infinity, rate: 0.30 }
+  ];
+
+  let prev = 0;
+  for (let i = 0; i < slabs.length; i++) {
+    const { limit, rate } = slabs[i];
+    if (taxable > prev) {
+      const slabAmount = Math.min(taxable, limit) - prev;
+      tax += slabAmount * rate;
+      prev = limit;
+    } else {
+      break;
+    }
+  }
+  // No cess included; for learning only
+  return Math.max(0, Math.round(tax));
+}
+
+// ---------- In-hand calculator ----------
+function calculateInHand() {
+  const ctcEl = document.getElementById("ctcInput");
+  const varEl = document.getElementById("varInput");
+  const bonusEl = document.getElementById("bonusInput");
+  const cityEl = document.getElementById("cityInput");
+  const pfToggle = document.getElementById("pfToggle");
+
+  const ctc = Number(ctcEl.value || 0);
+  const varPct = Number(varEl.value || 0);
+  const bonusPct = Number(bonusEl.value || 0);
+
+  if (!ctc || ctc <= 0) {
+    alert("Please enter a valid annual CTC.");
+    return;
+  }
+
+  // Simple structure
+  const basic = 0.40 * ctc;
+  const hra = 0.40 * basic;
+  const fixedPortionPct = 100 - varPct - bonusPct;
+  const fixedCTC = (fixedPortionPct / 100) * ctc;
+
+  const grossMonthly = fixedCTC / 12; // only fixed assumed as regular monthly
+
+  let employeePFMonthly = 0;
+  if (pfToggle.checked) {
+    employeePFMonthly = (0.12 * basic) / 12;
+  }
+
+  // Approx professional tax
+  let profTaxMonthly = 0;
+  if (ctc > 250000) {
+    profTaxMonthly = 200; // rough
+  }
+
+  // Approx income tax
+  const approxAnnualTax = estimateTaxNewRegime(ctc);
+  const incomeTaxMonthly = approxAnnualTax / 12;
+
+  const totalDeductions = employeePFMonthly + incomeTaxMonthly + profTaxMonthly;
+  const inHand = grossMonthly - totalDeductions;
+
+  // Write outputs
+  const format = (x) => isFinite(x) ? "₹ " + Math.round(x).toLocaleString("en-IN") : "–";
+
+  document.getElementById("grossOut").textContent   = format(grossMonthly);
+  document.getElementById("pfOut").textContent      = pfToggle.checked ? format(employeePFMonthly) : "₹ 0";
+  document.getElementById("taxOut").textContent     = format(incomeTaxMonthly);
+  document.getElementById("ptOut").textContent      = format(profTaxMonthly);
+  document.getElementById("deductOut").textContent  = format(totalDeductions);
+  document.getElementById("inHandOut").textContent  = format(inHand);
+}
+</script>
+{% endblock %}

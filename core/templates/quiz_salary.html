@@ -1,0 +1,239 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Salary Quiz | Educational Finance Lab{% endblock %}
+
+{% block extra_head %}
+<style>
+@keyframes fl-confetti-fall {
+  0% { transform: translateY(-20px) rotate(0deg); opacity: 0; }
+  20% { opacity: 1; }
+  100% { transform: translateY(220px) rotate(360deg); opacity: 0; }
+}
+</style>
+
+<script>
+// -------------------------------
+// 35-QUESTION MASTER BANK
+// -------------------------------
+const salaryBank = [
+{ text: "Basic ₹15,000, HRA ₹6,000, Allowances ₹19,000. A lower Basic usually means:", context: "", options: ["More PF & long-term savings","Lower PF & slightly more in-hand now","No effect","Fake offer"], correct: 1, explanation: "Basic often determines PF & HRA base; lower basic -> lower PF contribution & slightly higher in-hand." },
+{ text: "CTC with 30% variable vs 10% variable: which is likely true?", context: "", options: ["Higher CTC always better","More variable = less predictable in-hand","Variable guaranteed","CTC and in-hand same"], correct: 1, explanation: "Variable pay depends on performance & company; fixed portion matters for stable in-hand." },
+{ text: "PF cap reduces long-term savings; immediate effect is:", context: "", options: ["Higher in-hand, lower retirement build-up","Lower in-hand","No effect","PF becomes huge"], correct: 0, explanation: "Capping PF increases in-hand but reduces long-term PF accumulation." },
+{ text: "Joining bonus with 1-year clawback — best approach:", context: "", options: ["Spend immediately","Keep aside in case of early exit","Ignore clause","Take loan"], correct: 1, explanation: "Clawback means conditional money — keep buffer or save it until safe." },
+{ text: "A company shows high gross but low in-hand due to:", context: "", options: ["Deductions like PF & tax","Generous perks","Salary mistake","Pending bonus"], correct: 0, explanation: "Gross includes components; deductions reduce in-hand." },
+{ text: "If employer pays PF partly as fixed cash instead of PF, this means:", context: "", options: ["Illegal","Your retirement savings may be lower","Better for pension","PF unaffected"], correct: 1, explanation: "Substituting PF reduces statutory retirement contributions." },
+{ text: "Variable pay is usually:", context: "", options: ["Guaranteed monthly","Paid based on performance/company results","Always paid annually","Non-taxable"], correct: 1, explanation: "Variable is conditional on individual/company performance." },
+{ text: "HRA exemption requires:", context: "", options: ["Rent receipts & living in rented home","Payslip only","Landlord's photo","Nothing"], correct: 0, explanation: "To claim HRA exemption, rent receipts are needed when you don't live with landlord signature." },
+{ text: "If offered 'No PF opt-out' as a choice, short-term effect:", context: "", options: ["Higher take-home now, less retirement saving","Lower take-home","No change","Company pays more salary later"], correct: 0, explanation: "Opting out increases immediate in-hand but reduces retirement saving via PF." },
+{ text: "Company gives joining bonus and asks to repay if you leave early. Good to:", context: "", options: ["Assume it's yours","Treat as refundable — keep a buffer","Ignore clause","Spend all then ask HR later"], correct: 1, explanation: "Clawback means repay — keep some aside." },
+
+{ text: "Basic salary determines which components most directly?", context: "", options: ["HRA & PF","Only HRA","Only PF","Tax slab"], correct: 0, explanation: "Basic often forms the base for HRA and PF calculations." },
+{ text: "Exemptions that reduce taxable income include:", context: "", options: ["HRA (if you pay rent), Standard Deductions, Section 80C investments","Only salary","Only investments over 1L","None"], correct: 0, explanation: "HRA, 80C & standard deductions reduce taxable income depending on documents." },
+{ text: "If you negotiate fixed pay instead of variable, likely result:", context: "", options: ["More predictable monthly in-hand","Less predictable","Higher tax","Lower basic"], correct: 0, explanation: "Higher fixed pay improves predictability of monthly in-hand." },
+{ text: "Gross salary vs CTC: which statement is correct?", context: "", options: ["CTC includes employer contributions & benefits; gross is salary before deductions","They are same","Gross includes employer PF","CTC is always smaller"], correct: 0, explanation: "CTC aggregates gross salary + employer PF + benefits; gross is pre-deduction salary." },
+{ text: "If a company says 'we provide meal coupons', is this taxable?", context: "", options: ["Usually partially tax-exempt upto limits","Never taxable","Fully taxable always","Only tax-free if salary < threshold"], correct: 0, explanation: "Certain allowances (like meal vouchers) have tax rules and exemptions within limits." },
+
+{ text: "If your employer increases basic but reduces allowance, what's likely?", context: "", options: ["Higher PF & HRA base; may reduce take-home depending on deductions","No change","Illegal","Always results in more in-hand"], correct: 0, explanation: "Raising basic increases PF/HRA base which affects deductions & long-term saving." },
+{ text: "When switching jobs, you should ask about:", context: "", options: ["CTC split (fixed vs variable), notice period, clawbacks","Only CTC headline","Only office location","Only technology stack"], correct: 0, explanation: "CTC split, notice, and clawbacks materially affect in-hand and flexibility." },
+{ text: "On a payslip 'deductions' usually include:", context: "", options: ["PF employee share, tax (TDS), professional tax possibly","Only PF","Only bonuses","Nothing"], correct: 0, explanation: "Standard deductions include employee PF share and tax deducts." },
+{ text: "If employer offers stock options, treat them as:", context: "", options: ["Potential upside with vesting conditions & tax implications","Guaranteed money","Immediate cash equivalent","Not taxable"], correct: 0, explanation: "ESOPs have vesting & tax implications; not guaranteed cash." },
+{ text: "If company reports 'variable paid yearly', then monthly in-hand will:", context: "", options: ["Be lower but get a yearly bonus perhaps","Be higher every month","Not include variable amount monthly","Guarantee raises"], correct: 0, explanation: "If variable is paid annually you may not see it in monthly in-hand." },
+
+{ text: "What to verify in offer email besides CTC:", context: "", options: ["Bond/clawback clauses, PF policy, probation & notice period, variable payout rules","Only start date","Only reporting manager","Nothing else"], correct: 0, explanation: "Claws, notice, PF rules determine real take-home & freedom to move." },
+{ text: "If PF employer share is below statutory rate due to 'cap', you'll notice:", context: "", options: ["Smaller employer PF credited and slightly higher in-hand","Higher PF credited","No PF","Tax return increased"], correct: 0, explanation: "Cap reduces employer PF contribution relative to full statutory percentage." },
+{ text: "If you are paid part in 'allowances', can you reduce tax legally?", context: "", options: ["Only certain allowances have exemptions; you need proofs (rent receipts, investments)","All allowances are tax-exempt","Allowances can be converted to tax-free easily","Never"], correct: 0, explanation: "Tax treatment depends on the allowance type and proofs." },
+{ text: "If you pick 'new tax regime' with lower exemptions, when does it make sense?", context: "", options: ["If you have few tax-saving investments/deductions","If you have many 80C investments","Always","Never"], correct: 0, explanation: "New regime is often beneficial if you don't claim many deductions." },
+{ text: "A 'bonus' described as 'discretionary' likely means:", context: "", options: ["Not guaranteed and based on company performance","Guaranteed every year","Paid monthly","Tax-free"], correct: 0, explanation: "Discretionary bonuses depend on performance and are not guaranteed." },
+
+{ text: "If your company asks you to forgo PF and gives higher in-hand, long-term effect:", context: "", options: ["You get immediate cash but lower retirement corpus","You get more retirement saving","No change","Tax-free forever"], correct: 0, explanation: "Skipping PF reduces long-term retirement accumulation." },
+{ text: "If HRA is part of structure, what documents help claim exemption?", context: "", options: ["Rent receipts, landlord details, address proof","Payslip only","No document required","Pan only"], correct: 0, explanation: "Rent receipts & proof help claim HRA." },
+{ text: "If you leave a job mid-year, tax & variable may be affected because:", context: "", options: ["Variable may be pro-rated or not paid; TDS calculations differ","Tax returns vanish","You always pay less tax","No effect"], correct: 0, explanation: "Leaving mid-cycle affects variable payout & TDS dynamics." },
+{ text: "If an employer includes perks (insurance, meals) in CTC, the take-home is:", context: "", options: ["Potentially lower in-hand than headline CTC suggests","Higher than CTC","Same as CTC","Non-taxable"], correct: 0, explanation: "Perks included in CTC don't translate to cash-in-hand." },
+
+{ text: "If your employer offers 'gross-up' on tax for certain components, it means:", context: "", options: ["They pay additional amount to cover tax on that benefit","You pay extra tax","Tax-free forever","Not real money"], correct: 0, explanation: "Gross-up means employer covers the tax liability on the benefit." },
+{ text: "Careful negotiation tip when you prefer in-hand stability:", context: "", options: ["Ask for higher fixed pay, lower variable; clarify PF & benefits","Ask only for sign-on bonus","Ask for free lunches","Negotiate holidays"], correct: 0, explanation: "Fixed pay increases predictability; negotiate fixed components, not just headline CTC." },
+{ text: "If company offers 'opt-out PF' to senior hires, downside is:", context: "", options: ["Less statutory retirement saving & lost employer match","More employer PF","Tax exempt forever","Higher gratuity"], correct: 0, explanation: "Opting out reduces employer PF matching and building of statutory retirement funds." },
+
+{ text: "Which is the safest use of a joining bonus?", context: "", options: ["Keep some as emergency buffer; invest/save remainder","Spend it all on lifestyle upgrades","Use it to pay off debt entirely always","Ignore tax implications"], correct: 0, explanation: "Keep buffer in case of clawback and use remainder thoughtfully." },
+{ text: "If you want maximum in-hand today and keep retirement separate, good option:", context: "", options: ["Negotiate higher fixed take-home but then save independently","Avoid PF entirely","Never invest","Take all as variable"], correct: 0, explanation: "You can negotiate more fixed take-home, but then proactively save for retirement." },
+{ text: "If your employer's 'CTC' includes non-cash benefits, best practice is to:", context: "", options: ["Ask for CTC split and actual in-hand breakdown","Trust the headline","Ignore benefits","Assume cash"], correct: 0, explanation: "Ask for breakdown to know real monthly cash flows." },
+{ text: "If you get two offers and value job flexibility, which to prefer?", context: "", options: ["Offer with smaller clawback & lower variable", "Offer with higher clawback", "Offer with biggest CTC regardless", "Offer with longest notice"], correct: 0, explanation: "Less clawback and predictable pay mean more flexibility." }
+];
+
+// -------------------------------
+// Utility
+// -------------------------------
+function pickRandom5(arr) {
+  return [...arr].sort(() => Math.random() - 0.5).slice(0, 5);
+}
+
+let quiz = [], idx = 0, score = 0, answered = {};
+
+// -------------------------------
+// Render Question
+// -------------------------------
+function renderQ() {
+  const q = quiz[idx];
+
+  document.getElementById("q-text").textContent = q.text;
+  document.getElementById("q-counter").textContent = `Question ${idx+1} of ${quiz.length}`;
+  document.getElementById("q-score").textContent = `Score: ${score} / ${quiz.length}`;
+
+  const box = document.getElementById("q-options");
+  box.innerHTML = "";
+  document.getElementById("q-feedback").classList.add("hidden");
+  document.getElementById("q-warning").classList.add("hidden");
+
+  q.options.forEach((op,i)=>{
+    const b=document.createElement("button");
+    b.className="w-full text-left px-3 py-2 rounded-md border border-gray-200 dark:border-gray-600 text-sm bg-gray-50 dark:bg-gray-800 hover:bg-blue-50 dark:hover:bg-blue-900";
+    b.textContent=op; b.onclick=()=>handle(i,b); box.appendChild(b);
+  });
+
+  document.getElementById("q-prev").disabled = idx === 0;
+
+  if (answered[idx]) restoreState();
+}
+
+function restoreState() {
+  const q = quiz[idx];
+  const fb = document.getElementById("q-feedback");
+
+  document.querySelectorAll("#q-options button").forEach((b,i)=>{
+    b.disabled = true;
+    if (i === q.correct) b.classList.add("bg-green-200");
+  });
+
+  fb.classList.remove("hidden");
+  fb.innerHTML = `<strong>Answered</strong> – ${q.explanation}`;
+}
+
+// -------------------------------
+// Handle Answer
+// -------------------------------
+function handle(i, btn) {
+  if (answered[idx]) return;
+
+  const q = quiz[idx];
+  const buttons = document.querySelectorAll("#q-options button");
+
+  buttons.forEach(b => b.disabled = true);
+
+  const correct = i === q.correct;
+  if (correct) { score++; btn.classList.add("bg-green-200"); }
+  else { btn.classList.add("bg-red-200"); buttons[q.correct].classList.add("bg-green-200"); }
+
+  document.getElementById("q-feedback").classList.remove("hidden");
+  document.getElementById("q-feedback").innerHTML =
+    `<strong>${correct ? "Correct" : "Incorrect"}</strong> – ${q.explanation}`;
+
+  answered[idx] = true;
+  document.getElementById("q-score").textContent = `Score: ${score} / ${quiz.length}`;
+}
+
+// -------------------------------
+// Navigation
+// -------------------------------
+function nextQ(){
+  if(!answered[idx])
+    return document.getElementById("q-warning").classList.remove("hidden");
+
+  if(idx === quiz.length-1) return showResult();
+  idx++; renderQ();
+}
+
+function prevQ(){
+  if(idx > 0){ idx--; renderQ(); }
+}
+
+// -------------------------------
+// Results + XP + Badges
+// -------------------------------
+function showResult(){
+  document.getElementById("quiz-card").classList.add("hidden");
+  document.getElementById("result-card").classList.remove("hidden");
+
+  const percent = Math.round((score / quiz.length) * 100);
+  document.getElementById("result-score").textContent =
+    `You scored ${score} / ${quiz.length} (${percent}%).`;
+
+  let level = "bronze";
+  if (percent > 70) level = "gold";
+  else if (percent > 40) level = "silver";
+
+  localStorage.setItem("fl_badge_salary", level);
+
+  // XP: +50 base + bonus
+  let xp = Number(localStorage.getItem("fl_xp") || 0);
+  xp += 50 + (level === "silver" ? 10 : level === "gold" ? 20 : 0);
+  localStorage.setItem("fl_xp", xp);
+
+  renderBadge(level);
+  launchConfetti();
+}
+
+function renderBadge(level){
+  const wrap=document.getElementById("badge-wrapper");
+  wrap.innerHTML = `
+    <svg viewBox="0 0 120 150" class="w-28 h-36">
+      <defs>
+        <linearGradient id="ig" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="${level==="gold"?"#A9D957":level==="silver"?"#C9D1D9":"#C08A5B"}"/>
+          <stop offset="100%" stop-color="${level==="gold"?"#6EA230":level==="silver"?"#8E99A8":"#8B5E3C"}"/>
+        </linearGradient>
+      </defs>
+      <path d="M60 10 L95 25 L95 70 C95 95 80 120 60 135 C40 120 25 95 25 70 L25 25 Z"
+        fill="url(#ig)" stroke="rgba(0,0,0,0.1)" stroke-width="2"/>
+      <text x="60" y="95" text-anchor="middle" fill="white" font-size="14" font-weight="700">${level.toUpperCase()}</text>
+    </svg>`;
+}
+
+function launchConfetti(){
+  const c=document.getElementById("confetti-container");
+  c.classList.remove("hidden");
+  for(let i=0;i<40;i++){
+    const p=document.createElement("div");
+    p.style.cssText=
+      `position:absolute;width:6px;height:3px;left:${Math.random()*100}%;
+       top:-10px;background:#${Math.floor(Math.random()*999)};
+       animation:fl-confetti-fall ${2+Math.random()}s ease-out forwards;`;
+    c.appendChild(p);
+  }
+  setTimeout(()=>{c.innerHTML="";c.classList.add("hidden");},3000);
+}
+
+function restartQuiz(){
+  idx=0;score=0;answered={};
+  quiz=pickRandom5(salaryBank);
+  document.getElementById("result-card").classList.add("hidden");
+  document.getElementById("quiz-card").classList.remove("hidden");
+  renderQ();
+}
+
+// -------------------------------
+// INIT
+// -------------------------------
+document.addEventListener("DOMContentLoaded",()=>{
+  quiz = pickRandom5(salaryBank);
+  document.getElementById("q-next").onclick = nextQ;
+  document.getElementById("q-prev").onclick = prevQ;
+  renderQ();
+});
+</script>
+{% endblock %}
+
+{% block content %}
+
+<section class="mb-6">
+  <h1 class="text-2xl md:text-3xl font-semibold text-trust dark:text-blue-300">
+    Salary & Payslip Fundamentals – Quiz
+  </h1>
+  <p class="mt-2 text-sm md:text-base text-gray-700 dark:text-gray-300 max-w-2xl">
+    Test your understanding of CTC, PF, variable CTC etc.
+    Every attempt gives 5 questions.
+  </p>
+</section>
+
+{% include "quiz_base.html" %}
+
+{% endblock %}

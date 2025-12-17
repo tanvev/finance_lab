@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+{% block title %}Budget Planner | Educational Finance Lab{% endblock %}
+
+{% block content %}
+
+<!-- 📝 Header -->
+<div class="card p-6 sm:p-8 max-w-3xl mx-auto bg-white dark:bg-gray-900 shadow-xl border border-gray-200 dark:border-gray-800 rounded-xl">
+  <h2 class="text-xl sm:text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-1">Budget Planner 🖩</h2>
+  <p class="text-sm text-gray-600 dark:text-gray-300">
+    Create your monthly plan using the smart 50-30-20 method.
+  </p>
+</div>
+
+<!-- 📥 Form -->
+<div class="card p-6 sm:p-8 max-w-3xl mx-auto bg-white dark:bg-gray-900 shadow-xl border border-gray-200 dark:border-gray-800 rounded-xl mt-6">
+  <form method="post" class="space-y-4">
+    {% csrf_token %}
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      {% for field in form %}
+      <div>
+        <label class="form-label">{{ field.label }}</label>
+        {{ field }}
+      </div>
+      {% endfor %}
+    </div>
+
+    <button type="submit"
+      class="mt-4 w-full sm:w-auto px-6 py-2 font-medium bg-blue-600 text-white rounded-md hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-400 transition">
+      Calculate
+    </button>
+  </form>
+</div>
+
+{% if result %}
+<!-- 📊 Results Summary -->
+<div class="mt-10 max-w-3xl mx-auto bg-white dark:bg-gray-900 shadow-xl border border-gray-200 dark:border-gray-800 rounded-xl p-6 sm:p-8">
+
+  <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200">📌 Summary</h3>
+
+  <div class="mt-3 space-y-1 text-gray-700 dark:text-gray-300 text-sm">
+    <p>Monthly income: <strong class="highlight">₹{{ result.income }}</strong></p>
+    <p>Total needs: <strong class="highlight">₹{{ result.total_needs }}</strong></p>
+    <p>Wants: <strong class="highlight">₹{{ result.wants }}</strong></p>
+    <p>Total planned spending: <strong class="highlight">₹{{ result.total_planned }}</strong></p>
+    <p>Expected savings: <strong class="highlight">₹{{ result.savings }}</strong></p>
+  </div>
+
+  <p class="mt-4 text-sm text-blue-700 dark:text-blue-300">{{ result.message }}</p>
+
+  {% if result.smart_tip %}
+  <div class="mt-4 p-3 text-sm rounded-md border-l-4 border-green-500 bg-green-50 dark:bg-green-900 dark:border-green-400 text-gray-800 dark:text-gray-100">
+    <strong>💡 Smart Tip:</strong> {{ result.smart_tip }}
+  </div>
+  {% endif %}
+</div>
+
+<!-- 📊 Chart Visualization -->
+<div class="mt-10 max-w-3xl mx-auto bg-white dark:bg-gray-900 shadow-xl border border-gray-200 dark:border-gray-800 rounded-xl p-6 sm:p-8">
+
+  <div class="flex justify-between items-center">
+    <h2 class="text-lg font-semibold text-gray-800 dark:text-gray-200">📊 Budget Allocation</h2>
+
+    <span class="text-xs px-2 py-1 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300">
+      50-30-20 Analysis
+    </span>
+  </div>
+
+  <div class="relative w-full h-64 mt-4">
+    <canvas id="budgetChart"></canvas>
+  </div>
+
+  <p class="mt-3 text-sm text-gray-600 dark:text-gray-400">
+    🔵 Your spending vs. 🔴 recommended 50-30-20 guideline.
+  </p>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+(function() {
+  const ctx = document.getElementById('budgetChart');
+  if (!ctx) return;
+
+  const needs = {{ result.total_needs }};
+  const wants = {{ result.wants }};
+  const savings = {{ result.savings }};
+  const totalIncome = needs + wants + Math.max(savings, 0);
+
+  const ruleNeeds = totalIncome * 0.50;
+  const ruleWants = totalIncome * 0.30;
+  const ruleSavings = totalIncome * 0.20;
+
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['Needs', 'Wants', 'Savings'],
+      datasets: [
+        {
+          label: 'Your Spending (₹)',
+          data: [needs, wants, Math.max(savings, 0)],
+          backgroundColor: 'rgba(54, 162, 235, 0.7)',
+          borderColor: 'rgba(54, 162, 235, 1)',
+          borderWidth: 1
+        },
+        {
+          label: 'Suggested — 50/30/20 (₹)',
+          data: [ruleNeeds, ruleWants, ruleSavings],
+          backgroundColor: 'rgba(255, 99, 132, 0.7)',
+          borderColor: 'rgba(255, 99, 132, 1)',
+          borderWidth: 1
+        }
+      ]
+    },
+    options: { scales: { y: { beginAtZero: true } } }
+  });
+})();
+</script>
+{% endif %}
+<style>
+input[type="text"],
+input[type="number"],
+select,
+textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #666;
+  border-radius: 6px;
+  background-color: #fff;
+  color: #111;
+}
+
+.dark input[type="text"],
+.dark input[type="number"],
+.dark select,
+.dark textarea {
+  background-color: #1f2937; /* gray-800 */
+  border-color: #4b5563; /* gray-600 */
+  color: #f3f4f6; /* gray-100 */
+}
+
+.dark input::placeholder,
+.dark textarea::placeholder {
+  color: #9ca3af; /* gray-400 */
+}
+</style>
+
+{% endblock %}

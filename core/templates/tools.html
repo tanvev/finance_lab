@@ -1,0 +1,218 @@
+{% extends "base.html" %}
+{% block title %}Tools | Educational Finance Lab{% endblock %}
+
+{% block content %}
+
+<!-- HEADER -->
+<section class="text-center mb-10">
+  <h1 class="text-3xl font-semibold text-trust dark:text-blue-300">🛠 Smart Finance Tools</h1>
+  <p class="text-gray-700 dark:text-gray-300 mt-2 text-base max-w-2xl mx-auto">
+    Visual calculators that help you see real costs and growth — built for students & young professionals in India.
+  </p>
+</section>
+
+<!-- GRID OF TOOLS -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+  <!-- Budget Planner -->
+  <a href="{% url 'tool_budget_planner' %}" onclick="trackTool('Budget Planner')"
+     class="group bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-6 shadow-sm hover:shadow-xl transition-transform hover:-translate-y-1">
+    <span class="inline-block text-xs px-2 py-0.5 rounded-full bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-200">
+      Budget
+    </span>
+    <h3 class="mt-3 text-lg font-semibold text-trust dark:text-blue-200">Budget Planner 🖩</h3>
+    <p class="text-sm text-gray-600 dark:text-gray-300 mt-2">
+      Plan income, track expenses, and estimate savings.
+    </p>
+  </a>
+
+  <!-- Emergency Fund -->
+  <a href="{% url 'tool_emergency_fund' %}" onclick="trackTool('Emergency Fund')"
+     class="group bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-6 shadow-sm hover:shadow-xl transition-transform hover:-translate-y-1">
+    <span class="inline-block text-xs px-2 py-0.5 rounded-full bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-200">
+      Budget
+    </span>
+    <h3 class="mt-3 text-lg font-semibold text-trust dark:text-blue-200">Emergency Fund 💳</h3>
+    <p class="text-sm text-gray-600 dark:text-gray-300 mt-2">
+      Know how much safety cushion you really need.
+    </p>
+  </a>
+
+  <!-- SIP Calculator -->
+  <a href="{% url 'tool_sip_calculator' %}" onclick="trackTool('SIP Calculator')"
+     class="group bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-6 shadow-sm hover:shadow-xl transition-transform hover:-translate-y-1">
+    <span class="inline-block text-xs px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-200">
+      Investment
+    </span>
+    <h3 class="mt-3 text-lg font-semibold text-trust dark:text-blue-200">SIP Calculator 📈</h3>
+    <p class="text-sm text-gray-600 dark:text-gray-300 mt-2">
+      See how monthly investing grows over time.
+    </p>
+  </a>
+
+  <!-- FD vs SIP -->
+  <a href="{% url 'tool_fd_vs_sip' %}" onclick="trackTool('FD vs SIP')"
+     class="group bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-6 shadow-sm hover:shadow-xl transition-transform hover:-translate-y-1">
+    <span class="inline-block text-xs px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-200">
+      Investment
+    </span>
+    <h3 class="mt-3 text-lg font-semibold text-trust dark:text-blue-200">FD vs SIP 🔁</h3>
+    <p class="text-sm text-gray-600 dark:text-gray-300 mt-2">
+      Compare safe deposits vs compounding growth.
+    </p>
+  </a>
+
+  <!-- EMI Calculator -->
+  <a href="{% url 'tool_emi_calculator' %}" onclick="trackTool('EMI Calculator')"
+     class="group bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-6 shadow-sm hover:shadow-xl transition-transform hover:-translate-y-1">
+    <span class="inline-block text-xs px-2 py-0.5 rounded-full bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-200">
+      Loans
+    </span>
+    <h3 class="mt-3 text-lg font-semibold text-trust dark:text-blue-200">EMI Calculator 📉</h3>
+    <p class="text-sm text-gray-600 dark:text-gray-300 mt-2">
+      Break down EMI into principal + interest.
+    </p>
+  </a>
+
+  <!-- Loan Comparison -->
+  <a href="{% url 'tool_loan_comparison' %}" onclick="trackTool('Loan Comparison')"
+     class="group bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-6 shadow-sm hover:shadow-xl transition-transform hover:-translate-y-1">
+    <span class="inline-block text-xs px-2 py-0.5 rounded-full bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-200">
+      Loans
+    </span>
+    <h3 class="mt-3 text-lg font-semibold text-trust dark:text-blue-200">Loan Comparison 🔍</h3>
+    <p class="text-sm text-gray-600 dark:text-gray-300 mt-2">
+      Compare EMIs, total cost & prepayment impact.
+    </p>
+  </a>
+  <!--Salary Offer Coach-->
+<a href="{% url 'salary_coach' %}" onclick="trackTool('Salary Coach')"
+     class="group bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-6 shadow-sm hover:shadow-xl transition-transform hover:-translate-y-1">
+    <span class="inline-block text-xs px-2 py-0.5 rounded-full bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-200">
+      Salary Coach
+    </span>
+    <h3 class="mt-3 text-lg font-semibold text-trust dark:text-blue-200">Know your salary🔍</h3>
+    <p class="text-sm text-gray-600 dark:text-gray-300 mt-2">
+      Understand your first salary breakdown
+    </p>
+  </a>
+    <!--Salary Planner-->
+<a href="{% url 'salary_plan' %}" onclick="trackTool('Salary Planner')"
+     class="group bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-6 shadow-sm hover:shadow-xl transition-transform hover:-translate-y-1">
+    <span class="inline-block text-xs px-2 py-0.5 rounded-full bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-200">
+      Salary Planner
+    </span>
+    <h3 class="mt-3 text-lg font-semibold text-trust dark:text-blue-200">Plan your first salary🔍</h3>
+    <p class="text-sm text-gray-600 dark:text-gray-300 mt-2">
+      Plan your first salary breakdown
+    </p>
+  </a>
+  <!--Credit Card-->
+<a href="{% url 'tool_credit_card' %}" onclick="trackTool('Credit Card')"
+     class="group bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-6 shadow-sm hover:shadow-xl transition-transform hover:-translate-y-1">
+    <span class="inline-block text-xs px-2 py-0.5 rounded-full bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-200">
+      Credit Cards
+    </span>
+    <h3 class="mt-3 text-lg font-semibold text-trust dark:text-blue-200">Credit Cards Comparison 🔍</h3>
+    <p class="text-sm text-gray-600 dark:text-gray-300 mt-2">
+      Compare cards, total cost & payment impact.
+    </p>
+  </a>
+    <!--Side Hustle-->
+<a href="{% url 'tool_side_hustle' %}" onclick="trackTool('Side Hustle')"
+     class="group bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-6 shadow-sm hover:shadow-xl transition-transform hover:-translate-y-1">
+    <span class="inline-block text-xs px-2 py-0.5 rounded-full bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-200">
+      Side Hustle
+    </span>
+    <h3 class="mt-3 text-lg font-semibold text-trust dark:text-blue-200">Side Hustle Finder 🔍</h3>
+    <p class="text-sm text-gray-600 dark:text-gray-300 mt-2">
+      Where can you earn from.
+    </p>
+  </a>
+<!--Tax Calculator-->
+<a href="{% url 'tool_tax_calculator' %}" onclick="trackTool('Tax Calculator')"
+     class="group bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-6 shadow-sm hover:shadow-xl transition-transform hover:-translate-y-1">
+    <span class="inline-block text-xs px-2 py-0.5 rounded-full bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-200">
+      Side Hustle
+    </span>
+    <h3 class="mt-3 text-lg font-semibold text-trust dark:text-blue-200">Tax Calculator 🔍</h3>
+    <p class="text-sm text-gray-600 dark:text-gray-300 mt-2">
+      Where can you save .
+    </p>
+  </a>
+    <!--PF Calculator-->
+<a href="{% url 'tool_pf_calculator' %}" onclick="trackTool('PF Calculator')"
+     class="group bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-6 shadow-sm hover:shadow-xl transition-transform hover:-translate-y-1">
+    <span class="inline-block text-xs px-2 py-0.5 rounded-full bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-200">
+      PF Calculator
+    </span>
+    <h3 class="mt-3 text-lg font-semibold text-trust dark:text-blue-200">PF Calculator 🔍</h3>
+    <p class="text-sm text-gray-600 dark:text-gray-300 mt-2">
+      Where can you save.
+    </p>
+  </a>
+
+<a href="{% url 'tool_health_insurance_calc' %}" onclick="trackTool('Health Insurance Calculator')"
+     class="group bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-6 shadow-sm hover:shadow-xl transition-transform hover:-translate-y-1">
+    <span class="inline-block text-xs px-2 py-0.5 rounded-full bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-200">
+      Health Insurance Premium Calculator
+    </span>
+    <h3 class="mt-3 text-lg font-semibold text-trust dark:text-blue-200">HI Calculator 🔍</h3>
+    <p class="text-sm text-gray-600 dark:text-gray-300 mt-2">
+      your life saving money
+    </p>
+  </a>
+
+<a href="{% url 'tool_life_insurance_calc' %}" onclick="trackTool('Life Insurance Calculator')"
+     class="group bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-6 shadow-sm hover:shadow-xl transition-transform hover:-translate-y-1">
+    <span class="inline-block text-xs px-2 py-0.5 rounded-full bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-200">
+      Life Insurance Premium Calculator
+    </span>
+    <h3 class="mt-3 text-lg font-semibold text-trust dark:text-blue-200">LI Calculator 🔍</h3>
+    <p class="text-sm text-gray-600 dark:text-gray-300 mt-2">
+     Your Life's worth
+    </p>
+  </a>
+</div>
+
+<!-- USER TOOL STATS -->
+<section class="mt-14 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700
+                rounded-xl p-6 shadow-inner">
+  <h2 class="text-xl font-semibold text-trust dark:text-blue-300">📊 Your Usage Summary</h2>
+  <p class="text-gray-600 dark:text-gray-300 text-sm mt-1">
+    See which tools you use the most. Data is stored only on this device.
+  </p>
+
+  <ul id="usageList" class="mt-4 space-y-1 text-sm text-gray-700 dark:text-gray-300"></ul>
+
+  <button onclick="resetStats()"
+    class="mt-4 px-4 py-1.5 text-xs rounded-md bg-red-500 text-white hover:bg-red-600">
+    Reset Stats
+  </button>
+</section>
+
+<script>
+  function loadStats() {
+    let stats = JSON.parse(localStorage.getItem("financeLabStats") || "{}");
+    let container = document.getElementById("usageList");
+    container.innerHTML = "";
+
+    if (Object.keys(stats).length === 0) {
+      container.innerHTML = "<li class='text-gray-500'>No tools used yet.</li>";
+      return;
+    }
+
+    for (let tool in stats) {
+      container.innerHTML += `<li>${tool}: <strong>${stats[tool]}</strong> visits</li>`;
+    }
+  }
+
+  function resetStats() {
+    localStorage.removeItem("financeLabStats");
+    loadStats();
+  }
+
+  loadStats();
+</script>
+
+{% endblock %}

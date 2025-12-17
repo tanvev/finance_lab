@@ -1,0 +1,390 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Quiz Dashboard | Educational Finance Lab{% endblock %}
+
+{% block content %}
+
+<!-- HEADER -->
+<section class="mb-8">
+  <h1 class="text-3xl font-bold text-trust dark:text-blue-300">🎯 Quiz Dashboard</h1>
+  <p class="text-gray-700 dark:text-gray-300 text-sm md:text-base max-w-2xl mt-2">
+    Track your progress, complete quizzes, earn badges and level up your money skills.
+  </p>
+</section>
+
+<!-- PROGRESS + XP SECTION -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+
+  <!-- Overall Progress -->
+  <div class="col-span-1 md:col-span-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6 shadow-sm">
+    <h2 class="text-xl font-semibold text-gray-900 dark:text-gray-100">📊 Overall Progress</h2>
+    <p class="mt-1 text-sm text-gray-600 dark:text-gray-300">Complete quizzes to unlock achievements.</p>
+
+    <div class="mt-4 w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3">
+      <div id="progressBar"
+           class="h-3 rounded-full bg-blue-600 dark:bg-blue-400 transition-all duration-500"
+           style="width: 0%;"></div>
+    </div>
+
+    <p id="progressText" class="mt-2 text-sm font-medium text-gray-800 dark:text-gray-200"></p>
+  </div>
+
+</section>
+
+<!-- BADGES -->
+<section class="mb-10">
+  <h2 class="text-xl font-semibold text-gray-900 dark:text-gray-100">🎖 Your Badges</h2>
+
+  <div id="badgeGrid" class="mt-4 grid sm:grid-cols-2 lg:grid-cols-4 gap-6"></div>
+</section>
+
+<!-- DAILY CHALLENGE ROW -->
+<section class="mb-12">
+  <h2 class="text-xl font-semibold text-gray-900 dark:text-gray-100 flex items-center gap-2">
+    📅 Daily Finance Challenge
+  </h2>
+
+  <div class="mt-4 md:flex md:items-center md:justify-between gap-4">
+    <a href="{% url 'daily_challenge' %}"
+       class="block md:inline-block w-full md:w-auto">
+      <div class="p-5 rounded-lg border dark:border-gray-700 bg-green-50 dark:bg-green-900 text-green-800 dark:text-green-200 shadow hover:shadow-md cursor-pointer transition">
+        <h3 class="text-lg font-semibold">1-Minute Money Skill</h3>
+        <p class="text-sm mt-1">One question • 60 seconds • New every day</p>
+      </div>
+    </a>
+
+    <div class="mt-4 md:mt-0">
+      <div class="p-4 rounded-lg border dark:border-gray-700 bg-white dark:bg-gray-800 shadow text-gray-900 dark:text-gray-100">
+        <p id="streakBox" class="font-semibold">🔥 Streak: 0 days</p>
+        <p id="lastClaimText" class="text-xs text-gray-500 dark:text-gray-400 mt-1">Last completed: —</p>
+
+        <div class="mt-3 flex gap-2">
+          <button id="claimDailyBtn"
+                  class="px-3 py-1 rounded-md bg-green-600 hover:bg-green-700 text-white text-sm">
+            Claim today's challenge
+          </button>
+          <button id="resetStreakBtn"
+                  class="px-3 py-1 rounded-md border border-gray-300 dark:border-gray-600 text-sm">
+            Reset streak
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OTHER QUIZZES ROW -->
+<section class="mb-20">
+  <h2 class="text-xl font-semibold text-gray-900 dark:text-gray-100">🧩 Finance Quizzes</h2>
+
+  <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-4">
+
+    <a href="{% url 'quiz_budgeting' %}">
+      <div class="p-5 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow hover:shadow-lg cursor-pointer transition">
+        <h3 class="text-lg font-semibold text-trust dark:text-blue-300">Budgeting</h3>
+        <p class="mt-1 text-sm text-gray-600 dark:text-gray-300">Needs vs wants, saving habits & goals.</p>
+      </div>
+    </a>
+
+    <a href="{% url 'quiz_investment' %}">
+      <div class="p-5 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow hover:shadow-lg cursor-pointer transition">
+        <h3 class="text-lg font-semibold text-trust dark:text-blue-300">Investment</h3>
+        <p class="mt-1 text-sm text-gray-600 dark:text-gray-300">Compounding, SIPs & risks explained.</p>
+      </div>
+    </a>
+
+    <a href="{% url 'quiz_loans' %}">
+      <div class="p-5 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow hover:shadow-lg cursor-pointer transition">
+        <h3 class="text-lg font-semibold text-trust dark:text-blue-300">Loans & Credit</h3>
+        <p class="mt-1 text-sm text-gray-600 dark:text-gray-300">EMI traps, interest cost & credit cards.</p>
+      </div>
+    </a>
+
+    <a href="{% url 'quiz_salary' %}">
+      <div class="p-5 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow hover:shadow-lg cursor-pointer transition">
+        <h3 class="text-lg font-semibold text-trust dark:text-blue-300">Salary & Payslip</h3>
+        <p class="mt-1 text-sm text-gray-600 dark:text-gray-300">CTC breakdown, PF cap & bonus traps.</p>
+      </div>
+    </a>
+
+    <a href="{% url 'quiz_scams' %}">
+      <div class="p-5 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow hover:shadow-lg cursor-pointer transition">
+        <h3 class="text-lg font-semibold text-trust dark:text-blue-300">Scams 101</h3>
+        <p class="mt-1 text-sm text-gray-600 dark:text-gray-300">Is your money safe?</p>
+      </div>
+    </a>
+
+    <a href="{% url 'quiz_creditcard' %}">
+      <div class="p-5 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow hover:shadow-lg cursor-pointer transition">
+        <h3 class="text-lg font-semibold text-trust dark:text-blue-300">Credit Cards 101</h3>
+        <p class="mt-1 text-sm text-gray-600 dark:text-gray-300">Choose the right card for you.</p>
+      </div>
+    </a>
+
+  </div>
+</section>
+
+<!-- CERTIFICATE LOCK -->
+<section class="mt-10 bg-blue-50 dark:bg-blue-900 p-6 rounded-xl border border-blue-200 dark:border-blue-700">
+  <h2 class="text-xl font-semibold text-trust dark:text-blue-200">🏆 Certificate Unlock</h2>
+  <p class="mt-1 text-sm text-gray-700 dark:text-gray-300">
+    Earn at least <strong>Silver in all quizzes</strong> to unlock your starter finance certificate (coming soon!).
+  </p>
+  <p id="unlockStatus" class="mt-3 text-sm font-semibold"></p>
+</section>
+
+{% endblock %}
+
+{% block extra_head %}
+<script>
+/* =========
+  Quiz Dashboard Logic
+  - Mini badge icons
+  - XP Level System (Option A)
+  - Daily Challenge Streak with claim button
+=========== */
+
+document.addEventListener("DOMContentLoaded", () => {
+
+  /* ---------- Config & Keys ---------- */
+  const badgeKeys = {
+    budget: "fl_badge_budget",
+    invest: "fl_badge_invest",
+    loans: "fl_badge_loans",
+    salary: "fl_badge_salary",
+    scams: "fl_badge_scam",
+    creditcard: "fl_badge_cc"
+  };
+
+  const badgeLabels = {
+    budget: "Budgeting",
+    invest: "Investment",
+    loans: "Loans & Credit",
+    salary: "Salary & Payslip",
+    scams: "Scams 101",
+    creditcard: "Credit Cards 101"
+  };
+
+  const totalQuizzes = Object.keys(badgeKeys).length;
+
+  /* ---------- XP System (Option A) ---------- */
+  // XP stored in localStorage.fl_xp
+  let xp = Number(localStorage.getItem("fl_xp") || 0);
+
+  function xpAdd(amount) {
+    xp = Math.max(0, xp + Number(amount));
+    localStorage.setItem("fl_xp", xp);
+    updateLevelUI();
+  }
+
+  function updateLevelUI() {
+    const level = Math.min(10, Math.floor(xp / 100));
+    const fill = xp % 100;
+    const levelText = `Level ${level} · XP: ${xp} / ${level === 10 ? "MAX" : (level + 1)*100}`;
+    const levelEl = document.getElementById("levelText");
+    const levelBar = document.getElementById("levelBar");
+    if (levelEl) levelEl.textContent = levelText;
+    if (levelBar) levelBar.style.width = `${fill}%`;
+  }
+
+  /* ---------- Mini badge SVG generator ---------- */
+  function miniShieldSVG(level) {
+    // returns HTML string for a small shield based on level
+    // default bronze colors
+    let color1 = "#C08A5B", color2 = "#8B5E3C", label = "B";
+    if (level === "silver") { color1 = "#C9D1D9"; color2 = "#8E99A8"; label = "S"; }
+    if (level === "gold")   { color1 = "#A9D957"; color2 = "#6EA230"; label = "G"; }
+    if (!level) { color1 = "#E6E8EA"; color2 = "#CBD2D9"; label = "—"; }
+
+    return `
+      <svg viewBox="0 0 60 75" class="w-10 h-12 mx-auto" role="img" aria-hidden="true">
+        <defs>
+          <linearGradient id="g${label}" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="${color1}"/>
+            <stop offset="100%" stop-color="${color2}"/>
+          </linearGradient>
+        </defs>
+        <path d="M30 5 L50 15 L50 40 C50 55 40 68 30 72 C20 68 10 55 10 40 L10 15 Z"
+              fill="url(#g${label})" stroke="rgba(0,0,0,0.08)" stroke-width="1.2"/>
+        <text x="30" y="42" text-anchor="middle" font-family="system-ui, -apple-system" font-size="14" fill="white" font-weight="700">${label}</text>
+      </svg>`;
+  }
+
+  /* ---------- Render badges ---------- */
+  const badgeGrid = document.getElementById("badgeGrid");
+  let completed = 0;
+  if (badgeGrid) {
+    badgeGrid.innerHTML = "";
+    Object.keys(badgeKeys).forEach(key => {
+      const storageKey = badgeKeys[key];
+      const lvl = localStorage.getItem(storageKey); // bronze|silver|gold or null
+      if (lvl) completed++;
+      const miniSVG = miniShieldSVG(lvl);
+      const name = badgeLabels[key] || key;
+      const lvlText = lvl ? lvl.toUpperCase() : "Not earned yet";
+      const opacityClass = lvl ? "" : "opacity-40";
+
+      const card = document.createElement("div");
+      card.className = `p-4 rounded-lg border dark:border-gray-700 bg-white dark:bg-gray-800 shadow text-center ${opacityClass}`;
+
+      card.innerHTML = `
+        <div class="flex items-center gap-3 justify-center">
+          <div class="w-12">${miniSVG}</div>
+          <div class="text-left">
+            <p class="font-bold text-trust dark:text-blue-300">${name}</p>
+            <p class="mt-1 text-sm text-gray-600 dark:text-gray-300">${lvl ? lvl.toUpperCase() : "Not earned yet"}</p>
+          </div>
+        </div>`;
+      badgeGrid.appendChild(card);
+    });
+  }
+
+  /* ---------- Progress Bar ---------- */
+  const pct = Math.round((completed / totalQuizzes) * 100);
+  const progressBar = document.getElementById("progressBar");
+  const progressText = document.getElementById("progressText");
+  if (progressBar) progressBar.style.width = `${pct}%`;
+  if (progressText) progressText.textContent = `Completed ${completed} of ${totalQuizzes} quizzes (${pct}%)`;
+
+  /* ---------- Certificate Unlock ---------- */
+  const allSilver = Object.values(badgeKeys).every(k => {
+    const lvl = localStorage.getItem(k);
+    return lvl === "silver" || lvl === "gold";
+  });
+  const unlockEl = document.getElementById("unlockStatus");
+  if (unlockEl) unlockEl.textContent = allSilver ? "🎉 Eligible for Certificate!" : "🔒 Keep learning to unlock certificate!";
+
+
+
+  /* ---------- Daily Streak Logic ---------- */
+  const streakBox = document.getElementById("streakBox");
+  const lastClaimText = document.getElementById("lastClaimText");
+  const claimBtn = document.getElementById("claimDailyBtn");
+  const resetBtn = document.getElementById("resetStreakBtn");
+
+  function formatDateLocal(d) {
+    // returns YYYY-MM-DD for stable storage/comparison
+    const y = d.getFullYear();
+    const m = String(d.getMonth()+1).padStart(2,'0');
+    const dt = String(d.getDate()).padStart(2,'0');
+    return `${y}-${m}-${dt}`;
+  }
+
+  function getTodayKey() { return formatDateLocal(new Date()); }
+  function getYesterdayKey() {
+    const d = new Date();
+    d.setDate(d.getDate() - 1);
+    return formatDateLocal(d);
+  }
+
+  function refreshStreakUI() {
+    const streak = Number(localStorage.getItem("fl_streak") || 0);
+    const lastClaim = localStorage.getItem("fl_last_claim") || "—";
+    if (streakBox) streakBox.textContent = `🔥 Streak: ${streak} day${streak !== 1 ? "s" : ""}`;
+    if (lastClaimText) lastClaimText.textContent = `Last claimed: ${lastClaim === "—" ? "—" : lastClaim}`;
+  }
+
+  // Claim today's challenge (idempotent)
+  function claimDaily() {
+    const today = getTodayKey();
+    const yesterday = getYesterdayKey();
+    const last = localStorage.getItem("fl_last_claim");
+
+    if (last === today) {
+      // already claimed
+      alert("You've already claimed today's challenge ✅");
+      return;
+    }
+
+    let streak = Number(localStorage.getItem("fl_streak") || 0);
+
+    if (last === yesterday) {
+      // continue streak
+      streak += 1;
+    } else {
+      // new streak
+      streak = 1;
+    }
+
+    localStorage.setItem("fl_last_claim", today);
+    localStorage.setItem("fl_streak", streak);
+    // also keep a separate last_challenge key to show last completion date (compat)
+    localStorage.setItem("fl_last_challenge", today);
+
+    // award XP for daily challenge
+    xpAdd(10);
+
+    refreshStreakUI();
+    // small visual feedback
+    launchMiniConfetti();
+    alert(`Nice! +10 XP. Streak: ${streak} day${streak !== 1 ? "s" : ""}`);
+  }
+
+  // reset streak button (with confirmation)
+  function resetStreak() {
+    if (!confirm("Reset your daily streak? This cannot be undone.")) return;
+    localStorage.removeItem("fl_last_claim");
+    localStorage.removeItem("fl_streak");
+    refreshStreakUI();
+    alert("Streak reset.");
+  }
+
+  // initialize streak UI
+  (function initStreak(){
+    if (!localStorage.getItem("fl_last_claim")) {
+      // nothing yet
+      localStorage.setItem("fl_last_claim", "—");
+    }
+    refreshStreakUI();
+  })();
+
+  if (claimBtn) claimBtn.addEventListener("click", claimDaily);
+  if (resetBtn) resetBtn.addEventListener("click", resetStreak);
+
+  /* ---------- Helper: tiny confetti (for daily claim) ---------- */
+  function launchMiniConfetti() {
+    const root = document.createElement("div");
+    root.style.position = "fixed";
+    root.style.left = "50%";
+    root.style.top = "30%";
+    root.style.transform = "translateX(-50%)";
+    root.style.pointerEvents = "none";
+    root.style.zIndex = "9999";
+    document.body.appendChild(root);
+
+    const colors = ["#F4A261","#A8DADC","#457B9D","#E63946","#A9D957"];
+    for (let i=0;i<20;i++){
+      const el = document.createElement("div");
+      const size = 6 + Math.random()*10;
+      el.style.position = "absolute";
+      el.style.left = `${Math.random()*120 - 10}%`;
+      el.style.top = "0px";
+      el.style.width = `${size}px`;
+      el.style.height = `${size*0.4}px`;
+      el.style.background = colors[Math.floor(Math.random()*colors.length)];
+      el.style.opacity = "0.95";
+      el.style.borderRadius = "2px";
+      el.style.transform = `rotate(${Math.random()*360}deg)`;
+      el.style.animation = `fl-confetti-fall ${1 + Math.random()*1.5}s ease-out forwards`;
+      el.style.animationDelay = `${Math.random()*0.2}s`;
+      root.appendChild(el);
+    }
+    setTimeout(()=>{ root.remove(); }, 1800);
+  }
+
+  /* ---------- tiny animation keyframe injection ---------- */
+  const styleTag = document.createElement("style");
+  styleTag.textContent = `
+    @keyframes fl-confetti-fall {
+      0% { transform: translateY(-10px) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(160px) rotate(360deg); opacity: 0; }
+    }
+  `;
+  document.head.appendChild(styleTag);
+
+  /* ---------- Expose xpAdd for quizzes to call (optional) ---------- */
+  window.fl_xpAdd = xpAdd;
+
+});
+</script>
+{% endblock %}

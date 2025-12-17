@@ -1,0 +1,469 @@
+{% extends "base.html" %}
+{% block content %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Ultimate Tax Calculator</title>
+
+  <!-- Tailwind CDN (for quick prototyping; replace with your build pipeline in production) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+  <style>
+    /* small UI niceties */
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Courier New", monospace; }
+    #levelUpPopup {
+      position: fixed;
+      top: 14%;
+      left: 50%;
+      transform: translateX(-50%) scale(0.6);
+      padding: 18px 22px;
+      background: white;
+      color: #0f172a;
+      border-radius: 16px;
+      box-shadow: 0 12px 40px rgba(2,6,23,0.18);
+      font-size: 18px;
+      font-weight: 800;
+      opacity: 0;
+      z-index: 99999;
+      transition: all 300ms cubic-bezier(.2,.9,.34,1);
+      pointer-events: none;
+    }
+    @keyframes mini-confetti {
+      0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(140px) rotate(360deg); opacity: 0; }
+    }
+    .badge {
+      display:inline-grid;place-items:center;width:48px;height:48px;border-radius:10px;
+      background:linear-gradient(180deg,#fef3c7,#f59e0b);color:#0f172a;font-weight:700;
+      box-shadow: 0 6px 18px rgba(245,158,11,0.18);
+    }
+  </style>
+</head>
+<body class="bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100">
+
+  <div class="max-w-6xl mx-auto p-6">
+    <header class="mb-6">
+      <h1 class="text-3xl font-bold text-trust dark:text-blue-300">Ultimate Tax Calculator</h1>
+      <p class="mt-2 text-sm text-slate-600 dark:text-slate-300 max-w-2xl">
+        Compare Old vs New regime, calculate HRA exemption, capital gains tax, and get personalized suggestions.
+      </p>
+    </header>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <!-- LEFT: Inputs -->
+      <div class="lg:col-span-2 bg-white dark:bg-slate-800 p-6 rounded-xl shadow">
+        <h2 class="text-lg font-semibold mb-3">Income & Deductions</h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <label class="block">
+            Gross Annual Salary (₹)
+            <input id="inp_gross" type="number" placeholder="e.g. 800000" class="mt-1 w-full p-2 rounded border bg-slate-50 dark:bg-slate-900">
+          </label>
+
+          <label class="block">
+            Other Annual Income (₹)
+            <input id="inp_other" type="number" placeholder="interest, rent..." class="mt-1 w-full p-2 rounded border bg-slate-50 dark:bg-slate-900">
+          </label>
+
+          <label class="block">
+            Basic Salary (₹)
+            <input id="inp_basic" type="number" placeholder="basic component" class="mt-1 w-full p-2 rounded border bg-slate-50 dark:bg-slate-900">
+          </label>
+
+          <label class="block">
+            HRA Received (₹)
+            <input id="inp_hra" type="number" placeholder="HRA amount" class="mt-1 w-full p-2 rounded border bg-slate-50 dark:bg-slate-900">
+          </label>
+
+          <label class="block">
+            Rent Paid (annual) (₹)
+            <input id="inp_rent" type="number" placeholder="total rent paid in year" class="mt-1 w-full p-2 rounded border bg-slate-50 dark:bg-slate-900">
+          </label>
+
+          <label class="block">
+            City Type
+            <select id="inp_city" class="mt-1 w-full p-2 rounded border bg-slate-50 dark:bg-slate-900">
+              <option value="metro">Metro (50% of Basic)</option>
+              <option value="nonmetro">Non-metro (40% of Basic)</option>
+            </select>
+          </label>
+
+          <label class="block">
+            80C total (PF/ELSS/LIC) (₹)
+            <input id="inp_80c" type="number" placeholder="max 1,50,000" class="mt-1 w-full p-2 rounded border bg-slate-50 dark:bg-slate-900">
+          </label>
+
+          <label class="block">
+            80D Health Ins. (₹)
+            <input id="inp_80d" type="number" placeholder="health insurance premium" class="mt-1 w-full p-2 rounded border bg-slate-50 dark:bg-slate-900">
+          </label>
+
+          <label class="block">
+            Other Deductions (₹)
+            <input id="inp_otherDed" type="number" placeholder="standard/other" class="mt-1 w-full p-2 rounded border bg-slate-50 dark:bg-slate-900">
+          </label>
+
+          <label class="block">
+            Equity Gain (₹)
+            <input id="inp_eqGain" type="number" placeholder="capital gain (equity)" class="mt-1 w-full p-2 rounded border bg-slate-50 dark:bg-slate-900">
+          </label>
+
+          <label class="block">
+            Gain Holding Period (months)
+            <input id="inp_eqMonths" type="number" placeholder="months" class="mt-1 w-full p-2 rounded border bg-slate-50 dark:bg-slate-900">
+          </label>
+        </div>
+
+        <div class="mt-4 flex gap-3">
+          <button id="btn_calc" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md font-medium">Calculate Tax</button>
+          <button id="btn_reset" class="px-4 py-2 border rounded-md">Reset</button>
+        </div>
+      </div>
+
+      <!-- RIGHT: Results + charts -->
+      <div class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow">
+        <h2 class="text-lg font-semibold mb-3">Results & Suggestions</h2>
+
+        <div id="resultsBox" class="text-sm text-slate-700 dark:text-slate-300 space-y-2">
+          <p class="italic text-slate-500">Run the calculation to see results & recommendations.</p>
+        </div>
+
+        <div id="recommendBox" class="mt-4 p-3 rounded bg-emerald-50 dark:bg-emerald-900 text-emerald-900 dark:text-emerald-200 hidden"></div>
+
+        <div class="mt-4">
+          <h3 class="text-sm font-semibold mb-2">Old vs New (visual)</h3>
+          <canvas id="taxCompareChart" height="160"></canvas>
+        </div>
+
+        <div class="mt-4">
+          <h3 class="text-sm font-semibold mb-2">Effective Tax Rate</h3>
+          <canvas id="taxRateChart" height="120"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="levelUpPopup">LEVEL UP! 🎉</div>
+
+  <script>
+  (function () {
+    // Defensive DOM helper
+    function $id(id){ return document.getElementById(id); }
+
+    // Chart handles
+    let compareChart = null, rateChart = null;
+
+    // Tax slabs FY 2023-24 (new & old). Each entry is [rangeAmount, rateDecimal]
+    // ranges are slice sizes, not cumulative thresholds
+    const newRegime = [
+      [300000, 0.00],   // 0-3L
+      [300000, 0.05],   // 3L-6L
+      [300000, 0.10],   // 6L-9L
+      [300000, 0.15],   // 9L-12L
+      [300000, 0.20],   // 12L-15L
+      [Infinity, 0.30]  // above 15L
+    ];
+    const oldRegime = [
+      [250000, 0.00],   // 0-2.5L
+      [250000, 0.05],   // 2.5L-5L
+      [500000, 0.20],   // 5L-10L
+      [Infinity, 0.30]  // above 10L
+    ];
+
+    function calcSlabTax(income, slabs) {
+      // returns tax (including 4% cess)
+      let remaining = income;
+      let tax = 0;
+      for (const [range, rate] of slabs) {
+        if (remaining <= 0) break;
+        const portion = Math.min(remaining, range);
+        tax += portion * rate;
+        remaining -= portion;
+      }
+      // cess 4% on tax
+      return tax * 1.04;
+    }
+
+    function calcHRA(basic, hraReceived, rentPaid, city) {
+      // Per Indian rules:
+      // min( HRA received, Rent - 10% of basic, % of basic (50% metro / 40% non-metro) )
+      const rentMinusTenPct = Math.max(0, rentPaid - basic * 0.10);
+      const pctBasic = city === 'metro' ? basic * 0.50 : basic * 0.40;
+      const hraExempt = Math.max(0, Math.min(hraReceived, rentMinusTenPct, pctBasic));
+      return Math.round(hraExempt);
+    }
+
+    function calcCapitalGainsTax(gain, months) {
+      // Equity: STCG <=12 months @15% ; LTCG >12 months: 10% on gains above 1L
+      if (!gain || gain <= 0) return 0;
+      if (months <= 12) {
+        return Math.round(gain * 0.15 * 1.04); // include cess
+      } else {
+        const exempt = 100000;
+        const taxable = Math.max(0, gain - exempt);
+        return Math.round(taxable * 0.10 * 1.04);
+      }
+    }
+
+    // XP system
+    function getXP(){ return Number(localStorage.getItem('fl_xp') || 0); }
+    function saveXP(n){ localStorage.setItem('fl_xp', String(n)); updateXPUI(); }
+    function addXP(n){
+      const prev = getXP();
+      const next = prev + Math.max(0, Math.floor(n));
+      saveXP(next);
+      // check level up
+      const prevLevel = Math.floor(prev / 100);
+      const newLevel = Math.floor(next / 100);
+      if (newLevel > prevLevel) showLevelUp(newLevel);
+    }
+    function updateXPUI(){
+      const el = $id('xpBadge');
+      if (el) el.textContent = String(getXP());
+    }
+
+    function showLevelUp(level){
+      const pop = $id('levelUpPopup');
+      if(!pop) return;
+      pop.textContent = `LEVEL ${level} UNLOCKED 🎉`;
+      pop.style.opacity = '1';
+      pop.style.transform = 'translateX(-50%) scale(1)';
+      launchMiniConfetti();
+      setTimeout(()=>{ pop.style.opacity = '0'; pop.style.transform = 'translateX(-50%) scale(0.6)'; }, 1400);
+    }
+    function launchMiniConfetti(){
+      for(let i=0;i<18;i++){
+        const el = document.createElement('div');
+        el.style.width = (6 + Math.random()*10) + 'px';
+        el.style.height = (4 + Math.random()*6) + 'px';
+        el.style.background = ["#F59E0B","#60A5FA","#34D399","#F87171","#A78BFA"][Math.floor(Math.random()*5)];
+        el.style.position = 'fixed';
+        el.style.left = (50 + (Math.random()*40-20)) + '%';
+        el.style.top = (14 + Math.random()*4) + '%';
+        el.style.borderRadius = '2px';
+        el.style.opacity = '0.95';
+        el.style.transform = `rotate(${Math.random()*360}deg)`;
+        el.style.animation = `mini-confetti ${0.9 + Math.random()*0.9}s ease-out forwards`;
+        el.style.zIndex = '99999';
+        document.body.appendChild(el);
+        setTimeout(()=> el.remove(), 1200);
+      }
+    }
+
+    // Render charts
+    function renderCharts(oldTax, newTax, grossIncome) {
+      // destroy old if exists
+      if (compareChart) compareChart.destroy();
+      if (rateChart) rateChart.destroy();
+
+      const ctx1 = $id('taxCompareChart').getContext('2d');
+      compareChart = new Chart(ctx1, {
+        type: 'bar',
+        data: {
+          labels: ['Old Regime','New Regime'],
+          datasets: [{
+            label: 'Tax Payable (₹)',
+            data: [oldTax, newTax],
+            backgroundColor: ['#2563EB','#16A34A']
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: { legend: { display: false } },
+          scales: { y: { beginAtZero: true } }
+        }
+      });
+
+      const oldRate = grossIncome > 0 ? (oldTax / grossIncome * 100) : 0;
+      const newRate = grossIncome > 0 ? (newTax / grossIncome * 100) : 0;
+
+      const ctx2 = $id('taxRateChart').getContext('2d');
+      rateChart = new Chart(ctx2, {
+        type: 'line',
+        data: {
+          labels: ['Old Regime','New Regime'],
+          datasets: [{
+            label: 'Effective Tax Rate (%)',
+            data: [Number(oldRate.toFixed(2)), Number(newRate.toFixed(2))],
+            tension: 0.3,
+            borderColor: '#6366F1',
+            fill: false,
+            pointRadius: 6,
+            pointBackgroundColor: '#6366F1'
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: { legend: { display: false } },
+          scales: { y: { beginAtZero: true } }
+        }
+      });
+    }
+
+    // Recommendation engine: simple heuristics
+    function recommendations(data) {
+      const recs = [];
+      // Suggest regime
+      if (data.finalOld < data.finalNew) {
+        recs.push({ title: 'Old regime likely better', detail: `Old saves ₹${(data.finalNew - data.finalOld).toLocaleString()}. Keep claiming HRA/80C if valid.` });
+      } else if (data.finalNew < data.finalOld) {
+        recs.push({ title: 'New regime likely better', detail: `New saves ₹${(data.finalOld - data.finalNew).toLocaleString()}. Consider new regime for simplicity.` });
+      } else {
+        recs.push({ title: 'Both regimes equal', detail: 'Both regimes give similar tax — choose based on paperwork preference.' });
+      }
+
+      // If 80C low, suggest maxing
+      if ((data.inputs.d80c || 0) < 150000 && data.inputs.gross > 200000) {
+        recs.push({ title: 'Consider 80C investments', detail: `You can save tax by investing up to ₹1,50,000 in PF / ELSS / PPF / LIC. Even small additions reduce taxable income.` });
+      }
+
+      // HRA suggestions
+      if (data.hraExempt === 0 && data.inputs.hra > 0) {
+        recs.push({ title: 'HRA not exempt — check documents', detail: 'You reported HRA but exemption computed as zero (rent too low or basic mismatch). Ensure rent receipts & landlord details available.' });
+      } else if (data.hraExempt > 0) {
+        recs.push({ title: 'You have HRA exemption', detail: `HRA exempt: ₹${data.hraExempt.toLocaleString()}. Keep rent receipts for proof.` });
+      }
+
+      // Capital gains advice
+      if ((data.inputs.eqGain || 0) > 0) {
+        if (data.inputs.eqMonths <= 12) {
+          recs.push({ title: 'Short-term capital gain taxed @15%', detail: 'STCG on equities is taxed at 15% + cess — consider holding >12 months to reduce tax if feasible.' });
+        } else if (data.inputs.eqGain > 100000) {
+          recs.push({ title: 'LTCG beyond ₹1L taxed', detail: 'LTCG > ₹1,00,000 is taxable at 10% + cess.' });
+        } else {
+          recs.push({ title: 'LTCG within ₹1L exemption', detail: 'Your long-term gain is within ₹1,00,000 exemption — no LTCG tax.' });
+        }
+      }
+
+      // If gross small and tax high, advice
+      const effectiveOldPercent = data.gross > 0 ? (data.finalOld / data.gross) * 100 : 0;
+      if (effectiveOldPercent > 15) {
+        recs.push({ title: 'High effective tax rate', detail: 'Your effective tax rate is >15%. Consider tax-saving investments (80C, 80D), and check if new regime reduces tax.' });
+      }
+
+      return recs;
+    }
+
+    // Main calculate handler
+    function handleCalculate() {
+      const gross = Number(($id('inp_gross').value || 0));
+      const other = Number(($id('inp_other').value || 0));
+      const basic = Number(($id('inp_basic').value || 0));
+      const hraReceived = Number(($id('inp_hra').value || 0));
+      const rentPaid = Number(($id('inp_rent').value || 0));
+      const city = ($id('inp_city').value || 'metro');
+
+      const d80c = Math.min(150000, Number(($id('inp_80c').value || 0))); // cap 1.5L
+      const d80d = Number(($id('inp_80d').value || 0));
+      const otherDed = Number(($id('inp_otherDed').value || 0));
+
+      const eqGain = Number(($id('inp_eqGain').value || 0));
+      const eqMonths = Number(($id('inp_eqMonths').value || 0));
+
+      // Inputs defensive
+      const stdDeduction = 50000; // standard deduction
+
+      // HRA
+      const hraExempt = calcHRA(basic, hraReceived, rentPaid, city);
+
+      // Old taxable
+      let oldTaxable = gross + other - stdDeduction - hraExempt - d80c - d80d - otherDed;
+      oldTaxable = Math.max(0, Math.round(oldTaxable));
+
+      // New taxable: new regime allows few deductions (we apply only stdDeduction here)
+      let newTaxable = Math.max(0, Math.round(gross + other - stdDeduction));
+
+      // slab taxes
+      const oldTax = Math.round(calcSlabTax(oldTaxable, oldRegime));
+      const newTax = Math.round(calcSlabTax(newTaxable, newRegime));
+
+      // capital gains tax (added separately)
+      const cgTax = calcCapitalGainsTax(eqGain, eqMonths);
+
+      const finalOld = Math.max(0, oldTax + cgTax);
+      const finalNew = Math.max(0, newTax + cgTax);
+
+      // Render result HTML
+      const resultsBox = $id('resultsBox');
+      if (!resultsBox) return;
+      const html = `
+        <div class="space-y-1">
+          <p><strong>HRA Exempt:</strong> ₹${hraExempt.toLocaleString()}</p>
+          <p><strong>Capital Gains Tax:</strong> ₹${cgTax.toLocaleString()}</p>
+          <hr class="my-1">
+          <p class="font-medium">Old Regime</p>
+          <p class="text-sm">Taxable Income: ₹${oldTaxable.toLocaleString()}</p>
+          <p class="text-sm">Tax Payable (incl cess): <strong>₹${finalOld.toLocaleString()}</strong></p>
+          <hr class="my-1">
+          <p class="font-medium">New Regime</p>
+          <p class="text-sm">Taxable Income: ₹${newTaxable.toLocaleString()}</p>
+          <p class="text-sm">Tax Payable (incl cess): <strong>₹${finalNew.toLocaleString()}</strong></p>
+        </div>
+      `;
+      resultsBox.innerHTML = html;
+
+      // Show charts
+      renderCharts(finalOld, finalNew, Math.max(1, gross + other));
+
+      // Recommendation engine
+      const recBox = $id('recommendBox');
+      if (recBox) {
+        const payload = {
+          inputs: { gross, other, basic, hraReceived, rentPaid, city, d80c, d80d, otherDed, eqGain, eqMonths },
+          hraExempt, oldTaxable, newTaxable, oldTax, newTax, cgTax, finalOld, finalNew, gross
+        };
+        const recs = recommendations(payload);
+        recBox.innerHTML = recs.map(r => `<div class="mb-2">
+          <div class="font-semibold">${r.title}</div>
+          <div class="text-xs text-slate-700 dark:text-slate-300 mt-1">${r.detail}</div>
+        </div>`).join('');
+        recBox.classList.remove('hidden');
+      }
+
+      // XP awarding: base 50 + bonus if you picked the cheaper regime or have tax >0 (simple gamification)
+      let xpGain = 50;
+      if (Math.abs(finalOld - finalNew) > 0) xpGain += 10; // extra for being able to choose
+      if (Math.min(finalOld, finalNew) === 0) xpGain += 10;
+      addXP(xpGain);
+    }
+
+    // Reset handler
+    function handleReset() {
+      ['inp_gross','inp_other','inp_basic','inp_hra','inp_rent','inp_80c','inp_80d','inp_otherDed','inp_eqGain','inp_eqMonths'].forEach(id=>{
+        const el = $id(id); if (el) el.value = '';
+      });
+      const resultsBox = $id('resultsBox'); if(resultsBox) resultsBox.innerHTML = '<p class="italic text-slate-500">Run the calculation to see results & recommendations.</p>';
+      const recBox = $id('recommendBox'); if(recBox) { recBox.classList.add('hidden'); recBox.innerHTML = ''; }
+      if (compareChart) { compareChart.destroy(); compareChart = null; }
+      if (rateChart) { rateChart.destroy(); rateChart = null; }
+    }
+
+    // DOMContentLoaded wiring
+    document.addEventListener('DOMContentLoaded', function () {
+      // wire buttons safely
+      const calcBtn = $id('btn_calc');
+      const resetBtn = $id('btn_reset');
+      if (calcBtn) calcBtn.addEventListener('click', handleCalculate);
+      if (resetBtn) resetBtn.addEventListener('click', handleReset);
+
+      // populate XP UI
+      updateXPUI();
+    });
+
+    // Expose for debugging (optional)
+    window._taxCalc = {
+      calcSlabTax, calcHRA, calcCapitalGainsTax, handleCalculate, getXP
+    };
+
+  })();
+  </script>
+</body>
+</html>
+
+{% endblock %}
+

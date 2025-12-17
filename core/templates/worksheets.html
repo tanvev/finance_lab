@@ -1,0 +1,163 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Worksheets | Educational Finance Lab{% endblock %}
+
+{% block content %}
+
+<!-- HEADER -->
+<section class="rounded-xl p-8 text-white shadow-md mt-4"
+         style="background: linear-gradient(to right, rgba(29,53,87,0.92), rgba(29,53,87,0.85));">
+  <h1 class="text-3xl font-semibold">Finance Practice Worksheets</h1>
+  <p class="mt-3 max-w-2xl text-base text-blue-100">
+    Download ready-to-use Excel templates for budgeting, SIP tracking,
+    goal planning, and loan comparison — no formulas required.
+  </p>
+</section>
+
+<div class="mt-12 space-y-12">
+
+  <!-- 🧾 BUDGETING -->
+  <div>
+    <h2 class="text-2xl font-semibold text-trust dark:text-blue-300">🧾 Budgeting Worksheets</h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+
+      <!-- Monthly Budget Tracker -->
+      <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow hover:shadow-lg border dark:border-gray-700 transition">
+        <h3 class="text-lg font-semibold text-trust dark:text-blue-200">Monthly Budget Tracker</h3>
+        <p class="text-gray-700 dark:text-gray-300 text-sm mt-2">
+          Track income, expenses, and savings with smart dashboard visuals.
+        </p>
+        <div class="mt-4 flex flex-wrap gap-3">
+          <a href="{% static 'worksheets/monthly_budget_tracker.xlsx' %}" download class="btn-secondary">
+            📥 Excel
+          </a>
+        </div>
+      </div>
+
+      <!-- Daily Expense Tracker -->
+      <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow hover:shadow-lg border dark:border-gray-700 transition">
+        <h3 class="text-lg font-semibold text-trust dark:text-blue-200">Daily Expense Tracker</h3>
+        <p class="text-gray-700 dark:text-gray-300 text-sm mt-2">
+          Log daily expenses and get automatic monthly + category summaries.
+        </p>
+        <div class="mt-4 flex flex-wrap gap-3">
+          <a href="{% static 'worksheets/daily_expense_tracker.xlsx' %}" download class="btn-secondary">
+            📥 Excel
+          </a>
+        </div>
+      </div>
+
+      <!-- 50/30/20 Smart Budget -->
+      <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow hover:shadow-lg border dark:border-gray-700 transition">
+        <h3 class="text-lg font-semibold text-trust dark:text-blue-200">50/30/20 Smart Budget Sheet</h3>
+        <p class="text-gray-700 dark:text-gray-300 text-sm mt-2">
+          Enter your income and adjust Needs/Wants/Savings with logic checks.
+        </p>
+        <div class="mt-4 flex flex-wrap gap-3">
+          <a href="{% static 'worksheets/budget_50_30_20.xlsx' %}" download class="btn-secondary">
+            📥 Excel
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 📈 INVESTING -->
+  <div>
+    <h2 class="text-2xl font-semibold text-trust dark:text-blue-300">📈 Investing Worksheets</h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+
+      <!-- Goal Planning Sheet -->
+      <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow hover:shadow-lg border dark:border-gray-700 transition">
+        <h3 class="text-lg font-semibold text-trust dark:text-blue-200">Goal Planning Sheet</h3>
+        <p class="text-gray-700 dark:text-gray-300 text-sm mt-2">
+          Calculate monthly savings needed to reach your life goals with expected returns.
+        </p>
+        <div class="mt-4 flex flex-wrap gap-3">
+          <a href="{% static 'worksheets/goal_planning.xlsx' %}" download class="btn-secondary">
+            📥 Excel
+          </a>
+        </div>
+      </div>
+
+      <!-- SIP Tracking Sheet -->
+      <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow hover:shadow-lg border dark:border-gray-700 transition">
+        <h3 class="text-lg font-semibold text-trust dark:text-blue-200">SIP Tracking Sheet</h3>
+        <p class="text-gray-700 dark:text-gray-300 text-sm mt-2">
+          Track SIP contributions, NAV, units, returns, and XIRR easily.
+        </p>
+        <div class="mt-4 flex flex-wrap gap-3">
+          <a href="{% static 'worksheets/sip_tracking.xlsx' %}" download class="btn-secondary">
+            📥 Excel
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 💳 LOAN -->
+  <div>
+    <h2 class="text-2xl font-semibold text-trust dark:text-blue-300">💳 Loan Worksheets</h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+
+      <!-- Loan Comparison -->
+      <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow hover:shadow-lg border dark:border-gray-700 transition">
+        <h3 class="text-lg font-semibold text-trust dark:text-blue-200">Loan Comparison Sheet</h3>
+        <p class="text-gray-700 dark:text-gray-300 text-sm mt-2">
+          Compare EMIs, total cost, and best loan option based on actual math.
+        </p>
+        <div class="mt-4 flex flex-wrap gap-3">
+          <a href="{% static 'worksheets/loan_comparison.xlsx' %}" download class="btn-secondary">
+            📥 Excel
+          </a>
+        </div>
+      </div>
+
+      <!-- Debt Overview -->
+      <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow hover:shadow-lg border dark:border-gray-700 transition">
+        <h3 class="text-lg font-semibold text-trust dark:text-blue-200">Debt Overview Sheet</h3>
+        <p class="text-gray-700 dark:text-gray-300 text-sm mt-2">
+          Track all loans + simulate extra payments with payoff savings.
+        </p>
+        <div class="mt-4 flex flex-wrap gap-3">
+          <a href="{% static 'worksheets/debt_overview.xlsx' %}" download class="btn-secondary">
+            📥 Excel
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 💳 SALARY -->
+  <div>
+    <h2 class="text-2xl font-semibold text-trust dark:text-blue-300">💳 Salary Worksheets</h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+
+      <!-- Salary Comparison -->
+      <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow hover:shadow-lg border dark:border-gray-700 transition">
+        <h3 class="text-lg font-semibold text-trust dark:text-blue-200">Salary Comparison Sheet</h3>
+        <p class="text-gray-700 dark:text-gray-300 text-sm mt-2">
+          Use this sheet to compare up to 3 offers. Instead of only looking at CTC, score them based on stability, learning and balance. Adjust the weights based on what matters most to you right now.
+        </p>
+        <div class="mt-4 flex flex-wrap gap-3">
+          <a href="{% static 'worksheets/salary_comparison.xlsx' %}" download class="btn-secondary">
+            📥 Excel
+          </a>
+        </div>
+      </div>
+
+
+
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}

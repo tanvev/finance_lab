@@ -1,0 +1,472 @@
+{% extends "base.html" %}
+{% block title %}Loan Comparison Tool{% endblock %}
+
+{% block content %}
+
+<section class="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-6">
+
+  <!-- LEFT INPUT PANEL -->
+  <div class="bg-white dark:bg-gray-800 rounded-lg p-8 shadow-md border dark:border-gray-700">
+    <h2 class="text-2xl font-semibold text-trust dark:text-blue-300">Loan Comparison</h2>
+    <p class="text-gray-700 dark:text-gray-300 text-base mt-2">
+      Compare two loan options side by side and understand how EMI, interest, and total cost differ.
+    </p>
+
+    <form id="loanCompareForm" class="space-y-6 mt-8 text-base" onsubmit="return false;">
+
+      <!-- Loan A -->
+      <div>
+        <h3 class="text-lg font-semibold text-trust dark:text-blue-300">Loan A</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3">
+          <div>
+            <label class="block text-gray-700 dark:text-gray-200 font-medium">Amount (₹)</label>
+            <input type="number" id="aAmount" min="1"
+              class="w-full px-4 py-2.5 rounded-md border border-gray-300 dark:border-gray-600
+                     bg-gray-50 dark:bg-gray-900 dark:text-gray-100">
+          </div>
+          <div>
+            <label class="block text-gray-700 dark:text-gray-200 font-medium">Interest (% / year)</label>
+            <input type="number" id="aRate" min="1" max="40" step="0.1"
+              class="w-full px-4 py-2.5 rounded-md border border-gray-300 dark:border-gray-600
+                     bg-gray-50 dark:bg-gray-900 dark:text-gray-100">
+          </div>
+          <div>
+            <label class="block text-gray-700 dark:text-gray-200 font-medium">Tenure (years)</label>
+            <input type="number" id="aYears" min="1" max="40"
+              class="w-full px-4 py-2.5 rounded-md border border-gray-300 dark:border-gray-600
+                     bg-gray-50 dark:bg-gray-900 dark:text-gray-100">
+          </div>
+          <div>
+            <label class="block text-gray-700 dark:text-gray-200 font-medium">Processing Fee (₹)</label>
+            <input type="number" id="aFee" min="0" value="0"
+              class="w-full px-4 py-2.5 rounded-md border border-gray-300 dark:border-gray-600
+                     bg-gray-50 dark:bg-gray-900 dark:text-gray-100">
+          </div>
+        </div>
+      </div>
+
+      <!-- Loan B -->
+      <div class="pt-4 border-t border-gray-200 dark:border-gray-700">
+        <h3 class="text-lg font-semibold text-trust dark:text-blue-300">Loan B</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3">
+          <div>
+            <label class="block text-gray-700 dark:text-gray-200 font-medium">Amount (₹)</label>
+            <input type="number" id="bAmount" min="1"
+              class="w-full px-4 py-2.5 rounded-md border border-gray-300 dark:border-gray-600
+                     bg-gray-50 dark:bg-gray-900 dark:text-gray-100">
+          </div>
+          <div>
+            <label class="block text-gray-700 dark:text-gray-200 font-medium">Interest (% / year)</label>
+            <input type="number" id="bRate" min="1" max="40" step="0.1"
+              class="w-full px-4 py-2.5 rounded-md border border-gray-300 dark:border-gray-600
+                     bg-gray-50 dark:bg-gray-900 dark:text-gray-100">
+          </div>
+          <div>
+            <label class="block text-gray-700 dark:text-gray-200 font-medium">Tenure (years)</label>
+            <input type="number" id="bYears" min="1" max="40"
+              class="w-full px-4 py-2.5 rounded-md border border-gray-300 dark:border-gray-600
+                     bg-gray-50 dark:bg-gray-900 dark:text-gray-100">
+          </div>
+          <div>
+            <label class="block text-gray-700 dark:text-gray-200 font-medium">Processing Fee (₹)</label>
+            <input type="number" id="bFee" min="0" value="0"
+              class="w-full px-4 py-2.5 rounded-md border border-gray-300 dark:border-gray-600
+                     bg-gray-50 dark:bg-gray-900 dark:text-gray-100">
+          </div>
+        </div>
+      </div>
+
+      <button type="button" onclick="compareLoans()"
+        class="w-full px-6 py-2.5 rounded-md text-white bg-blue-600 hover:bg-blue-700
+               dark:bg-blue-500 dark:hover:bg-blue-400 font-medium mt-4">
+        Compare Loans
+      </button>
+    </form>
+
+    <div class="p-4 mt-6 bg-blue-50 dark:bg-blue-900 text-gray-900 dark:text-gray-100
+                rounded-md border-l-4 border-blue-500 text-base">
+      <strong>Tip:</strong> A slightly lower EMI with a much longer tenure can end up costing much more interest.
+    </div>
+  </div>
+
+  <!-- RIGHT OUTPUT PANEL -->
+  <div class="bg-white dark:bg-gray-800 rounded-lg p-8 shadow-md border dark:border-gray-700">
+    <h3 class="text-xl font-semibold text-trust dark:text-blue-300">Cost Breakdown</h3>
+    <p class="text-gray-700 dark:text-gray-300 text-base mt-1">
+      Principal, interest, and total cost for both loans.
+    </p>
+
+    <!-- Combo Chart -->
+    <canvas id="loanChart" class="mt-6 w-full h-64"></canvas>
+
+    <!-- Summary Table -->
+    <div id="loanSummary"
+         class="hidden mt-8 space-y-3 text-base bg-blue-50 dark:bg-blue-900 border border-blue-300
+                dark:border-blue-700 rounded-lg p-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <h4 class="font-semibold text-trust dark:text-blue-200 mb-1">Loan A</h4>
+          <p><strong>EMI:</strong> <span id="aEmi"></span></p>
+          <p><strong>Total Interest:</strong> <span id="aInterest"></span></p>
+          <p><strong>Processing Fee:</strong> <span id="aFeeOut"></span></p>
+          <p><strong>Total Cost:</strong> <span id="aTotal"></span></p>
+        </div>
+        <div>
+          <h4 class="font-semibold text-trust dark:text-blue-200 mb-1">Loan B</h4>
+          <p><strong>EMI:</strong> <span id="bEmi"></span></p>
+          <p><strong>Total Interest:</strong> <span id="bInterest"></span></p>
+          <p><strong>Processing Fee:</strong> <span id="bFeeOut"></span></p>
+          <p><strong>Total Cost:</strong> <span id="bTotal"></span></p>
+        </div>
+      </div>
+      <p class="text-sm text-gray-700 dark:text-gray-300 mt-1">
+        Total cost = Principal + Total Interest + Processing Fee.
+      </p>
+    </div>
+  </div>
+
+</section>
+
+<!-- PREPAYMENT SECTION -->
+<section class="mt-12 bg-white dark:bg-gray-800 rounded-lg p-8 shadow-md border dark:border-gray-700">
+  <h3 class="text-xl font-semibold text-trust dark:text-blue-300">Prepayment Impact on Loan A</h3>
+  <p class="text-gray-700 dark:text-gray-300 text-base mt-1">
+    See how extra payments can reduce your loan duration and interest cost. We keep EMI constant and reduce tenure.
+  </p>
+
+  <!-- Toggle -->
+  <div class="flex flex-wrap items-center gap-4 mt-6">
+    <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Prepayment Type:</span>
+    <button type="button" id="modeMonthlyBtn"
+      class="px-4 py-1.5 rounded-full text-sm font-medium bg-blue-600 text-white">
+      Monthly Extra Payment
+    </button>
+    <button type="button" id="modeLumpBtn"
+      class="px-4 py-1.5 rounded-full text-sm font-medium bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-100">
+      One-Time Lump Sum
+    </button>
+  </div>
+
+  <!-- Monthly Extra Mode -->
+  <div id="monthlyExtraSection" class="mt-6 space-y-4 text-base">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div>
+        <label class="block text-gray-700 dark:text-gray-200 font-medium">
+          Extra Amount per Month (₹)
+        </label>
+        <input type="number" id="extraMonthly" min="0"
+          class="w-full px-4 py-2.5 rounded-md border border-gray-300 dark:border-gray-600
+                 bg-gray-50 dark:bg-gray-900 dark:text-gray-100">
+      </div>
+      <div>
+        <label class="block text-gray-700 dark:text-gray-200 font-medium">
+          Start Month (from EMI start)
+        </label>
+        <input type="number" id="extraStartMonth" min="1" value="1"
+          class="w-full px-4 py-2.5 rounded-md border border-gray-300 dark:border-gray-600
+                 bg-gray-50 dark:bg-gray-900 dark:text-gray-100">
+        <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
+          For example, 13 means you start extra payment from year 2.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lump Sum Mode -->
+  <div id="lumpSumSection" class="mt-6 space-y-4 text-base hidden">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div>
+        <label class="block text-gray-700 dark:text-gray-200 font-medium">
+          One-Time Prepayment Amount (₹)
+        </label>
+        <input type="number" id="lumpAmount" min="0"
+          class="w-full px-4 py-2.5 rounded-md border border-gray-300 dark:border-gray-600
+                 bg-gray-50 dark:bg-gray-900 dark:text-gray-100">
+      </div>
+      <div>
+        <label class="block text-gray-700 dark:text-gray-200 font-medium">
+          Prepayment Month (from EMI start)
+        </label>
+        <input type="number" id="lumpMonth" min="1" value="12"
+          class="w-full px-4 py-2.5 rounded-md border border-gray-300 dark:border-gray-600
+                 bg-gray-50 dark:bg-gray-900 dark:text-gray-100">
+        <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
+          For example, 12 means a lump sum paid after one year.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <button type="button" onclick="calculatePrepayment()"
+    class="mt-6 px-6 py-2.5 rounded-md text-white bg-blue-600 hover:bg-blue-700
+           dark:bg-blue-500 dark:hover:bg-blue-400 font-medium">
+    Calculate Prepayment Impact (Loan A)
+  </button>
+
+  <!-- Prepayment Result -->
+  <div id="prepaySummary"
+       class="hidden mt-6 space-y-2 text-base bg-blue-50 dark:bg-blue-900 border border-blue-300
+              dark:border-blue-700 rounded-lg p-4">
+    <p><strong>Original Tenure:</strong> <span id="origTenure"></span> months</p>
+    <p><strong>New Tenure:</strong> <span id="newTenure"></span> months</p>
+    <p><strong>Months Saved:</strong> <span id="monthsSaved"></span></p>
+    <p><strong>Original Interest:</strong> <span id="origInterest"></span></p>
+    <p><strong>New Interest:</strong> <span id="newInterest"></span></p>
+    <p><strong>Interest Saved:</strong> <span id="interestSaved"></span></p>
+
+    <p class="text-sm text-gray-700 dark:text-gray-300 mt-1">
+      We assume EMI stays the same and extra payments reduce the remaining tenure. This shows how small extra amounts can significantly reduce interest cost.
+    </p>
+  </div>
+</section>
+
+{% endblock %}
+
+{% block extra_head %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+// Format as ₹ 1,20,000
+function formatINR(amount) {
+  return "₹ " + amount.toLocaleString("en-IN");
+}
+
+// EMI formula + totals
+function loanStats(principal, annualRate, years) {
+  const months = years * 12;
+  const r = (annualRate / 100) / 12;
+  const factor = Math.pow(1 + r, months);
+  const emi = principal * r * factor / (factor - 1);
+  const totalPayment = emi * months;
+  const totalInterest = totalPayment - principal;
+  return {
+    emi: emi,
+    months: months,
+    totalInterest: totalInterest,
+    totalPayment: totalPayment
+  };
+}
+
+// Global storage for Loan A for prepayment calculations
+let loanAOriginal = null;
+
+// LOAN COMPARISON
+function compareLoans() {
+  const aAmount = parseFloat(document.getElementById("aAmount").value);
+  const aRate   = parseFloat(document.getElementById("aRate").value);
+  const aYears  = parseFloat(document.getElementById("aYears").value);
+  const aFee    = parseFloat(document.getElementById("aFee").value || 0);
+
+  const bAmount = parseFloat(document.getElementById("bAmount").value);
+  const bRate   = parseFloat(document.getElementById("bRate").value);
+  const bYears  = parseFloat(document.getElementById("bYears").value);
+  const bFee    = parseFloat(document.getElementById("bFee").value || 0);
+
+  if (!aAmount || !aRate || !aYears || !bAmount || !bRate || !bYears) {
+    alert("Please fill all key fields for both loans.");
+    return;
+  }
+
+  const a = loanStats(aAmount, aRate, aYears);
+  const b = loanStats(bAmount, bRate, bYears);
+
+  // Save Loan A baseline for prepayment
+  loanAOriginal = {
+    principal: aAmount,
+    annualRate: aRate,
+    emi: a.emi,
+    months: a.months,
+    totalInterest: a.totalInterest
+  };
+
+  const aTotalCost = a.totalPayment + aFee;
+  const bTotalCost = b.totalPayment + bFee;
+
+  // Update summary
+  document.getElementById("aEmi").innerText = formatINR(Math.round(a.emi));
+  document.getElementById("aInterest").innerText = formatINR(Math.round(a.totalInterest));
+  document.getElementById("aFeeOut").innerText = formatINR(Math.round(aFee));
+  document.getElementById("aTotal").innerText = formatINR(Math.round(aTotalCost));
+
+  document.getElementById("bEmi").innerText = formatINR(Math.round(b.emi));
+  document.getElementById("bInterest").innerText = formatINR(Math.round(b.totalInterest));
+  document.getElementById("bFeeOut").innerText = formatINR(Math.round(bFee));
+  document.getElementById("bTotal").innerText = formatINR(Math.round(bTotalCost));
+
+  document.getElementById("loanSummary").classList.remove("hidden");
+
+  // Chart: stacked principal + interest + line for total cost
+  const ctx = document.getElementById("loanChart");
+  if (window.loanChartInstance) {
+    window.loanChartInstance.destroy();
+  }
+
+  window.loanChartInstance = new Chart(ctx, {
+    data: {
+      labels: ["Loan A", "Loan B"],
+      datasets: [
+        {
+          type: "bar",
+          label: "Principal",
+          data: [aAmount, bAmount],
+          backgroundColor: "#1D3557",
+          stack: "stack1"
+        },
+        {
+          type: "bar",
+          label: "Interest",
+          data: [a.totalInterest, b.totalInterest],
+          backgroundColor: "#A8DADC",
+          stack: "stack1"
+        },
+        {
+          type: "line",
+          label: "Total Cost",
+          data: [aTotalCost, bTotalCost],
+          borderColor: "#457B9D",
+          fill: false,
+          tension: 0.3
+        }
+      ]
+    },
+    options: {
+      plugins: { legend: { display: true } },
+      scales: {
+        y: { ticks: { display: false }, grid: { display: false } },
+        x: { grid: { display: false } }
+      }
+    }
+  });
+}
+
+// PREPAYMENT LOGIC (Reduce Tenure, EMI fixed)
+function simulatePrepaymentMonthlyExtra(orig, extra, startMonth) {
+  if (!orig) return null;
+  const r = (orig.annualRate / 100) / 12;
+  let principal = orig.principal;
+  let month = 0;
+  let totalInterest = 0;
+
+  while (principal > 1) {
+    month += 1;
+    const interest = principal * r;
+    let payment = orig.emi;
+    if (month >= startMonth) {
+      payment += extra;
+    }
+    if (payment > principal + interest) {
+      payment = principal + interest;
+    }
+    const principalPaid = payment - interest;
+    principal -= principalPaid;
+    totalInterest += interest;
+    if (month > orig.months + 600) break; // safety
+  }
+
+  return { months: month, totalInterest: totalInterest };
+}
+
+function simulatePrepaymentLumpSum(orig, lumpAmount, lumpMonth) {
+  if (!orig) return null;
+  const r = (orig.annualRate / 100) / 12;
+  let principal = orig.principal;
+  let month = 0;
+  let totalInterest = 0;
+
+  while (principal > 1) {
+    month += 1;
+    const interest = principal * r;
+    let payment = orig.emi;
+    if (month === lumpMonth) {
+      payment += lumpAmount;
+    }
+    if (payment > principal + interest) {
+      payment = principal + interest;
+    }
+    const principalPaid = payment - interest;
+    principal -= principalPaid;
+    totalInterest += interest;
+    if (month > orig.months + 600) break; // safety
+  }
+
+  return { months: month, totalInterest: totalInterest };
+}
+
+function calculatePrepayment() {
+  if (!loanAOriginal) {
+    alert("Please compare the loans first. Prepayment is applied to Loan A.");
+    return;
+  }
+
+  const modeMonthly = !document.getElementById("monthlyExtraSection").classList.contains("hidden");
+
+  let result = null;
+
+  if (modeMonthly) {
+    const extra = parseFloat(document.getElementById("extraMonthly").value || 0);
+    const startMonth = parseInt(document.getElementById("extraStartMonth").value || "1", 10);
+
+    if (!extra || extra <= 0) {
+      alert("Enter a valid extra monthly payment.");
+      return;
+    }
+
+    result = simulatePrepaymentMonthlyExtra(loanAOriginal, extra, startMonth);
+
+  } else {
+    const lump = parseFloat(document.getElementById("lumpAmount").value || 0);
+    const lumpMonth = parseInt(document.getElementById("lumpMonth").value || "12", 10);
+
+    if (!lump || lump <= 0) {
+      alert("Enter a valid lump sum amount.");
+      return;
+    }
+
+    result = simulatePrepaymentLumpSum(loanAOriginal, lump, lumpMonth);
+  }
+
+  if (!result) return;
+
+  const origMonths = loanAOriginal.months;
+  const newMonths = result.months;
+  const monthsSaved = Math.max(origMonths - newMonths, 0);
+  const origInterest = loanAOriginal.totalInterest;
+  const newInterest = result.totalInterest;
+  const interestSaved = Math.max(origInterest - newInterest, 0);
+
+  document.getElementById("origTenure").innerText = origMonths.toString();
+  document.getElementById("newTenure").innerText = newMonths.toString();
+  document.getElementById("monthsSaved").innerText = monthsSaved.toString();
+  document.getElementById("origInterest").innerText = formatINR(Math.round(origInterest));
+  document.getElementById("newInterest").innerText = formatINR(Math.round(newInterest));
+  document.getElementById("interestSaved").innerText = formatINR(Math.round(interestSaved));
+
+  document.getElementById("prepaySummary").classList.remove("hidden");
+}
+
+// Toggle between modes
+document.addEventListener("DOMContentLoaded", function() {
+  const monthlyBtn = document.getElementById("modeMonthlyBtn");
+  const lumpBtn = document.getElementById("modeLumpBtn");
+  const monthlySection = document.getElementById("monthlyExtraSection");
+  const lumpSection = document.getElementById("lumpSumSection");
+
+  monthlyBtn.addEventListener("click", () => {
+    monthlySection.classList.remove("hidden");
+    lumpSection.classList.add("hidden");
+    monthlyBtn.classList.add("bg-blue-600", "text-white");
+    monthlyBtn.classList.remove("bg-gray-200", "dark:bg-gray-700");
+    lumpBtn.classList.remove("bg-blue-600", "text-white");
+    lumpBtn.classList.add("bg-gray-200", "dark:bg-gray-700");
+  });
+
+  lumpBtn.addEventListener("click", () => {
+    monthlySection.classList.add("hidden");
+    lumpSection.classList.remove("hidden");
+    lumpBtn.classList.add("bg-blue-600", "text-white");
+    lumpBtn.classList.remove("bg-gray-200", "dark:bg-gray-700");
+    monthlyBtn.classList.remove("bg-blue-600", "text-white");
+    monthlyBtn.classList.add("bg-gray-200", "dark:bg-gray-700");
+  });
+});
+</script>
+{% endblock %}

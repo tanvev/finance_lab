@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Health Insurance 101 | Educational Finance Lab{% endblock %}
+
+{% block content %}
+<section class="mb-8">
+  <h1 class="text-3xl font-bold text-trust dark:text-blue-300">
+    Health Insurance 101 — Understand Before You Buy
+  </h1>
+  <p class="mt-2 text-gray-700 dark:text-gray-300 max-w-2xl">
+Welcome to the real world, where the scariest thing isn't your student loan interest rate, but a surprise medical bill. You think you’re invincible? That’s cute. Here’s the brutally honest guide to the insurance you actually need.  </p>
+
+</section>
+
+<!-- CONTENT -->
+<div class="space-y-6">
+
+  <!-- 1) WHY HI -->
+<div class="bg-white dark:bg-gray-800 rounded-lg p-8 shadow-md border dark:border-gray-700 mt-6">
+  <h3 class="text-xl font-semibold text-trust dark:text-blue-300">What does health insurance actually cover?</h3>
+  <p class="text-gray-700 dark:text-gray-300 text-base mt-1">
+    It covers the stuff that could put you in debt, not your weekly pharmacy run. Think of it as bankruptcy prevention, not a wellness subscription.
+  </p>
+  <ul class="mt-3 text-sm text-gray-700 dark:text-gray-300 space-y-2">
+      <li><strong>Hospitalisation, treatments, surgery:</strong> When you are officially admitted for more than 24 hours. This covers the terrifying high-ticket items like operation theatre, ICU, and the doctor's massive fees.</li>
+      <li><strong>Room charges:</strong> The cost of your room. (Watch the Room Rent Limit trap below!).</li>
+      <li><strong>Diagnostics:</strong> X-rays, MRIs, and lab tests done during your hospital stay.</li>
+      <li><strong>Post-hospitalisation:</strong> Follow-up visits and medicines for a period after you're discharged (usually 60–180 days). They'll cover the follow-up, but probably not the cab ride home.</li>
+      <li><strong>(OPD usually NOT covered unless you buy a rider.)</strong> Standard policies do not cover your routine cough and cold visits, or buying Band-Aids. If you want that, you'll pay a ridiculously high premium for a "rider" that often isn't worth it.</li>
+    </ul>
+</div>
+<!--IMP TERMS-->
+    <div class="bg-white dark:bg-gray-800 rounded-lg p-8 shadow-md border dark:border-gray-700 mt-6">
+  <h3 class="text-xl font-semibold text-trust dark:text-blue-300">Important terms you must understand</h3>
+  <p class="text-gray-700 dark:text-gray-300 text-base mt-1">
+    Ignore these, and you'll learn the hard way—by paying a huge surprise bill.
+  </p>
+  <ul class="mt-3 text-sm text-gray-700 dark:text-gray-300 space-y-2">
+      <li><strong>Sum Insured (SI): ₹5–20L recommended depending on city:</strong> The ATM Limit. This is the maximum money the insurer will ever pay you in a year. If you live in a metro city, ₹10 Lakh is the bare minimum—a serious surgery can burn through ₹5 Lakh faster than you burn through your monthly stipend.</li>
+      <li><strong>Room Rent Limit: Avoid caps. It causes proportional deductions:</strong> The Class Divider. If the limit is ₹5,000/day, but you choose the ₹8,000/day private room because the general ward was too loud, they don't just deduct ₹3,000. They might cut all your associated bills (doctor, surgery, nurse fees) by 37.5% because your room exceeded the cap! Always choose a plan with NO cap or "Single Private AC Room" benefit.</li>
+      <li><strong>Co-pay: Your share of bill. Prefer ZERO:</strong> Your Share of the Pain. This is a fixed percentage (e.g., 10%) you must pay on every claim. If you're young and healthy, DO NOT ACCEPT A CO-PAY. Your emergency fund is too small for a 10% hit on a ₹5 Lakh bill (that's ₹50,000, which is a month of rent!).</li>
+      <li><strong>Waiting Period: 2–4 years for pre-existing conditions:</strong>Insurance Purgatory. You had minor asthma in college? That's a Pre-Existing Condition (PEC). The insurer makes you wait 2–4 years before they cover it. The sarcastic advice: Buy the policy today while you're still technically "invincible" to start this miserable clock running.</li>
+      <li><strong>Sub-limits: Caps on specific treatments—avoid if possible.</strong> This is the insurer saying, "We covered the surgery, but we’ll only pay ₹40,000 for your pacemaker, even though it costs ₹1.5 Lakh." Run away from policies with sub-limits on common procedures.</li>
+    </ul>
+</div>
+
+
+    <!-RIGHT PLAN-->
+    <div class="bg-white dark:bg-gray-800 rounded-lg p-8 shadow-md border dark:border-gray-700 mt-6">
+  <h3 class="text-xl font-semibold text-trust dark:text-blue-300">Choosing the right plan</h3>
+  <p class="text-gray-700 dark:text-gray-300 text-base mt-1">
+Stop swiping right on the cheapest option. Look for stability and generosity.  </p>
+  <ul class="mt-3 text-sm text-gray-700 dark:text-gray-300 space-y-2">
+      <li><strong>Check cashless hospital network near your home.:</strong>
+In an emergency, you don't want to worry about arranging a ₹3 Lakh deposit. "Cashless" means the insurer pays the hospital directly. Make sure the network covers the hospitals near your rented apartment or campus.      </li>
+      <li><strong>Look for minimal restrictions (no sub-limits, no room caps):</strong>
+The Golden Rule: The less the fine print, the better the plan. Pay slightly more premium for a plan that doesn't nickel and dime you when you're lying in a hospital bed.      </li>
+      <li><strong>CSR above 95% is preferable.:</strong>
+Claim Settlement Ratio (CSR): It's the percentage of claims the company approved versus received. A high CSR (95%+) means they actually pay out instead of looking for reasons to reject your claim. You want stability, not drama.      </li>
+      <li><strong>Buy early → cheaper premiums.:</strong>
+The Age Tax is Real. Premiums go up every year you age. Plus, you need to clear those 2–4 year waiting periods. Starting now is the cheapest, easiest way to enter the financial protection game.      </li>
+
+    </ul>
+</div>
+
+
+</div>
+
+<!-- CTA to tool -->
+<div class="mt-8 bg-blue-50 dark:bg-blue-900 border border-blue-200 dark:border-blue-700 p-5 rounded-lg">
+  <p class="text-sm text-gray-700 dark:text-gray-300">
+    Ready to estimate actual insurer payout for your medical bill?
+  </p>
+  <a href="{% url 'tool_health_insurance_calc' %}">
+    <button class="mt-3 px-4 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700 text-sm">
+      Open Health Insurance Calculator →
+    </button>
+  </a>
+</div>
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Badges{% endblock %}
+
+{% block content %}
+
+<h1 class="text-3xl font-bold text-trust dark:text-blue-300">🎖 Your Streak Badges</h1>
+
+<div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+
+  <div class="p-4 bg-white dark:bg-gray-800 border-l-4 border-yellow-500 rounded-md">
+    <h3 class="font-semibold">🥉 Bronze Saver</h3>
+    <p class="text-xs opacity-75">Streak: 3 days</p>
+  </div>
+
+  <div class="p-4 bg-white dark:bg-gray-800 border-l-4 border-gray-400 rounded-md">
+    <h3 class="font-semibold">🥈 Silver Smart–Spender</h3>
+    <p class="text-xs opacity-75">Streak: 7 days</p>
+  </div>
+
+  <div class="p-4 bg-white dark:bg-gray-800 border-l-4 border-orange-500 rounded-md">
+    <h3 class="font-semibold">🥇 Gold Money Master</h3>
+    <p class="text-xs opacity-75">Streak: 15 days</p>
+  </div>
+
+  <div class="p-4 bg-white dark:bg-gray-800 border-l-4 border-purple-600 rounded-md">
+    <h3 class="font-semibold">💎 Platinum Wealth Ninja</h3>
+    <p class="text-xs opacity-75">Streak: 30 days</p>
+  </div>
+
+</div>
+
+<script>
+const s = Number(localStorage.getItem("fl_streak") || 0);
+document.querySelectorAll("div[p]").forEach(() => {});
+
+// optional highlight logic later
+</script>
+
+{% endblock %}

@@ -1,0 +1,196 @@
+{% extends "base.html" %}
+{% block title %}SIP Calculator{% endblock %}
+
+{% block content %}
+
+<section class="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-6">
+
+  <!-- LEFT INPUT PANEL -->
+  <div class="bg-white dark:bg-gray-800 rounded-lg p-8 shadow-md border dark:border-gray-700">
+    <h2 class="text-2xl font-semibold text-trust dark:text-blue-300">SIP Calculator</h2>
+    <p class="text-gray-700 dark:text-gray-300 text-base mt-2">
+      Estimate how your monthly or yearly investment can grow depending on market returns.
+    </p>
+
+    <form id="sipForm" class="space-y-5 mt-8 text-base">
+
+      <!-- Mode Switch -->
+      <div class="flex items-center gap-3">
+        <label class="text-gray-700 dark:text-gray-200 font-medium">Investment Mode:</label>
+        <select id="sipMode"
+          class="px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-900 dark:text-gray-100">
+          <option value="monthly">Monthly SIP</option>
+          <option value="yearly">Yearly SIP</option>
+        </select>
+      </div>
+
+      <!-- Investment Amount -->
+      <div>
+        <label class="block text-gray-700 dark:text-gray-200 font-medium">Investment Amount (₹)</label>
+        <input type="number" id="sipAmount" min="1"
+          class="w-full px-4 py-2.5 rounded-md border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-900 dark:text-gray-100">
+      </div>
+
+      <!-- Min Return -->
+      <div>
+        <label class="block text-gray-700 dark:text-gray-200 font-medium">Min Expected Return (% per year)</label>
+        <input type="number" id="minReturn" min="1" max="50"
+          class="w-full px-4 py-2.5 rounded-md border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-900 dark:text-gray-100">
+      </div>
+
+      <!-- Max Return -->
+      <div>
+        <label class="block text-gray-700 dark:text-gray-200 font-medium">Max Expected Return (% per year)</label>
+        <input type="number" id="maxReturn" min="1" max="50"
+          class="w-full px-4 py-2.5 rounded-md border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-900 dark:text-gray-100">
+      </div>
+
+      <!-- Years -->
+      <div>
+        <label class="block text-gray-700 dark:text-gray-200 font-medium">Time Period (Years)</label>
+        <input type="number" id="sipYears" min="1" max="50"
+          class="w-full px-4 py-2.5 rounded-md border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-900 dark:text-gray-100">
+      </div>
+
+      <!-- Button -->
+      <button type="button" onclick="calculateSIP()"
+        class="w-full px-6 py-2.5 rounded-md text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-400 font-medium mt-4">
+        Calculate Growth
+      </button>
+
+    </form>
+  </div>
+
+  <!-- RIGHT OUTPUT PANEL -->
+  <div class="bg-white dark:bg-gray-800 rounded-lg p-8 shadow-md border dark:border-gray-700">
+    <h3 class="text-xl font-semibold text-trust dark:text-blue-300">Projected Growth</h3>
+    <p class="text-gray-700 dark:text-gray-300 text-base mt-1">
+      Visualizes lower returns, average market returns, and best-case outcomes.
+    </p>
+
+    <canvas id="sipChart" class="mt-6 w-full h-64"></canvas>
+
+    <!-- Results Summary -->
+    <div id="sipSummary" class="hidden mt-8 space-y-2 text-base bg-blue-50 dark:bg-blue-900 border border-blue-300 dark:border-blue-700 rounded-lg p-4">
+      <p><strong>Total Invested: </strong><span id="totalInvested"></span></p>
+      <p><strong>Final Value (Min): </strong><span id="finalMin"></span></p>
+      <p><strong>Final Value (Mid): </strong><span id="finalMid"></span></p>
+      <p><strong>Final Value (Max): </strong><span id="finalMax"></span></p>
+      <p id="sipInsight" class="text-sm text-gray-800 dark:text-gray-200 mt-2"></p>
+    </div>
+
+  </div>
+</section>
+
+{% endblock %}
+
+{% block extra_head %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+
+// Currency Formatter: ₹ 1,20,000 format
+function formatINR(amount) {
+  return "₹ " + amount.toLocaleString("en-IN");
+}
+
+// SIP Future Value Calculator (Monthly + Yearly)
+function sipFutureValue(invest, rate, years, mode) {
+  let r = rate / 100;
+  let months = years * 12;
+
+  if (mode === "monthly") {
+    let mr = r / 12;
+    return Math.round(invest * (((1 + mr) ** months - 1) / mr) * (1 + mr));
+  } else {
+    return Math.round(invest * (((1 + r) ** years - 1) / r) * (1 + r));
+  }
+}
+
+function calculateSIP() {
+
+  // Input Values
+  let mode = document.getElementById("sipMode").value;
+  let amount = parseFloat(document.getElementById("sipAmount").value);
+  let minR = parseFloat(document.getElementById("minReturn").value);
+  let maxR = parseFloat(document.getElementById("maxReturn").value);
+  let years = parseFloat(document.getElementById("sipYears").value);
+
+  // Validation
+  if (!amount || !minR || !maxR || !years) return alert("Please fill all fields.");
+  if (maxR <= minR) return alert("Max return must be greater than Min return.");
+
+  let midR = (minR + maxR) / 2;
+
+  // Chart Data
+  let labels = [];
+  let minData = [], midData = [], maxData = [];
+
+  for (let y = 1; y <= years; y++) {
+    labels.push("Year " + y);
+    minData.push(sipFutureValue(amount, minR, y, mode));
+    midData.push(sipFutureValue(amount, midR, y, mode));
+    maxData.push(sipFutureValue(amount, maxR, y, mode));
+  }
+
+  // Destroy existing chart
+  if (window.sipChartInstance) window.sipChartInstance.destroy();
+
+  // Dark-Mode Colors
+  let isDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+  let gainColor = isDark ? "#00FFA3" : "#0EA5E9";  // Gains color
+  let investColor = isDark ? "#FF6B6B" : "#EF4444"; // Invested color
+
+  // Chart Creation
+  const ctx = document.getElementById("sipChart");
+
+  window.sipChartInstance = new Chart(ctx, {
+    type: "line",
+    data: {
+      labels: labels,
+      datasets: [
+        {
+          label: "Invested Amount (₹)",
+          data: labels.map((_, i) => (mode === "monthly" ? amount * 12 : amount) * (i + 1)),
+          borderColor: investColor,
+          backgroundColor: investColor + "55",
+          fill: true,
+          borderWidth: 2,
+          tension: 0.3
+        },
+        {
+          label: "Future Value (₹)",
+          data: maxData,
+          borderColor: gainColor,
+          backgroundColor: gainColor + "55",
+          fill: true,
+          borderWidth: 2,
+          tension: 0.3
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      scales: { y: { beginAtZero: false } },
+      animation: { duration: 1400, easing: "easeInOutQuart" }
+    }
+  });
+
+  // Summary Update
+  document.getElementById("sipSummary").classList.remove("hidden");
+
+  let totalInvest = (mode === "monthly" ? amount * 12 : amount) * years;
+
+  document.getElementById("totalInvested").innerText = formatINR(totalInvest);
+  document.getElementById("finalMin").innerText = formatINR(minData[minData.length - 1]);
+  document.getElementById("finalMid").innerText = formatINR(midData[midData.length - 1]);
+  document.getElementById("finalMax").innerText = formatINR(maxData[maxData.length - 1]);
+
+  document.getElementById("sipInsight").innerHTML =
+    `📌 <strong>Insight:</strong> Your total investment of <strong>${formatINR(totalInvest)}</strong>
+     could grow to <strong>${formatINR(maxData[maxData.length - 1])}</strong>
+     in <strong>${years} years</strong> depending on market returns.`;
+
+}
+
+</script>
+{% endblock %}

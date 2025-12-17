@@ -1,0 +1,249 @@
+{% extends "base.html" %}
+{% block title %}Investment Fundamentals | Educational Finance Lab{% endblock %}
+
+{% block content %}
+
+<!-- HERO -->
+<section class="rounded-lg p-10 text-white bg-gradient-to-r from-[#1D3557]/95 to-[#1D3557]/90 shadow-md mb-12">
+  <h1 class="text-4xl font-bold mb-3">Investment Fundamentals</h1>
+  <p class="max-w-2xl text-base md:text-lg opacity-90">
+    Learn how to grow your money safely and patiently using simple, realistic examples for students and young professionals in India.
+  </p>
+</section>
+
+<!-- INTRO SECTION -->
+<h2 class="text-2xl font-semibold text-trust dark:text-blue-300">Learn the Concepts</h2>
+<p class="text-gray-700 dark:text-gray-300 text-base mt-1">
+  Investing is about using time and compounding to make your money work for you, not about chasing tips.
+</p>
+
+<!-- 1) WHY INVESTING IS NEEDED -->
+<div class="bg-white dark:bg-gray-800 rounded-lg p-8 shadow-md border dark:border-gray-700 mt-6">
+  <h3 class="text-xl font-semibold text-trust dark:text-blue-300">Why Investing Is Needed</h3>
+  <p class="text-gray-700 dark:text-gray-300 text-base mt-3">
+    Because money is shy. If you don’t help it grow, it quietly loses value behind your back.
+Prices keep rising over time — that villain is called inflation.
+If your money sits in super-low-return accounts, it’s basically shrinking in slow motion.
+  </p>
+  <p class="text-gray-700 dark:text-gray-300 text-base mt-3">
+Think about it:
+That mobile plan that was ₹149 a few years ago?
+Now it’s ₹249 for the same exact service.
+Nothing improved — except the bill.
+Your income and savings need to grow just to stay in the same place.
+Investing is how you make sure Future You isn’t struggling with Past You’s decisions.
+  </p>
+
+  <div class="p-4 mt-4 bg-green-100 dark:bg-green-900 text-gray-900 dark:text-gray-100 rounded-md border-l-4 border-green-600 text-base">
+    <strong>Tip:</strong> Use safe places for short-term goals, but for anything long-term?
+Investing isn’t optional — it’s survival training for your money.
+  </div>
+</div>
+
+<!-- 2) RISK VS RETURN -->
+<div class="bg-white dark:bg-gray-800 rounded-lg p-8 shadow-md border dark:border-gray-700 mt-12">
+  <h3 class="text-xl font-semibold text-trust dark:text-blue-300">Risk and Return in Plain Language</h3>
+  <p class="text-gray-700 dark:text-gray-300 text-base mt-3">The basic rule of investing: “If it moves less, it grows less. If it moves more, it could grow more.”</p>
+<p class="text-gray-700 dark:text-gray-300 text-base mt-3">Low risk = slow and steady.</p>
+<p class="text-gray-700 dark:text-gray-300 text-base mt-3">High risk = jumps around, but can climb higher over time.
+  </p>
+  <p class="text-gray-700 dark:text-gray-300 text-base mt-3">Think of investments like personalities: </p>
+  <ul class="list-disc pl-6 mt-4 text-gray-700 dark:text-gray-300 text-base">
+    <li>Savings account: Super chill. Zero drama. Also zero growth.
+“I’ll keep your money safe, but don’t expect miracles.”</li>
+    <li>Fixed deposit (FD): The reliable friend. Low risk, slightly better returns than savings.
+Around 6–7% per year, slow and steady</li>
+    <li>Debt mutual funds: Medium risk, medium spice.
+Not too jumpy, not too boring.</li>
+    <li>Equity mutual funds / stocks: The energetic cousin. Can be down one year and up a lot the next.
+Best for long-term goals where you let it grow without panicking.</li>
+  </ul>
+
+  <p class="text-gray-700 dark:text-gray-300 text-base mt-4">
+    Equity can show negative returns in some years and very strong positive returns in others — that’s part of the deal.
+  </p>
+
+  <div class="p-4 mt-4 bg-red-100 dark:bg-red-900 text-gray-900 dark:text-gray-100 rounded-md border-l-4 border-red-600 text-base">
+    <strong>Avoid:</strong> Thinking “higher return” = “guaranteed return.”
+Nope.
+Higher potential returns always come with higher risk.
+If someone promises high returns with zero risk, run. Fast.
+  </div>
+</div>
+
+<!-- 3) POWER OF COMPOUNDING (LINE CHART) -->
+<div class="bg-white dark:bg-gray-800 rounded-lg p-8 shadow-md border dark:border-gray-700 mt-12">
+  <h3 class="text-xl font-semibold text-trust dark:text-blue-300">Power of Compounding (SIP Example)</h3>
+  <p class="text-gray-700 dark:text-gray-300 text-base mt-3">
+    Compounding is “returns on previous returns”. When you stay invested for many years, your money can grow much faster than
+    simple saving.
+  </p>
+
+  <p class="text-gray-700 dark:text-gray-300 text-base mt-3">
+    Example: investing ₹ 3,000 every month in a long-term SIP, assuming an average return of around 12% per year.
+  </p>
+
+  <!-- Line Chart -->
+  <canvas id="sipGrowthChart" class="mt-6 w-full h-64"></canvas>
+
+  <p class="text-gray-700 dark:text-gray-300 text-base mt-4">
+    The curve starts slowly, then bends upwards over time — this is compounding at work.
+  </p>
+
+  <div class="p-4 mt-4 bg-green-100 dark:bg-green-900 text-gray-900 dark:text-gray-100 rounded-md border-l-4 border-green-600 text-base">
+    <strong>Tip:</strong> Time and patience matter more than catching the “perfect” day to start.
+  </div>
+</div>
+
+<!-- 4) GOAL-BASED INVESTING (BAR CHART) -->
+<div class="bg-white dark:bg-gray-800 rounded-lg p-8 shadow-md border dark:border-gray-700 mt-12">
+  <h3 class="text-xl font-semibold text-trust dark:text-blue-300">Goal-Based Investing</h3>
+  <p class="text-gray-700 dark:text-gray-300 text-base mt-3">
+    Instead of investing randomly, connect each investment to a goal and a time frame. The risk level and product choice
+    should depend on when you need the money.
+  </p>
+
+  <ul class="list-disc pl-6 mt-4 text-gray-700 dark:text-gray-300 text-base">
+    <li>3 years: laptop, short course, local travel</li>
+    <li>5 years: higher studies, car down payment</li>
+    <li>10+ years: financial independence, early retirement</li>
+  </ul>
+
+  <p class="text-gray-700 dark:text-gray-300 text-base mt-4">
+    The chart below shows an illustration of how much you might aim for different goals.
+  </p>
+
+  <!-- Bar Chart -->
+  <canvas id="goalChart" class="mt-6 w-full h-64"></canvas>
+
+  <div class="p-4 mt-4 bg-green-100 dark:bg-green-900 text-gray-900 dark:text-gray-100 rounded-md border-l-4 border-green-600 text-base">
+    <strong>Tip:</strong> Short-term goals usually need safer options; long-term goals can handle more ups and downs.
+  </div>
+</div>
+
+<!-- 5) BASICS OF MUTUAL FUNDS -->
+<div class="bg-white dark:bg-gray-800 rounded-lg p-8 shadow-md border dark:border-gray-700 mt-12">
+  <h3 class="text-xl font-semibold text-trust dark:text-blue-300">Basics of Mutual Funds</h3>
+  <p class="text-gray-700 dark:text-gray-300 text-base mt-3">
+    A mutual fund is basically a team effort for your money.
+Lots of people put their money into one big pot, and a professional fund manager invests it in a mix of assets (like shares or bonds).
+You don’t pick stocks.
+You don’t stare at charts.
+You just invest — the fund manager does the nerdy stuff for you (for a small fee).
+  </p>
+
+  <ul class="list-disc pl-6 mt-4 text-gray-700 dark:text-gray-300 text-base">
+    <li><strong>Equity funds:</strong>Invest mostly in shares.
+Higher risk, higher long-term growth potential.
+Perfect for goals where you can chill and wait (5+ years).</li>
+    <li><strong>Debt funds:</strong> Invest in bonds and other steady instruments.
+Lower risk, calmer growth.
+Good for short to medium-term goals.</li>
+    <li><strong>Hybrid funds:</strong> A mix of equity + debt.
+For people who want “balanced diet” energy in investing.</li>
+  </ul>
+
+  <p class="text-gray-700 dark:text-gray-300 text-base mt-4">
+    You do not need to pick individual stocks. The fund manager does it for you, in exchange for a small fee.
+  </p>
+
+  <div class="p-4 mt-4 bg-red-100 dark:bg-red-900 text-gray-900 dark:text-gray-100 rounded-md border-l-4 border-red-600 text-base">
+    <strong>Avoid:</strong> Investing in a fund just because “it gave crazy returns last year.”
+That’s like choosing a partner because they were nice one weekend.
+Past performance alone ≠ future results.
+  </div>
+</div>
+
+<!-- TOOLS SECTION -->
+<h2 class="text-2xl font-semibold text-trust dark:text-blue-300 mt-16">Try the Tools</h2>
+<p class="text-gray-700 dark:text-gray-300 text-base mt-1">
+  Experiment with different amounts and durations to see how your money could grow.
+</p>
+
+<div class="flex gap-4 flex-wrap mt-6">
+  <a href="{% url 'tool_sip_calculator' %}">
+    <button class="px-6 py-2.5 rounded-md text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-400 font-medium text-base">
+      SIP Calculator
+    </button>
+  </a>
+  <a href="{% url 'tools' %}">
+    <button class="px-6 py-2.5 rounded-md text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-400 font-medium text-base">
+      FD vs SIP Comparison
+    </button>
+  </a>
+</div>
+
+<!-- WORKSHEETS SECTION -->
+<h2 class="text-2xl font-semibold text-trust dark:text-blue-300 mt-16">Download Worksheets</h2>
+<p class="text-gray-700 dark:text-gray-300 text-base mt-1">
+  Use planner sheets to connect your goals, monthly investments, and timelines on one page.
+</p>
+
+<a href="{% url 'worksheets' %}">
+  <button class="mt-5 px-6 py-2.5 rounded-md text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-400 font-medium text-base">
+    View All Worksheets
+  </button>
+</a>
+
+<!-- CHALLENGE -->
+<div class="bg-blue-50 dark:bg-blue-900 border border-blue-300 dark:border-blue-700 rounded-lg p-6 mt-8">
+  <strong>Challenge:</strong> Plan how you would fund a ₹ 80,000 laptop in 3 years using a monthly SIP.
+</div>
+
+{% endblock %}
+
+{% block extra_head %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  // SIP Growth Line Chart (₹ 3,000 per month, illustrative values)
+  const sipCtx = document.getElementById('sipGrowthChart');
+  if (sipCtx) {
+    new Chart(sipCtx, {
+      type: 'line',
+      data: {
+        labels: ["Year 1", "Year 2", "Year 3", "Year 4", "Year 5", "Year 6", "Year 7", "Year 8", "Year 9", "Year 10"],
+        datasets: [{
+          data: [40000, 90000, 150000, 220000, 300000, 390000, 490000, 600000, 720000, 850000],
+          borderColor: "#4dc0c4",
+          backgroundColor: "rgba(69,123,157,0.2)",
+          tension: 0.3,
+          fill: true
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { display: false } },
+        scales: {
+          y: { ticks: { display: false }, grid: { display: false } },
+          x: { grid: { display: false } }
+        }
+      }
+    });
+  }
+
+  // Goal-Based Bar Chart (illustrative target amounts)
+  const goalCtx = document.getElementById('goalChart');
+  if (goalCtx) {
+    new Chart(goalCtx, {
+      type: 'bar',
+      data: {
+        labels: ["Laptop (3 yrs)", "Higher Studies (5 yrs)", "Financial Cushion (10 yrs)"],
+        datasets: [{
+          data: [80000, 500000, 1500000],
+          backgroundColor: ["#4d7ec4", "#457B9D", "#A8DADC"]
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { display: false } },
+        scales: {
+          y: { ticks: { display: false }, grid: { display: false } },
+          x: { grid: { display: false } }
+        }
+      }
+    });
+  }
+});
+</script>
+{% endblock %}

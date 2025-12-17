@@ -1,0 +1,397 @@
+{% extends "base.html" %}
+{% block title %}Credit Card Safety Quiz | Educational Finance Lab{% endblock %}
+
+{% block content %}
+
+<section class="mb-6">
+  <h1 class="text-2xl md:text-3xl font-semibold text-trust dark:text-blue-300">
+    Credit Card Safety – Quiz
+  </h1>
+  <p class="mt-2 text-sm md:text-base text-gray-700 dark:text-gray-300 max-w-2xl">
+    Myths, traps, EMIs, minimum due, reward psychology — 5 random questions each attempt. Short snarky explanations after each answer.
+  </p>
+</section>
+
+<!-- QUIZ CARD -->
+<section id="quiz-card"
+         class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-5 md:p-6 shadow-md relative overflow-hidden">
+
+  <div class="flex items-center justify-between mb-3 text-xs md:text-sm text-gray-600 dark:text-gray-300">
+    <span id="q-counter">Question 1 of 5</span>
+    <span id="q-score">Score: 0 / 5</span>
+  </div>
+
+  <h2 id="q-text" class="text-base md:text-lg font-semibold text-gray-900 dark:text-gray-100"></h2>
+  <p id="q-context" class="mt-1 text-xs md:text-sm text-gray-600 dark:text-gray-300"></p>
+
+  <div id="q-options" class="mt-4 space-y-2"></div>
+
+  <div id="q-feedback" class="mt-3 text-xs md:text-sm hidden"></div>
+  <div id="q-warning" class="mt-2 text-xs text-red-600 dark:text-red-300 hidden">
+    Please select an answer before moving to the next question.
+  </div>
+
+  <div class="mt-5 flex justify-between items-center text-xs md:text-sm">
+    <button id="q-prev"
+            class="px-3 py-1.5 rounded-md border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-40 disabled:cursor-not-allowed"
+            disabled>
+      ← Previous
+    </button>
+    <button id="q-next"
+            class="px-4 py-1.5 rounded-md bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-400 text-white font-medium disabled:opacity-40 disabled:cursor-not-allowed">
+      Next →
+    </button>
+  </div>
+</section>
+
+<!-- RESULT / BADGE -->
+<section id="result-card"
+         class="hidden mt-8 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6 shadow-md relative overflow-hidden">
+
+  <div id="confetti-container" class="pointer-events-none absolute inset-0 overflow-hidden hidden"></div>
+
+  <h2 class="text-xl md:text-2xl font-semibold text-trust dark:text-blue-200">
+    Credit Card Quiz Result
+  </h2>
+  <p class="mt-1 text-sm md:text-base text-gray-700 dark:text-gray-300">
+    You’ve completed the Credit Card Safety quiz.
+  </p>
+
+  <p id="result-score"
+     class="mt-4 text-sm md:text-base text-gray-900 dark:text-gray-100 font-medium"></p>
+
+  <div class="mt-5 flex flex-col md:flex-row items-center gap-4">
+    <div id="badge-wrapper"
+         class="w-32 h-40 flex items-center justify-center"></div>
+    <div>
+      <p id="badge-title" class="text-base md:text-lg font-semibold text-gray-900 dark:text-gray-100"></p>
+      <p id="badge-desc" class="mt-1 text-sm text-gray-700 dark:text-gray-300 max-w-md"></p>
+      <p class="mt-2 text-xs text-gray-500 dark:text-gray-400">
+        This badge is stored in your browser only, and will be used later in your progress dashboard.
+      </p>
+    </div>
+  </div>
+
+  <div class="mt-6 flex flex-wrap gap-3 text-xs md:text-sm">
+    <a href="{% url 'module_credit_card' %}">
+      <button class="px-4 py-1.5 rounded-md bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-400 text-white font-medium">
+        Back to Credit Cards Module
+      </button>
+    </a>
+    <button onclick="restartCCQuiz()"
+            class="px-4 py-1.5 rounded-md border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700">
+      Retake Quiz
+    </button>
+  </div>
+</section>
+
+{% endblock %}
+
+{% block extra_head %}
+<style>
+  @keyframes fl-confetti-fall {
+    0%   { transform: translateY(-20px) rotate(0deg); opacity: 0; }
+    20%  { opacity: 1; }
+    100% { transform: translateY(220px) rotate(360deg); opacity: 0; }
+  }
+</style>
+
+<script>
+// ----------------------------
+// Credit Card Quiz Bank (25 questions)
+// Explanation style: snarky + educational
+// ----------------------------
+const _ccBank = [
+  { text: "Paying only the 'minimum due' every month is:", context: "", options: ["A smart credit-building trick", "A recipe for long-term expensive debt", "Always recommended by banks", "Good for credit score"], correct: 1, explanation: "Minimum due keeps you out of late fees but the remaining balance accrues high interest. Not a good long-term plan." },
+  { text: "Zero-cost EMI often means:", context: "", options: ["Truly zero interest always", "Interest hidden in product cost or discount adjustment", "You pay less than cash", "Bank absorbs the cost always"], correct: 1, explanation: "Often the merchant or lender absorbs interest via price adjustments. Check the final payable amount." },
+  { text: "Which is the safest card habit?", context: "", options: ["Use card for impulsive buys", "Pay the statement in full every month", "Max the limit for cashback", "Only pay minimum when busy"], correct: 1, explanation: "Paying in full avoids interest and keeps finances healthy." },
+  { text: "If a card has a high reward % on dining but you never dine out, choose it?", context: "", options: ["Yes — rewards are universal", "No — pick rewards matching your spending", "Yes if fee is high", "Always pick highest reward"], correct: 1, explanation: "Rewards are valuable only if they align with your real spending; otherwise they encourage waste." },
+  { text: "Credit limit increases are always good:", context: "", options: ["Yes — more buying power", "No — higher temptation + risk if you carry balances", "Yes for credit score only", "Never relevant"], correct: 1, explanation: "Higher limit can hurt if it tempts overspending. Keep limits conservative early on." },
+  { text: "You notice a small unauthorized charge. First step:", context: "", options: ["Ignore it", "Dispute via card's official app/phone immediately", "Share details on social media", "Pay it next month"], correct: 1, explanation: "Report unauthorized charges quickly — banks can often reverse them if informed promptly." },
+  { text: "EMI on credit card cash withdrawal is usually:", context: "", options: ["Cheaper than purchases", "Much more expensive (fees + interest from day 1)", "Zero cost sometimes", "No interest ever"], correct: 1, explanation: "Cash withdrawals on cards incur immediate interest and high fees — avoid unless necessary." },
+  { text: "Best way to build credit history safely:", context: "", options: ["Paying full dues on time and keeping low utilization", "Keeping multiple unused cards active", "Paying minimum always", "Using cards internationally only"], correct: 0, explanation: "Consistent on-time full payments and low utilization build a healthy credit history." },
+  { text: "Which is true about reward points?", context: "", options: ["They never expire", "They can expire and have limited redemption value", "They always beat cashback", "You can convert to cash easily"], correct: 1, explanation: "Points often expire and have restrictions. Understand redemption terms before chasing them." },
+  { text: "If you plan to buy a phone but can't pay upfront: choose EMI or save first?", context: "", options: ["EMI is always better", "Save first — avoid paying interest unless EMI truly interest-free", "Buy now and delay payments", "Take multiple small EMIs across cards"], correct: 1, explanation: "Saving before purchase avoids interest and keeps you in control; EMIs can be costly if not truly zero-cost." },
+  { text: "Which action lowers your credit utilization ratio?", context: "", options: ["Use full card limit monthly", "Pay down balances and request higher limit", "Close old credit cards", "Only make minimum payments"], correct: 1, explanation: "Lowering outstanding balances reduces utilization. Requesting limit increases helps, but only if you won't overspend." },
+  { text: "You see a 'no-cost EMI' but total paid > cash price. That means:", context: "", options: ["System error", "Hidden costs or merchant adjustment — check total payable", "Bank made mistake in your favour", "Ignore it"], correct: 1, explanation: "Always check final payable. 'No-cost' can be marketing; the fine print matters." },
+  { text: "Which is a red flag in card offers?", context: "", options: ["Clear T&Cs, no surprise fees", "Complex conditions, expiry of welcome bonus soon", "Transparent reward calendar", "Easy fee waiver details"], correct: 1, explanation: "Complex T&Cs and tight conditions hide real costs. Simplicity is a good sign." },
+  { text: "Splitting a purchase across multiple cards to game rewards is:", context: "", options: ["Always efficient", "Often messy and can trigger tracking issues", "Recommended by banks", "Risk-free"], correct: 1, explanation: "Chopping payments can create tracking headaches and accidental unpaid balances." },
+  { text: "Paying credit card bill by NEFT/IMPS before due date is:", context: "", options: ["Good — ensures payment credited", "Bad — banks don't accept such payment", "Only for large sums", "Never works"], correct: 0, explanation: "Paying via bank transfer ahead of due date is a safe way to ensure clearing; confirm crediting time with your issuer." },
+  { text: "Which is true about closing an old credit card?", context: "", options: ["Always improves credit score", "Can reduce average account age and hurt score", "Has no effect", "Banks prefer you close them"], correct: 1, explanation: "Closing old accounts can reduce average age and lower your credit score." },
+  { text: "If a merchant asks you to 'authorize charge now and refund later' to avoid EMI fees:", context: "", options: ["Agree — convenient", "Refuse — merchant-side manipulations are risky", "Only if they promise in writing", "Only if it's a known brand"], correct: 1, explanation: "Such flows can hide charges/adjustments. Avoid non-transparent practices." },
+  { text: "Which is the smart autopay setup?", context: "", options: ["Autopay for minimum due only", "Autopay full statement amount", "Autopay random amount", "No autopay ever"], correct: 1, explanation: "Autopay full statement avoids missed payments and interest; minimum-only autopay keeps you in debt cycle." },
+  { text: "High credit utilization (>40%) usually means:", context: "", options: ["Better credit score", "Higher credit stress and potential score drop", "Bank will always increase limit", "No impact"], correct: 1, explanation: "High utilization signals risk to lenders and can hurt scores; keep utilization low." },
+  { text: "Which is a safe way to use reward coupons?", context: "", options: ["Buy things you don't need to use coupon", "Use coupons for regular planned purchases", "Buy expensive gifts only for coupon points", "Max out coupons every month"], correct: 1, explanation: "Use coupons to save on planned expenses, not to justify extra spending." },
+  { text: "If you miss a payment and can't pay immediately, you should:", context: "", options: ["Continue ignoring", "Call issuer, explain & request a repayment plan", "Pay only the minimum forever", "Close account instantly"], correct: 1, explanation: "Call your issuer — they often offer solutions like EMI conversion or waiver options for first misses." },
+  { text: "Is it okay to share the last 4 digits of your card in public posts?", context: "", options: ["Safe always", "Usually safe but avoid showing full card or CVV", "Never safe to share any digits", "Only with friends"], correct: 1, explanation: "Last 4 digits alone are low-risk, but avoid sharing full card details or CVV anywhere public." },
+  { text: "Perks like airport lounge access are useful if:", context: "", options: ["You never travel", "You travel frequently and the access offsets the fee", "You like free food once", "Always ignore"], correct: 1, explanation: "Lounge perks only make sense if you travel enough to offset the card fees." },
+  { text: "If a card issuer increases interest rates unannounced, you should:", context: "", options: ["Keep using and accept", "Call the issuer, dispute or consider switching", "Pay minimum always", "Ignore communications"], correct: 1, explanation: "Dispute unexpected hikes and consider moving balances or switching if terms worsen." },
+  { text: "Which behavior most reduces long-term card cost?", context: "", options: ["Chasing every shiny reward", "Paying full statement each month and budgeting", "Frequently closing and opening cards", "Using many cards at once"], correct: 1, explanation: "Disciplined full payments and budgeting beat rewards-chasing in long-term cost." }
+];
+
+// ----------------------------
+// State: select 5 random Qs on load (locked for attempt)
+// ----------------------------
+let ccPool = [];
+let ccIndex = 0;
+let ccScore = 0;
+let ccAnswered = {};
+
+// pickRandomN helper (same as scam)
+function pickRandomN(arr, n){
+  const copy = arr.slice();
+  const picked = [];
+  for(let i=0;i<n && copy.length;i++){
+    const idx = Math.floor(Math.random()*copy.length);
+    picked.push(copy.splice(idx,1)[0]);
+  }
+  return picked;
+}
+
+// render
+function renderCCQuestion(){
+  const q = ccPool[ccIndex];
+  const qTextEl = document.getElementById("q-text");
+  const qContextEl = document.getElementById("q-context");
+  const qOptionsEl = document.getElementById("q-options");
+  const qFeedbackEl = document.getElementById("q-feedback");
+  const qWarningEl = document.getElementById("q-warning");
+  const qCounterEl = document.getElementById("q-counter");
+  const qScoreEl = document.getElementById("q-score");
+  const prevBtn = document.getElementById("q-prev");
+  const nextBtn = document.getElementById("q-next");
+
+  qTextEl.textContent = q.text;
+  qContextEl.textContent = q.context || "";
+  qContextEl.classList.toggle("hidden", !q.context);
+
+  qCounterEl.textContent = `Question ${ccIndex + 1} of ${ccPool.length}`;
+  qScoreEl.textContent = `Score: ${ccScore} / ${ccPool.length}`;
+
+  prevBtn.disabled = ccIndex === 0;
+  nextBtn.textContent = (ccIndex === ccPool.length - 1) ? "Finish" : "Next →";
+
+  qOptionsEl.innerHTML = "";
+  qFeedbackEl.classList.add("hidden");
+  qFeedbackEl.textContent = "";
+  qWarningEl.classList.add("hidden");
+
+  q.options.forEach((opt, idx) => {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className =
+      "w-full text-left px-3 py-2 rounded-md border border-gray-200 dark:border-gray-600 " +
+      "text-xs md:text-sm text-gray-800 dark:text-gray-100 bg-gray-50 dark:bg-gray-800 " +
+      "hover:bg-blue-50 dark:hover:bg-blue-900 transition";
+    btn.textContent = opt;
+    btn.dataset.index = idx;
+    btn.addEventListener("click", () => handleCCAnswer(idx, btn));
+    qOptionsEl.appendChild(btn);
+  });
+
+  if (ccAnswered[ccIndex]) {
+    showCCAnsweredState();
+  }
+}
+
+function showCCAnsweredState(){
+  const correctIndex = ccPool[ccIndex].correct;
+  const optionButtons = document.querySelectorAll("#q-options button");
+  optionButtons.forEach((b, idx) => {
+    b.disabled = true;
+    b.classList.add("cursor-not-allowed");
+    if (idx === correctIndex) {
+      b.classList.remove("bg-gray-50", "dark:bg-gray-800");
+      b.classList.add("bg-green-100", "dark:bg-green-900", "border-green-500");
+    }
+  });
+  const qFeedbackEl = document.getElementById("q-feedback");
+  qFeedbackEl.classList.remove("hidden");
+  qFeedbackEl.innerHTML = `<span class="text-green-700 dark:text-green-300 font-semibold">Answered</span> <span class="ml-1 text-gray-700 dark:text-gray-200">– ${ccPool[ccIndex].explanation}</span>`;
+}
+
+function handleCCAnswer(selectedIndex, clickedBtn){
+  if (ccAnswered[ccIndex]) return;
+
+  const q = ccPool[ccIndex];
+  const qFeedbackEl = document.getElementById("q-feedback");
+  const qWarningEl = document.getElementById("q-warning");
+
+  const optionButtons = document.querySelectorAll("#q-options button");
+  optionButtons.forEach(b => {
+    b.disabled = true;
+    b.classList.add("cursor-not-allowed");
+  });
+
+  ccAnswered[ccIndex] = true;
+  qWarningEl.classList.add("hidden");
+
+  const isCorrect = selectedIndex === q.correct;
+  if (isCorrect) {
+    ccScore += 1;
+    clickedBtn.classList.remove("bg-gray-50", "dark:bg-gray-800");
+    clickedBtn.classList.add("bg-green-100", "dark:bg-green-900", "border-green-500");
+  } else {
+    clickedBtn.classList.remove("bg-gray-50", "dark:bg-gray-800");
+    clickedBtn.classList.add("bg-red-100", "dark:bg-red-900", "border-red-500");
+    optionButtons[q.correct].classList.remove("bg-gray-50", "dark:bg-gray-800");
+    optionButtons[q.correct].classList.add("bg-green-100", "dark:bg-green-900", "border-green-500");
+  }
+
+  qFeedbackEl.classList.remove("hidden");
+  qFeedbackEl.innerHTML = `
+    <span class="${isCorrect ? "text-green-700 dark:text-green-300" : "text-red-700 dark:text-red-300"} font-semibold">
+      ${isCorrect ? "Correct" : "Not quite"}
+    </span>
+    <span class="ml-1 text-gray-700 dark:text-gray-200"> – ${q.explanation}</span>
+  `;
+
+  document.getElementById("q-score").textContent = `Score: ${ccScore} / ${ccPool.length}`;
+}
+
+function goCCNext(){
+  if (!ccAnswered[ccIndex]) {
+    const qWarningEl = document.getElementById("q-warning");
+    if (qWarningEl) qWarningEl.classList.remove("hidden");
+    return;
+  }
+  if (ccIndex === ccPool.length - 1) {
+    showCCResult();
+    return;
+  }
+  ccIndex += 1;
+  renderCCQuestion();
+}
+
+function goCCPrev(){
+  if (ccIndex === 0) return;
+  ccIndex -= 1;
+  renderCCQuestion();
+}
+
+// result & badge
+function showCCResult(){
+  const quizCard = document.getElementById("quiz-card");
+  const resultCard = document.getElementById("result-card");
+  const resultScoreEl = document.getElementById("result-score");
+  if (!quizCard || !resultCard || !resultScoreEl) return;
+
+  quizCard.classList.add("hidden");
+  resultCard.classList.remove("hidden");
+
+  const total = ccPool.length;
+  const percent = Math.round((ccScore / total) * 100);
+  resultScoreEl.textContent = `You scored ${ccScore} out of ${total} (${percent}%).`;
+
+  let level = "bronze";
+  if (percent > 70) level = "gold";
+  else if (percent > 40) level = "silver";
+
+  try { localStorage.setItem("fl_badge_cc", level); } catch(e){}
+
+  renderCCBadge(level);
+  if (level === "silver" || level === "gold") launchCCConfetti();
+}
+
+function renderCCBadge(level){
+  const wrapper = document.getElementById("badge-wrapper");
+  const titleEl = document.getElementById("badge-title");
+  const descEl = document.getElementById("badge-desc");
+  if (!wrapper || !titleEl || !descEl) return;
+
+  let shieldColor = "#C08A5B";
+  let accentColor = "#8B5E3C";
+  let label = "Card Curious 🔎";
+  let desc = "You know a few things about cards. Keep practicing.";
+
+  if (level === "silver") { shieldColor = "#C9D1D9"; accentColor = "#8E99A8"; label = "Card Aware 💡"; desc = "Good! You understand many common card traps."; }
+  if (level === "gold") { shieldColor = "#A9D957"; accentColor = "#6EA230"; label = "Card Pro 🏅"; desc = "Excellent — you’re confident with card safety and costs."; }
+
+  titleEl.textContent = label;
+  descEl.textContent = desc;
+
+  const svg = `
+    <svg viewBox="0 0 120 150" class="w-28 h-36">
+      <defs>
+        <linearGradient id="shieldGradCC" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="${shieldColor}"/>
+          <stop offset="100%" stop-color="${accentColor}"/>
+        </linearGradient>
+      </defs>
+      <path d="M60 10 L95 25 L95 70 C95 95 80 120 60 135 C40 120 25 95 25 70 L25 25 Z"
+            fill="url(#shieldGradCC)" stroke="rgba(0,0,0,0.1)" stroke-width="2"/>
+      <text x="60" y="86" text-anchor="middle" font-family="system-ui, -apple-system" font-size="14" fill="white" font-weight="700">CRD</text>
+      <text x="60" y="105" text-anchor="middle" font-family="system-ui, -apple-system" font-size="10" fill="rgba(255,255,255,0.95)" font-weight="600">${level.toUpperCase()}</text>
+    </svg>
+  `;
+  wrapper.innerHTML = svg;
+}
+
+function launchCCConfetti(){
+  const container = document.getElementById("confetti-container");
+  if (!container) return;
+  container.innerHTML = "";
+  container.classList.remove("hidden");
+  const colors = ["#F4A261", "#A8DADC", "#457B9D", "#E63946", "#A9D957"];
+  for (let i=0;i<50;i++){
+    const piece = document.createElement("div");
+    const size = 6 + Math.random()*6;
+    piece.style.position = "absolute";
+    piece.style.width = `${size}px`;
+    piece.style.height = `${size*0.4}px`;
+    piece.style.backgroundColor = colors[Math.floor(Math.random()*colors.length)];
+    piece.style.left = `${Math.random()*100}%`;
+    piece.style.top = "-10px";
+    piece.style.opacity = "0";
+    piece.style.borderRadius = "2px";
+    piece.style.transform = `rotate(${Math.random()*45}deg)`;
+    piece.style.animation = `fl-confetti-fall ${2 + Math.random()}s ease-out forwards`;
+    piece.style.animationDelay = `${Math.random()}s`;
+    container.appendChild(piece);
+  }
+  setTimeout(()=>{ container.classList.add("hidden"); container.innerHTML=""; }, 3500);
+}
+
+// restart
+function restartCCQuiz(){
+  ccPool = pickRandomN(_ccBank, 5);
+  // shuffle options and fix correct index
+  ccPool.forEach(q=>{
+    const opts = q.options.slice();
+    const correctText = opts[q.correct];
+    for (let i=opts.length-1;i>0;i--){
+      const j = Math.floor(Math.random()*(i+1));
+      [opts[i], opts[j]]=[opts[j], opts[i]];
+    }
+    q.options = opts;
+    q.correct = q.options.indexOf(correctText);
+  });
+
+  ccIndex = 0; ccScore = 0; ccAnswered = {};
+  document.getElementById("quiz-card").classList.remove("hidden");
+  document.getElementById("result-card").classList.add("hidden");
+  renderCCQuestion();
+}
+
+// init
+document.addEventListener("DOMContentLoaded", function(){
+  // pick 5 locked questions and shuffle their options
+  ccPool = pickRandomN(_ccBank, 5);
+  ccPool.forEach(q=>{
+    const opts = q.options.slice();
+    const correctText = opts[q.correct];
+    for (let i=opts.length-1;i>0;i--){
+      const j = Math.floor(Math.random()*(i+1));
+      [opts[i], opts[j]]=[opts[j], opts[i]];
+    }
+    q.options = opts;
+    q.correct = q.options.indexOf(correctText);
+  });
+
+  document.getElementById("q-next").addEventListener("click", goCCNext);
+  document.getElementById("q-prev").addEventListener("click", goCCPrev);
+
+  renderCCQuestion();
+});
+</script>
+{% endblock %}

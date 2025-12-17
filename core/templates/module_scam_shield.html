@@ -1,0 +1,249 @@
+{% extends "base.html" %}
+{% block title %}Financial Scam Shield{% endblock %}
+
+{% block content %}
+<section class="mb-6">
+  <h1 class="text-3xl font-bold text-trust dark:text-blue-300">🛡️ Financial Scam Shield — 2025 Edition</h1>
+  <p class="mt-2 text-gray-700 dark:text-gray-300 max-w-2xl">
+    Practical, no-fluff guide to spot UPI scams, phishing, fake job offers, loan apps, and social-engineering tricks — plus interactive checks you can run on messages.
+  </p>
+</section>
+
+<div class="grid md:grid-cols-2 gap-6">
+
+  <!-- Left column: guide -->
+  <div class="md:col-span-2 space-y-4">
+
+    <div class="bg-white dark:bg-gray-800 rounded-lg p-6 border dark:border-gray-700 shadow-sm">
+      <h2 class="text-xl font-semibold text-trust dark:text-blue-300">Top Scam Types (What you'll see)</h2>
+      <ul class="mt-3 space-y-2 text-sm text-gray-800 dark:text-gray-200">
+        <li><strong>Phishing links:</strong> Fake URLs asking to verify KYC / login.</li>
+        <li><strong>UPI return scams:</strong> Someone "sends" money, asks you to return it then reverses.</li>
+        <li><strong>Loan apps:</strong> Upfront "registration fee" requests & pressure.</li>
+        <li><strong>Fake HR / job offers:</strong> Requests OTP / bank details to "start onboarding".</li>
+        <li><strong>SIM-swap / Vishing:</strong> "I am from bank, share OTP" social trick.</li>
+      </ul>
+    </div>
+
+    <div class="bg-white dark:bg-gray-800 rounded-lg p-6 border dark:border-gray-700 shadow-sm">
+      <h2 class="text-xl font-semibold text-trust dark:text-blue-300">Red Flags Checklist</h2>
+      <ul class="mt-3 space-y-2 text-sm text-gray-800 dark:text-gray-200">
+        <li>• Urgency + threat: “Pay now or account closed.”</li>
+        <li>• Ask for OTP / UPI PIN / Bank details.</li>
+        <li>• Tiny grammar / unexpected domain URL.</li>
+        <li>• Promise of guaranteed high returns / 100% placement.</li>
+        <li>• Request to "quickly return money" after receiving unexpected transfer.</li>
+      </ul>
+    </div>
+
+    <div class="bg-white dark:bg-gray-800 rounded-lg p-6 border dark:border-gray-700 shadow-sm">
+      <h2 class="text-xl font-semibold text-trust dark:text-blue-300">How to Respond — Safe Scripts</h2>
+      <p class="mt-2 text-sm text-gray-800 dark:text-gray-200">
+        Copy-paste these when a suspicious person calls or messages:
+      </p>
+      <pre class="mt-3 bg-gray-50 dark:bg-gray-900 p-3 rounded text-xs dark:text-gray-200 text-gray-700">
+1) "I don't share OTP/pin. Please send official email/portal link
+    and I'll check."
+2) "Please send the offer from your corporate email and my recruiter
+    can confirm."
+3) "I received money but didn't request it. I will contact my bank
+    before returning anything."
+      </pre>
+    </div>
+
+  </div>
+
+  <!-- Right column: interactive tools -->
+  <div class="space-y-4">
+
+    <!-- Paste scanner -->
+    <div class="bg-white dark:bg-gray-800 rounded-lg p-4 border dark:border-gray-700 shadow-sm">
+      <h3 class="font-semibold text-gray-900 dark:text-gray-100">🔎 Paste SMS / UPI Text (Quick Scan)</h3>
+      <p class="text-xs text-gray-600 dark:text-gray-300 mt-1">Paste suspicious message(s) below — we’ll flag probable red flags.</p>
+      <textarea id="scanInput" rows="6" class="w-full mt-3 p-2 rounded border dark:bg-gray-900 dark:border-gray-600 text-sm" placeholder="Paste SMS or UPI message text here..."></textarea>
+      <button id="scanBtn" class="mt-3 px-3 py-1.5 rounded bg-blue-600 text-white text-sm">Run Scan</button>
+      <div id="scanResult" class="mt-3 text-sm"></div>
+    </div>
+
+    <!-- Mini-Game -->
+    <div class="bg-white dark:bg-gray-800 rounded-lg p-4 border dark:border-gray-700 shadow-sm">
+      <h3 class="font-semibold text-gray-900 dark:text-gray-100">🎯 Spot the Scam — Mini Game</h3>
+      <p class="text-xs text-gray-600 dark:text-gray-300 mt-1">Choose which message is most likely a scam. 3 rounds.</p>
+      <div id="gameArea" class="mt-3"></div>
+      <div class="mt-3 flex gap-2">
+        <button id="gameNext" class="px-3 py-1.5 rounded bg-blue-600 text-white text-sm">Start Game</button>
+        <button id="gameReset" class="px-3 py-1.5 rounded border text-sm">Reset</button>
+      </div>
+      <div id="gameScore" class="mt-2 text-sm text-gray-700 dark:text-gray-200"></div>
+    </div>
+
+    <!-- Quick checklist download -->
+    <div class="bg-white dark:bg-gray-800 rounded-lg p-4 border dark:border-gray-700 shadow-sm text-sm">
+      <h3 class="font-semibold text-gray-900 dark:text-gray-100">📝 Quick Checklist</h3>
+      <p class="mt-2">Download a 1-page checklist you can screenshot and keep.</p>
+      <a id="downloadChecklist" class="inline-block mt-3 bg-green-600 text-white px-3 py-1.5 rounded text-sm" href="#">Download Checklist (PNG)</a>
+    </div>
+
+  </div>
+</div>
+
+<!-- Long explanations -->
+<section class="mt-8 space-y-4">
+  <div class="bg-white dark:bg-gray-800 rounded-lg p-6 border dark:border-gray-700 shadow-sm">
+    <h3 class="text-lg font-semibold text-trust dark:text-blue-300">Case Studies (Real Examples)</h3>
+    <ol class="mt-3 text-sm text-gray-800 dark:text-gray-200 space-y-2">
+      <li><strong>UPI Return Scam:</strong> Someone sends ₹1,000 to your UPI ID, asks you to return ₹800. They then block and the bank reverses the initial transfer. If you returned money, you lose it.</li>
+      <li><strong>Fake Job Offer:</strong> They ask for bank details for "salary routing" OR an OTP for "KYC" — never share. Always ask for company email and call recruiter via official site.</li>
+      <li><strong>Loan App:</strong> Upfront "processing fee" via UPI or QR — real lenders don’t demand upfront fees by UPI.</li>
+    </ol>
+  </div>
+
+  <div class="bg-white dark:bg-gray-800 rounded-lg p-6 border dark:border-gray-700 shadow-sm">
+    <h3 class="text-lg font-semibold text-trust dark:text-blue-300">What to do if scammed</h3>
+    <ul class="mt-3 text-sm text-gray-800 dark:text-gray-200 space-y-2">
+      <li>1. Immediately block card / UPI app and call your bank’s official helpline.</li>
+      <li>2. File an FIR for larger amounts and ask the bank for tracing.</li>
+      <li>3. Report to NPCI for UPI fraud (collect reference IDs).</li>
+      <li>4. Preserve all messages and call logs — they help investigations.</li>
+      <li>5. Can also complain on NPCI Official website (https://www.npci.org.in/complaint-register) or contact National Cyber helpline at 1930 </li>
+    </ul>
+  </div>
+</section>
+
+{% endblock %}
+
+{% block extra_head %}
+<script>
+/* Scam Shield JS: simple rule-based scanner + mini-game */
+const scamPatterns = [
+  /OTP/i, /pin/i, /upi.*pin/i, /share.*otp/i, /kYC/i, /click.*verify/i,
+  /loan.*processing fee/i, /pay.*now/i, /urgent.*pay/i, /refund.*send/i,
+  /100%.*placement/i, /guaranteed.*returns/i, /withdraw.*now/i, /UPI/i,/details/i
+];
+
+function runScan(text) {
+  const lines = text.split(/\n/).map(l => l.trim()).filter(Boolean);
+  const issues = [];
+  lines.forEach((line, idx) => {
+    scamPatterns.forEach((re) => {
+      if (re.test(line)) {
+        issues.push({ line, reason: re.toString() });
+      }
+    });
+    // extra checks
+    if (/https?:\/\/\S+/.test(line) && !/nic|gov|in|bank|companyname/i.test(line)) {
+      issues.push({ line, reason: 'suspicious_url' });
+    }
+    if (/transfer.*received.*return/i.test(line)) {
+      issues.push({ line, reason: 'return_request' });
+    }
+  });
+  return issues;
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('scanBtn').addEventListener('click', () => {
+    const txt = document.getElementById('scanInput').value || '';
+    const out = document.getElementById('scanResult');
+    out.innerHTML = '';
+    if (!txt.trim()) { out.innerHTML = '<div class="text-sm text-gray-600 dark:text-gray-300">Paste text to scan.</div>'; return; }
+    const found = runScan(txt);
+    if (!found.length) {
+      out.innerHTML = '<div class="text-sm text-green-700 dark:text-green-200">No obvious red flags detected. Still be cautious.</div>';
+    } else {
+      out.innerHTML = '<div class="text-sm text-red-700 dark:text-red-300">Potential issues found:</div>';
+      found.forEach(f => {
+        out.innerHTML += `<div class="mt-2 p-2 bg-red-200 dark:bg-red-900/40 rounded text-xs text-gray-800 dark:text-gray-200"><strong>Line:</strong> ${escapeHtml(f.line)}<br><strong>Flag:</strong> ${escapeHtml(f.reason)}</div>`;
+      });
+    }
+  });
+
+  // Mini-game logic
+  const rounds = [
+    {
+      choices: [
+        "Hi, this is KYC team. Verify at http://secure-bank-verify.xyz immediately with OTP.",
+        "Congratulations, you’ve been shortlisted. Please send your resume to hr@company.com and we will call."
+      ],
+      answer: 0, hint: "Fake URL + asks for OTP."
+    },
+    {
+      choices: [
+        "We accidentally transferred ₹900 to you. Please return ₹800 to 99999xxxxx.",
+        "You received ₹900. No action required from you unless confirmed by bank."
+      ],
+      answer: 0, hint: "Return-request is classic UPI scam."
+    },
+    {
+      choices: [
+        "Apply for dream job — send 2,000 as processing fee to start.",
+        "Apply on the official portal and HR will contact you for next steps. No payment required."
+      ],
+      answer: 0, hint: "Upfront fees are scammy."
+    }
+  ];
+  let gameIndex = 0, score = 0;
+  const gameArea = document.getElementById('gameArea');
+  const gameScore = document.getElementById('gameScore');
+  const gameNext = document.getElementById('gameNext');
+  const gameReset = document.getElementById('gameReset');
+
+  function renderRound() {
+    const r = rounds[gameIndex];
+    gameArea.innerHTML = '';
+    r.choices.forEach((c,i) => {
+      const b = document.createElement('button');
+      b.className = 'w-full text-left p-2 mb-2 rounded border dark:border-gray-600 bg-gray-50 dark:bg-gray-900 text-sm';
+      b.innerHTML = escapeHtml(c);
+      b.addEventListener('click', () => {
+        const correct = (i === r.answer);
+        if (correct) { score++; gameScore.innerHTML = `<span class="text-green-700 dark:text-green-200">Correct — ${r.hint}</span>`; }
+        else { gameScore.innerHTML = `<span class="text-red-700 dark:text-red-300">Not quite — ${r.hint}</span>`; }
+        // show explanation then move
+        Array.from(gameArea.querySelectorAll('button')).forEach(btn => btn.disabled = true);
+      });
+      gameArea.appendChild(b);
+    });
+  }
+
+  gameNext.addEventListener('click', () => {
+    if (gameIndex >= rounds.length) { gameIndex = 0; score = 0; }
+    renderRound();
+    gameIndex++;
+    if (gameIndex > rounds.length) gameIndex = rounds.length;
+  });
+
+  gameReset.addEventListener('click', () => {
+    gameIndex = 0; score = 0; gameArea.innerHTML = ''; gameScore.innerHTML = '';
+  });
+
+  // checklist download (simple PNG via canvas)
+  document.getElementById('downloadChecklist').addEventListener('click', (e) => {
+    e.preventDefault();
+    const text = `SCAM CHECKLIST
+1. Never share OTP/PIN
+2. Don't send money to unknown UPI
+3. Confirm via official channels
+4. No upfront fees
+5. Check URL domain
+
+Keep this on your lock screen.`;
+    // quick canvas
+    const c = document.createElement('canvas');
+    c.width = 800; c.height = 600;
+    const ctx = c.getContext('2d');
+    ctx.fillStyle = '#ffffff'; ctx.fillRect(0,0,c.width,c.height);
+    ctx.fillStyle = '#0f172a'; ctx.font = '20px sans-serif';
+    const lines = text.split('\n');
+    lines.forEach((ln,i) => ctx.fillText(ln, 40, 60 + i*30));
+    const data = c.toDataURL('image/png');
+    const a = document.createElement('a');
+    a.href = data; a.download = 'scam_checklist.png';
+    a.click();
+  });
+});
+
+// Simple escape helper
+function escapeHtml(s) { return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+</script>
+{% endblock %}
